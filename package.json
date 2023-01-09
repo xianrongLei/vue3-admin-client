@@ -1,0 +1,49 @@
+{
+  "name": "vue3",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite --open --host 0.0.0.0",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint:init": "eslint --init",
+    "lint:fix": "eslint \"src/**/*.{js,vue,ts}\" --fix",
+    "prepare": "husky install",
+    "prettier-format": "prettier --config .prettierrc.cjs \"src/**/*.{vue,js,ts}\" --write"
+  },
+  "dependencies": {
+    "axios": "^0.27.2",
+    "pinia": "^2.0.11",
+    "vue": "^3.2.25",
+    "vue-i18n": "^9.1.9",
+    "vue-router": "^4.0.12"
+  },
+  "devDependencies": {
+    "@types/eslint": "^8.4.10",
+    "@types/node": "^18.11.18",
+    "@typescript-eslint/eslint-plugin": "^5.48.0",
+    "@typescript-eslint/parser": "^5.48.0",
+    "@vitejs/plugin-vue": "^2.2.0",
+    "eslint": "^8.31.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-import-resolver-alias": "^1.1.2",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-vue": "^9.8.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.1.0",
+    "prettier": "^2.8.2",
+    "sass": "^1.43.4",
+    "typescript": "^4.5.4",
+    "vite": "^2.8.0",
+    "vite-plugin-eslint": "^1.8.1",
+    "vue-tsc": "^0.29.8"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,vue}": [
+      "npm run lint",
+      "prettier-format"
+    ]
+  }
+}
