@@ -7,12 +7,13 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint:init": "eslint --init",
-    "lint:fix": "eslint \"src/**/*.{js,vue,ts}\" --fix",
+    "lint:fix": "eslint \"src/**/*.{vue,js,jsx,ts,tsx}\" --fix",
     "prepare": "husky install",
-    "prettier-format": "prettier --config .prettierrc.cjs \"src/**/*.{vue,js,ts}\" --write"
+    "prettier:fix": "prettier --config .prettierrc.cjs \"src/**/*.{vue,js,ts}\" --write"
   },
   "dependencies": {
     "axios": "^0.27.2",
+    "husky": "^8.0.3",
     "pinia": "^2.0.11",
     "vue": "^3.2.25",
     "vue-i18n": "^9.1.9",
@@ -31,7 +32,6 @@
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-vue": "^9.8.0",
-    "husky": "^8.0.3",
     "lint-staged": "^13.1.0",
     "prettier": "^2.8.2",
     "sass": "^1.43.4",
@@ -40,10 +40,15 @@
     "vite-plugin-eslint": "^1.8.1",
     "vue-tsc": "^0.29.8"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"          
+    }
+  },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx,vue}": [
-      "npm run lint",
-      "prettier-format"
+    "*.{vue,js,jsx,ts,tsx}": [
+      "npm run lint:fix",
+      "npm run prettier:fix"
     ]
   }
 }

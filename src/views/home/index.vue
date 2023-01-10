@@ -4,8 +4,7 @@ import { ref } from "vue"
 defineProps<{ msg: string }>()
 
 const count = ref(0)
-const add = (a: string) => {
-  console.log(a + b)
+const add = () => {
   count.value += 1
   console.log(count.value)
 }
@@ -16,7 +15,7 @@ const sub = () => {
 
 <template>
   <div class="container" ref="refContainer">
-    <button @click="add('asdfds')">disabled</button>
+    <button @click="add">disabled</button>
     {{ count }}
     <button @click="sub">disabled</button>
   </div>

@@ -3,10 +3,10 @@ module.exports = {
   env: {
     browser: true,
     es2021: true,
-    node: true,
+    node: true
   },
   // 插件从右到左覆盖处理
-  extends: ["plugin:vue/vue3-strongly-recommended", "airbnb-base", "prettier"],
+  extends: ["plugin:vue/vue3-strongly-recommended", "eslint-config-airbnb-base", "eslint-config-prettier"],
   // vue解析器
   parser: "vue-eslint-parser",
   // 解析器配置
@@ -16,8 +16,8 @@ module.exports = {
     parser: "@typescript-eslint/parser",
     ecmaFeatures: {
       tsx: true,
-      jsx: true,
-    },
+      jsx: true
+    }
   },
   // 全局自定义宏
   globals: {
@@ -25,7 +25,7 @@ module.exports = {
     defineExpose: "readonly",
     defineEmits: "readonly",
     withDefaults: "readonly",
-    $ref: "readonly",
+    $ref: "readonly"
   },
   // 插件
   plugins: ["vue", "@typescript-eslint"],
@@ -38,6 +38,6 @@ module.exports = {
     "vue/attribute-hyphenation": 0,
     "vue/v-on-event-hyphenation": 0,
     "import/extensions": 0,
-    "import/no-absolute-path": 0,
-  },
-};
+    "import/no-absolute-path": 0
+  }
+}
