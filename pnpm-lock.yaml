@@ -29,7 +29,6 @@ specifiers:
 
 dependencies:
   axios: 0.27.2
-  husky: 8.0.3
   pinia: 2.0.28_prq2uz4lho2pwp6irk4cfkrxwu
   vue: 3.2.45
   vue-i18n: 9.2.2_vue@3.2.45
@@ -48,6 +47,7 @@ devDependencies:
   eslint-plugin-import: 2.26.0_m2kn7xiag5lymyarkgri27ztxm
   eslint-plugin-prettier: 4.2.1_iu5s7nk6dw7o3tajefwfiqfmge
   eslint-plugin-vue: 9.8.0_eslint@8.31.0
+  husky: 8.0.3
   lint-staged: 13.1.0
   prettier: 2.8.2
   sass: 1.57.1
@@ -1757,7 +1757,7 @@ packages:
     resolution: {integrity: sha512-+dQSyqPh4x1hlO1swXBiNb2HzTDN1I2IGLQx1GrBuiqFJfoMrnZWwVmatvSiO+Iz8fBUnf+lekwNo4c2LlXItg==}
     engines: {node: '>=14'}
     hasBin: true
-    dev: false
+    dev: true
 
   /ignore/5.2.4:
     resolution: {integrity: sha512-MAb38BcSbH0eHNBxn7ql2NH/kX33OkB3lZ1BNdh7ENeRChHTYsTvWrMubiIAMNS2llXEEgZ1MUOBtXChP3kaFQ==}
