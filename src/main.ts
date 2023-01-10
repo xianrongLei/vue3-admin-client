@@ -6,8 +6,8 @@ import router from "./router/index"
 
 const app = createApp(App)
 // 注册 Pinia
-app.use(createPinia())
-registerStore()
+app.use(createPinia()) // 挂载
+registerStore() // 注册
 // 注册路由
 app.use(router)
 

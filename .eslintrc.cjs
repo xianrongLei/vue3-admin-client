@@ -21,10 +21,6 @@ module.exports = {
   },
   // 全局自定义宏
   globals: {
-    defineProps: "readonly",
-    defineExpose: "readonly",
-    defineEmits: "readonly",
-    withDefaults: "readonly",
     $ref: "readonly"
   },
   // 插件

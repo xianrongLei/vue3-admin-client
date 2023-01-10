@@ -22,7 +22,7 @@ specifiers:
   typescript: ^4.5.4
   vite: ^2.8.0
   vite-plugin-eslint: ^1.8.1
-  vue: ^3.2.25
+  vue: ^3.2.45
   vue-i18n: ^9.1.9
   vue-router: ^4.0.12
   vue-tsc: ^0.29.8
