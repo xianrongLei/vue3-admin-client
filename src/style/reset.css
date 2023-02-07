@@ -1,0 +1,86 @@
+/* 设置所有元素为css3盒模型 */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+/* html:focus-within 表示只要在html中的元素中任何元素获得焦点该选择器都生效 */
+/* scroll-behavior: smooth;设置滚动条滚动位置跳转时过渡展示而不是一闪而过 */
+html:focus-within {
+  scroll-behavior: smooth;
+}
+
+/* body默认样式 */
+body {
+  min-height: 100vh;
+  text-rendering: optimizeSpeed;
+  line-height: 1.5;
+  overflow: hidden;
+}
+/* 清除下列元素外边距内边距 */
+html,
+body,
+h1,
+h2,
+h3,
+h4,
+p {
+  margin: 0;
+  padding: 0;
+}
+
+/* 清除列表前的小图标 */
+ul[role="list"],
+ol[role="list"] {
+  list-style: none;
+}
+
+/* 设置默认状态的a标签下划线样式 */
+a:not([class]) {
+  text-decoration-skip-ink: auto;
+}
+
+/* 图片标签默认样式 */
+img,
+picture {
+  max-width: 100%;
+  display: block;
+}
+
+/* 设置表单标签字体大小为继承 */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* 如果用户系统设置为减少动画则将动画过渡效果禁用 */
+@media (prefers-reduced-motion: reduce) {
+  html:focus-within {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* 设置滚动条的样式 */
+::-webkit-scrollbar {
+  width: 8px;
+}
+/* 滚动槽 */
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0);
+  border-radius: 2px;
+}
+/* 滚动条滑块 */
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background: #a3a3a3;
+}

@@ -26,6 +26,8 @@ module.exports = {
   // 插件
   plugins: ["vue", "@typescript-eslint"],
   rules: {
+    "no-unused-vars": 1,
+    "no-console": 1,
     "import/no-extraneous-dependencies": 0,
     "import/prefer-default-export": 0,
     "import/no-unresolved": 0,

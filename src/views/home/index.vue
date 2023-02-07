@@ -16,12 +16,10 @@ let count = $ref<number>(0)
 const add = () => {
   refContainer.value.style.background = getUrl()
   count += 1
-  console.log(refContainer.value.style.backgroundImage)
 }
 const sub = () => {
   refContainer.value.style.background = getUrl()
   count -= 1
-  console.log(refContainer.value.style.backgroundImage)
 }
 </script>
 

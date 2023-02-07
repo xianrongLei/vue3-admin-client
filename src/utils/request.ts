@@ -37,25 +37,15 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   response => {
     if (response.status !== 200) {
-      return Promise.reject(new Error(response.statusText || "Error"))
+      return Promise.reject(response)
     }
-
     const res = response.data
-    // 响应成功
-    if (res.code === 0) {
-      return res
-    }
-
-    // 错误提示
-    // console.error(res.msg);
-
     // 没有权限，如：未登录、登录过期等，需要跳转到登录页
     if (res.code === 401) {
-      // store.userStore?.setToken('')
       window.location.reload()
     }
 
-    return Promise.reject(new Error(res.msg || "Error"))
+    return res
   },
   error => Promise.reject(error)
 )

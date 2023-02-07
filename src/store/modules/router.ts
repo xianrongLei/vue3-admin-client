@@ -1,6 +1,6 @@
 import { defineStore } from "pinia"
 
-export default defineStore("app", {
+export default defineStore("router", {
   state: () => ({}),
   actions: {}
 })

@@ -3,12 +3,17 @@ import { createPinia } from "pinia"
 import App from "./App.vue"
 import { registerStore } from "@/store"
 import router from "./router/index"
-
+import i18n from "@/i18n/index"
+// application style
+import "@/style/index.css"
+// application example
 const app = createApp(App)
-// 注册 Pinia
-app.use(createPinia()) // 挂载
-registerStore() // 注册
-// 注册路由
+// data manager
+app.use(createPinia())
+registerStore()
+// router
 app.use(router)
-
+// 语言注册
+app.use(i18n)
+// render application
 app.mount("#app")
