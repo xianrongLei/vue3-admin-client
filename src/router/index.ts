@@ -1,8 +1,16 @@
-import { createRouter, createWebHashHistory, Router, RouteRecordRaw } from "vue-router"
+import {
+  createRouter,
+  createWebHashHistory,
+  Router,
+  RouteRecordRaw
+} from "vue-router"
 import store from "@/store"
-import Layout from "@/layout/index.vue"
+import { isEmptyObj } from "@/utils/helpers"
 
-const getKeepAliveRoutes = (rs: RouteRecordRaw[], breadcrumb: RouteRecordRaw[]): RouteRecordRaw[] => {
+const getKeepAliveRoutes = (
+  rs: RouteRecordRaw[],
+  breadcrumb: RouteRecordRaw[]
+): RouteRecordRaw[] => {
   const routerList: RouteRecordRaw[] = []
 
   rs.forEach((item: any) => {
@@ -25,6 +33,10 @@ const constantRoutes: RouteRecordRaw[] = [
   {
     path: "/login",
     component: () => import("@/views/login/index.vue")
+  },
+  {
+    path: "/test",
+    component: () => import("@/layout/index.vue")
   },
   {
     path: "/404",
@@ -64,27 +76,14 @@ export default router
 const whiteList: string[] = ["/login"]
 // 路由加载前
 router.beforeEach(async (to, from, next) => {
-  // token存在的情况
-  if (store.user.token) {
-    if (!store.user.id) {
-      const menuRoutes: RouteRecordRaw[] = []
-
-      // 根据后端菜单路由，生成KeepAlive路由
-      const keepAliveRoutes = getKeepAliveRoutes(menuRoutes, [])
-
-      // 添加菜单路由
-      asyncRoutes.children?.push(...keepAliveRoutes)
-      router.addRoute(asyncRoutes)
-
-      // 错误路由
-      errorRoute.forEach(item => {
-        router.addRoute(item)
-      })
-
-      // 保存路由数据
-      // store.routerStore.setRoutes(constantRoutes.concat(asyncRoutes))
-
-      next({ ...to, replace: true })
+  if (!isEmptyObj(store.user.userInfo)) {
+    // 获取个人信息
+    if (!store.state.shared.isInit) {
+      console.log("router")
+    }
+    if (to.path === "/login") {
+      // 跳转到首页
+      next("/home")
     } else {
       next()
     }

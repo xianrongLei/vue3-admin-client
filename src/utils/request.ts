@@ -3,8 +3,9 @@ import axios from "axios"
 // import cache from '@/utils/cache'
 
 // axios实例
+
 const service = axios.create({
-  baseURL: import.meta.env.VITE_API_URL as any,
+  baseURL: window.APP_config.apiBaseURL,
   timeout: 60000,
   headers: { "Content-Type": "application/json;charset=UTF-8" }
 })
@@ -12,19 +13,16 @@ const service = axios.create({
 // 请求拦截器
 service.interceptors.request.use(
   (config: any) => {
-    // const userStore = store.userStore
-    // if (userStore?.token) {
-    //   config.headers.Authorization = 'Bearer ' + userStore.token
-    // }
-
-    // config.headers['Accept-Language'] = cache.getLanguage()
-
     // 追加时间戳，防止GET请求缓存
     if (config.method?.toUpperCase() === "GET") {
       config.params = { ...config.params, t: new Date().getTime() }
     }
 
-    if (Object.values(config.headers).includes("application/x-www-form-urlencoded")) {
+    if (
+      Object.values(config.headers).includes(
+        "application/x-www-form-urlencoded"
+      )
+    ) {
       // config.data = qs.stringify(config.data);
     }
 

@@ -4,10 +4,17 @@ import App from "./App.vue"
 import { registerStore } from "@/store"
 import router from "./router/index"
 import i18n from "@/i18n/index"
+import naive from "./naiveUI/index"
+// Naive UI 通用字体
+import "vfonts/Lato.css"
+// Naive UI 等宽字体
+import "vfonts/FiraCode.css"
 // application style
-import "@/style/index.css"
+import "@/style/index"
 // application example
 const app = createApp(App)
+// naiveUI
+app.use(naive)
 // data manager
 app.use(createPinia())
 registerStore()

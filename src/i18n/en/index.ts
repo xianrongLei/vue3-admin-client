@@ -2,6 +2,7 @@ import login from "./login"
 import project from "./project"
 
 const global = {
+  title: "MAKU",
   doc_addr: "Document",
   code_addr: "Code",
   form_account: "Please enter your account or email",

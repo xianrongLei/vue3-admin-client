@@ -2,6 +2,8 @@ import login from "./login"
 import project from "./project"
 
 const global = {
+  title: "MAKU",
+
   doc_addr: "文档地址",
   code_addr: "仓库地址",
   form_account: "请输入账号或邮箱",
