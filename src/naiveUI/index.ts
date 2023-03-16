@@ -7,7 +7,10 @@ import {
   NInputNumber,
   NSpace,
   NIcon,
-  NSpin
+  NSpin,
+  NMessageProvider,
+  NConfigProvider,
+  NThemeEditor
 } from "naive-ui"
 
 export default create({
@@ -19,6 +22,9 @@ export default create({
     NInputNumber,
     NSpace,
     NIcon,
-    NSpin
+    NSpin,
+    NMessageProvider,
+    NConfigProvider,
+    NThemeEditor
   ]
 })

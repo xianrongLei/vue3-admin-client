@@ -12,9 +12,19 @@ const checkMode = () => {
 </script>
 
 <template>
-  <div class="container" ref="refContainer">
-    <CommonResizeBox :mode="mode" :height="1080" :width="1920">
-      <div class="tt" @click="checkMode">
+  <div
+    class="container"
+    ref="refContainer"
+  >
+    <CommonResizeBox
+      :mode="mode"
+      :height="1080"
+      :width="1920"
+    >
+      <div
+        class="tt"
+        @click="checkMode"
+      >
         <div class="xxx">sadf</div>
       </div>
     </CommonResizeBox>

@@ -1,5 +1,8 @@
 <template>
-  <div class="layout-footer" :style="{ height: footerHeight }"></div>
+  <div
+    class="layout-footer"
+    :style="{ height: footerHeight }"
+  ></div>
 </template>
 
 <script lang="ts" setup>

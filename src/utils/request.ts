@@ -5,7 +5,7 @@ import axios from "axios"
 // axios实例
 
 const service = axios.create({
-  baseURL: window.APP_config.apiBaseURL,
+  baseURL: window.appConfig.apiBaseURL,
   timeout: 60000,
   headers: { "Content-Type": "application/json;charset=UTF-8" }
 })
@@ -28,12 +28,12 @@ service.interceptors.request.use(
 
     return config
   },
-  error => Promise.reject(error)
+  (error) => Promise.reject(error)
 )
 
 // 响应拦截器
 service.interceptors.response.use(
-  response => {
+  (response) => {
     if (response.status !== 200) {
       return Promise.reject(response)
     }
@@ -45,7 +45,7 @@ service.interceptors.response.use(
 
     return res
   },
-  error => Promise.reject(error)
+  (error) => Promise.reject(error)
 )
 
 // 导出 axios 实例

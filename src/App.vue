@@ -4,17 +4,14 @@
     :theme-overrides="themeOverrides"
   >
     <NThemeEditor v-if="showThemeEditor" />
-    <router-view></router-view>
+    <n-message-provider>
+      <router-view></router-view>
+    </n-message-provider>
   </n-config-provider>
 </template>
 
 <script lang="ts">
-import {
-  NConfigProvider,
-  NThemeEditor,
-  darkTheme,
-  GlobalThemeOverrides
-} from "naive-ui"
+import { NThemeEditor, darkTheme, GlobalThemeOverrides } from "naive-ui"
 import type { GlobalTheme } from "naive-ui"
 import { defineComponent, ref } from "vue"
 import { themeLightOverrides, themeDarkOverrides } from "@/style/index"
@@ -22,7 +19,6 @@ import Store from "@/store"
 
 export default defineComponent({
   components: {
-    NConfigProvider,
     NThemeEditor
   },
   setup() {

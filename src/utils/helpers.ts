@@ -61,24 +61,16 @@ export const colorHexToRgb = (hexStr: string, opacity?: boolean) => {
   }
   return `${(opacity ? "rgba(" : "rgb(") + rgbArray.join(",")})`
 }
+
 /**
- * @param {Promise} promise
- * @return {Promise} 返回一个Promise
+ * 判断是否是空对象
+ * @param obj
+ * @returns
  */
-// export const to = (promise: Promise<any>): Promise<any> =>
-//   promise.then(data => [null, data]).catch(err => [err, undefined])
-export const awaitTo = (
-  promise: Promise<any>,
-  errorExt?: object
-): Promise<any> =>
-  promise
-    .then(data => [null, data])
-    .catch(err => {
-      let parsedError = null
-      if (errorExt) {
-        parsedError = { ...err, ...errorExt }
-        return [parsedError, undefined]
-      }
-      return [err, undefined]
-    })
 export const isEmptyObj = (obj: any): boolean => JSON.stringify(obj) === "{}"
+/**
+ * 判断是否是空数组
+ * @param obj
+ * @returns
+ */
+export const isEmptyArray = (arr: any): boolean => JSON.stringify(arr) === "[]"

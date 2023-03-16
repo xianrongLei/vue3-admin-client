@@ -12,9 +12,21 @@ const checkMode = () => {
 </script>
 
 <template>
-  <div class="container" ref="refContainer">
-    <CommonResizeBox :mode="mode" :height="1080" :width="1920">
-      <div class="tt" @click="checkMode">第三方的</div>
+  <div
+    class="container"
+    ref="refContainer"
+  >
+    <CommonResizeBox
+      :mode="mode"
+      :height="1080"
+      :width="1920"
+    >
+      <div
+        class="tt"
+        @click="checkMode"
+      >
+        第三方的
+      </div>
     </CommonResizeBox>
   </div>
 </template>

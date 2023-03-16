@@ -11,7 +11,8 @@ withDefaults(
   }
 )
 const refContainer = ref()
-const getUrl = () => (refContainer.value.style.background === "" ? `url(${Logo})` : "")
+const getUrl = () =>
+  refContainer.value.style.background === "" ? `url(${Logo})` : ""
 let count = $ref<number>(0)
 const add = () => {
   refContainer.value.style.background = getUrl()
@@ -24,8 +25,12 @@ const sub = () => {
 </script>
 
 <template>
-  <div class="container" ref="refContainer">
-    <button @click="add">+</button>{{ count }} {{ msg }}<button @click="sub">-</button>
+  <div
+    class="container"
+    ref="refContainer"
+  >
+    <button @click="add">+</button>{{ count }} {{ msg
+    }}<button @click="sub">-</button>
   </div>
 </template>
 

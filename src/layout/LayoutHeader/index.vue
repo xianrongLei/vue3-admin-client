@@ -1,5 +1,8 @@
 <template>
-  <div class="layout-header" :style="{ height: headerHeight, minHeight: headerHeight }"></div>
+  <div
+    class="layout-header"
+    :style="{ height: headerHeight, minHeight: headerHeight }"
+  ></div>
 </template>
 
 <script lang="ts" setup>

@@ -15,6 +15,7 @@
         label-placement="left"
         label-width="auto"
         require-mark-placement="right-hanging"
+        @keyup.enter="login"
         size="large"
         :style="{
           maxWidth: '640px'
@@ -53,11 +54,11 @@
           </n-input>
         </n-form-item>
         <n-form-item
-          path="verify"
+          path="answer"
           label-style="margin:40px 0;"
         >
           <n-input
-            v-model:value="loginForm.verify"
+            v-model:value="loginForm.answer"
             :placeholder="$t('login.login_captcha_p')"
             clearable
           >
@@ -68,21 +69,25 @@
             </template>
           </n-input>
           <div
-            v-show="verifySrc"
-            v-html="verifySrc"
             class="verify"
-          ></div>
-          <div
-            v-show="!verifySrc"
-            class="verify"
+            @click="initialize"
           >
-            <n-icon
-              size="30"
-              color="#888"
-              style="margin-left: 10px"
+            <div
+              v-show="!isExceed && verifySrc"
+              v-html="verifySrc"
+            ></div>
+            <div
+              class="tip"
+              v-show="!verifySrc"
             >
-              <ImageIcon />
-            </n-icon>
+              <div class="content">网络异常</div>
+            </div>
+            <div
+              class="tip"
+              v-show="isExceed"
+            >
+              <div class="content">验证码已过期<br />点击刷新</div>
+            </div>
           </div>
         </n-form-item>
         <n-form-item>
@@ -102,48 +107,69 @@
 </template>
 
 <script lang="ts">
-import { ref, defineComponent, Ref } from "vue"
-import { Image, Person, KeySharp, DiceSharp } from "@vicons/ionicons5"
+import { ref, defineComponent } from "vue"
+import { Person, KeySharp, DiceSharp } from "@vicons/ionicons5"
 import { useI18n } from "vue-i18n"
-import { useCaptchaApi } from "./api.login"
-import { AnyObject } from "@/types/common"
+import { useMessage } from "naive-ui"
+import { useCaptchaApi, useSigninApi } from "./login.api"
 
 export default defineComponent({
   components: {
-    ImageIcon: Image,
     Person,
     KeySharp,
     DiceSharp
   },
+  mounted() {
+    this.initialize()
+  },
   methods: {
-    login() {
-      console.log(this.loginForm)
+    async initialize() {
+      this.isExceed = false
+      const [error, result] = await useCaptchaApi({
+        type: 1,
+        color: true
+      })
+      if (error) throw new Error(error)
+
+      this.verifySrc = result.data
+      this.loginForm.uniCode = result.uniCode
+
+      setTimeout(() => {
+        this.isExceed = true
+      }, result.time * 1000)
+    },
+    async login() {
+      let isPass: boolean
+      try {
+        await (this.$refs.loginFormRef as any).validate()
+        isPass = true
+      } catch (error) {
+        isPass = false
+      }
+      if (isPass) {
+        const [err, data]: any[] = await useSigninApi(this.loginForm)
+        if (err) {
+          this.initialize()
+          this.message.error(err.response.data.message)
+        } else {
+          this.message.success("登录成功")
+          console.log(data)
+        }
+      }
     }
   },
   setup() {
     const { t }: any = useI18n()
-    const verifySrc: Ref<string> = ref("")
-    const loginForm: Ref<AnyObject> = ref({
-      username: "",
-      password: "",
-      uniCode: "",
-      verify: ""
-    })
-    useCaptchaApi({
-      type: 1,
-      color: true
-    }).then(([error, result]) => {
-      if (result) {
-        verifySrc.value = result.data
-        loginForm.value.uniCode = result.uniCode
-      } else {
-        throw new Error(error)
-      }
-    })
-
     return {
-      verifySrc,
-      loginForm,
+      message: useMessage(),
+      isExceed: ref(false),
+      verifySrc: ref(""),
+      loginForm: ref({
+        username: "admin",
+        password: "admin123",
+        uniCode: "",
+        answer: ""
+      }),
       loginRules: {
         username: {
           required: true,
@@ -155,7 +181,7 @@ export default defineComponent({
           message: t("login.login_password_p"),
           trigger: "blur"
         },
-        verify: {
+        answer: {
           required: true,
           message: t("login.login_captcha_p"),
           trigger: "blur"
@@ -199,6 +225,7 @@ export default defineComponent({
   box-shadow: 1px 1px 8px var(--shadow-color);
   box-sizing: border-box;
   width: 440px;
+  cursor: pointer;
   :deep(.verify) {
     width: 150px;
     border: 1px solid var(--border-color);
@@ -207,10 +234,29 @@ export default defineComponent({
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    > svg {
+    position: relative;
+    > :nth-child(1) > svg {
       pointer-events: none;
       width: 100% !important;
       height: 40px !important;
+    }
+    .tip {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      font-size: 12px;
+      line-height: 15px;
+      display: flex;
+      justify-content: center;
+      text-align: center;
+      align-items: center;
+      background-color: var(--mark-color);
+      color: var(--text-strong-color);
+      .content {
+        transform: scale(0.8);
+      }
     }
   }
 }

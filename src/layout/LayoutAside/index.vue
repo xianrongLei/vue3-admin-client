@@ -1,6 +1,9 @@
 <template>
   <div class="layout-aside">
-    <div class="logo-container" :style="{ height: headerHeight }"></div>
+    <div
+      class="logo-container"
+      :style="{ height: headerHeight }"
+    ></div>
     <div
       class="menu-container"
       :style="{

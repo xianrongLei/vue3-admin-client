@@ -9,5 +9,5 @@ declare module "*.vue" {
 
 // eslint-disable-next-line no-unused-vars
 declare interface Window {
-  APP_config: any
+  [key: string]: any
 }
