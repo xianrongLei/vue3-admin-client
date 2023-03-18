@@ -1,44 +1,18 @@
-<script lang="ts" setup>
-import { ref } from "vue"
-import Logo from "@/assets/logo.png"
+<script lang="ts">
+import { defineComponent } from "vue"
 
-withDefaults(
-  defineProps<{
-    msg?: string
-  }>(),
-  {
-    msg: "@"
+export default defineComponent({
+  setup() {
+    return {}
   }
-)
-const refContainer = ref()
-const getUrl = () =>
-  refContainer.value.style.background === "" ? `url(${Logo})` : ""
-let count = $ref<number>(0)
-const add = () => {
-  refContainer.value.style.background = getUrl()
-  count += 1
-}
-const sub = () => {
-  refContainer.value.style.background = getUrl()
-  count -= 1
-}
+})
 </script>
 
 <template>
-  <div
-    class="container"
-    ref="refContainer"
-  >
-    <button @click="add">+</button>{{ count }} {{ msg
-    }}<button @click="sub">-</button>
-  </div>
+  <div class="home-container"></div>
 </template>
 
 <style lang="scss" scoped>
-.container {
-  border: 2px solid pink;
-  height: 100vh;
-  width: 100vw;
-  background-image: "@/assets/logo.png";
+.home-container {
 }
 </style>

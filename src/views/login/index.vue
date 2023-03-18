@@ -80,7 +80,7 @@
               class="tip"
               v-show="!verifySrc"
             >
-              <div class="content">网络异常</div>
+              <div class="content">获取验证码失败</div>
             </div>
             <div
               class="tip"
@@ -107,7 +107,7 @@
 </template>
 
 <script lang="ts">
-import { ref, defineComponent } from "vue"
+import { ref, defineComponent, ComponentOptions } from "vue"
 import { Person, KeySharp, DiceSharp } from "@vicons/ionicons5"
 import { useI18n } from "vue-i18n"
 import { useMessage } from "naive-ui"
@@ -141,7 +141,7 @@ export default defineComponent({
     async login() {
       let isPass: boolean
       try {
-        await (this.$refs.loginFormRef as any).validate()
+        await (this.$refs.loginFormRef as ComponentOptions).validate()
         isPass = true
       } catch (error) {
         isPass = false

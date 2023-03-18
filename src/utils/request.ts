@@ -1,13 +1,14 @@
 import axios from "axios"
 // import store from '@/store'
 // import cache from '@/utils/cache'
+import { appConfig } from "@/app.config"
 
 // axios实例
 
 const service = axios.create({
-  baseURL: window.appConfig.apiBaseURL,
-  timeout: 60000,
-  headers: { "Content-Type": "application/json;charset=UTF-8" }
+  baseURL: appConfig.axios.baseURL,
+  timeout: appConfig.axios.timeout,
+  headers: appConfig.axios.headers
 })
 
 // 请求拦截器

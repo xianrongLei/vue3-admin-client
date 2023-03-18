@@ -67,10 +67,13 @@ export const colorHexToRgb = (hexStr: string, opacity?: boolean) => {
  * @param obj
  * @returns
  */
-export const isEmptyObj = (obj: any): boolean => JSON.stringify(obj) === "{}"
+export const isEmptyObj = (obj: { [key: string]: any }): boolean =>
+  JSON.stringify(obj) === "{}"
 /**
  * 判断是否是空数组
  * @param obj
+ *
  * @returns
  */
-export const isEmptyArray = (arr: any): boolean => JSON.stringify(arr) === "[]"
+export const isEmptyArray = (arr: any[]): boolean =>
+  JSON.stringify(arr) === "[]"

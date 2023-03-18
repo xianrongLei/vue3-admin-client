@@ -5,20 +5,13 @@
   <meta charset="UTF-8" />
   <link rel="icon" href="/favicon.ico" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title id="app-title"></title>
-
+  <title></title>
 </head>
 
 <body>
   <div id="app"></div>
-  <script src="/app.config.js"></script>
+  <script type="module" src="/app.config.ts"></script>
   <script type="module" src="/src/main.ts"></script>
-  <script>
-    window
-      .document
-      .getElementById("app-title")
-      .innerText = window.appConfig.appTitle
-  </script>
 </body>
 
 </html>
