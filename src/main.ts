@@ -12,7 +12,11 @@ import "vfonts/FiraCode.css"
 // application style
 import "@/style/index"
 // application example
-import "./app.config"
+import { appConfig } from "./app.config"
+
+const win: Window = window
+win.appConfig = appConfig
+win.document.title = appConfig.appTitle
 
 const app = createApp(App)
 // naiveUI

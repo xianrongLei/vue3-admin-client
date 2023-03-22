@@ -21,6 +21,3 @@ export const appConfig: AppConfig = {
   },
   appTitle: "MAKU"
 }
-const app: Record<string, any> = window
-app.appConfig = appConfig
-app.document.title = appConfig.appTitle

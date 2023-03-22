@@ -8,6 +8,6 @@ declare module "*.vue" {
 }
 
 // eslint-disable-next-line no-unused-vars
-// declare interface Window {
-//   [key: string]: any
-// }
+declare interface Window {
+  [key: string]: any
+}
