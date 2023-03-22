@@ -1,43 +1,48 @@
-export type local = "local"
-export type session = "session"
-export type GetOptions = {
-  key: string
-  type?: local | session
+export type CacheTypes = {
+  local: "localStorage"
+  session: "sessionStorage"
 }
-export type SetOptions = GetOptions & {
-  value: string
-}
-export type ClearOptions = GetOptions & string
-
-const cacheType = {
+export type CacheType = keyof CacheTypes
+const cacheTypes: CacheTypes = {
   local: "localStorage",
   session: "sessionStorage"
-} as const
-const defaultCacheType: local = "local"
+}
+const defaultCacheType: CacheType = "local"
+export type Options = {
+  key: string
+  type?: CacheType
+}
+
 /**
  * 获取浏览器缓存
- * @param { Object } params
+ * @param { Options } options
  */
 // eslint-disable-next-line no-unused-vars
-export function getCache(params: GetOptions | string): unknown
+export function getCache(options: Options | string): unknown
 // eslint-disable-next-line no-redeclare
-export function getCache(params: unknown): unknown {
-  if (typeof params === "string") {
-    const key = params as string
-    return JSON.parse(<string>window[cacheType[defaultCacheType]].getItem(key))
+export function getCache(options: unknown): unknown {
+  if (typeof options === "string") {
+    return JSON.parse(
+      window[cacheTypes[defaultCacheType]].getItem(options) as string
+    )
   }
-  const { type, key } = params as GetOptions
+  const { type, key } = options as Options
   return JSON.parse(
-    <string>window[cacheType[type || defaultCacheType]].getItem(key)
+    window[cacheTypes[type || defaultCacheType]].getItem(key) as string
   )
 }
 
 /**
  * 设置浏览器缓存
- * @param { Object } { key, value, type }
+ * @param { Options } options
  */
-export function setCache({ key, value, type }: SetOptions): void {
-  window[cacheType[type || defaultCacheType]].setItem(
+export function setCache(
+  options: Options & {
+    value: string
+  }
+): void {
+  const { key, type, value } = options
+  window[cacheTypes[type || defaultCacheType]].setItem(
     key,
     JSON.stringify(value)
   )
@@ -45,31 +50,30 @@ export function setCache({ key, value, type }: SetOptions): void {
 
 /**
  * 清除缓存
- * @param { Array | Object } params
+ * @param { Options | Options[] } options
  */
 // eslint-disable-next-line no-unused-vars
-export function clearCache(params: ClearOptions | ClearOptions[] | string): void
+export function clearCache(options: Options | Options[]): void
 // eslint-disable-next-line no-redeclare
-export function clearCache(params: unknown): void {
-  if (typeof params === "string") {
-    const key: string = params as string
-    window[cacheType[defaultCacheType]].removeItem(key)
-  } else if (typeof params === "object") {
-    const { type, key }: ClearOptions = <ClearOptions>params
-    window[cacheType[type || defaultCacheType]].removeItem(key)
+export function clearCache(options: unknown): void {
+  if (typeof options === "string") {
+    window[cacheTypes[defaultCacheType]].removeItem(options)
+  } else if (typeof options === "object") {
+    const { type, key } = options as Options
+    window[cacheTypes[type || defaultCacheType]].removeItem(key)
   } else {
-    const arr: ClearOptions[] = <ClearOptions[]>params
-    arr.forEach(({ type, key }: ClearOptions) => {
-      window[cacheType[type || defaultCacheType]].removeItem(key)
+    const arr = options as Options[]
+    arr.forEach(({ type, key }: Options) => {
+      window[cacheTypes[type || defaultCacheType]].removeItem(key)
     })
   }
 }
 
 /**
  * 清除session或local中的所有缓存
- * @param { String } type
+ * @param { CacheType } type
  * clearAll("local" | "local")
  */
-export function clearAll(type?: local | session): void {
-  window[cacheType[type || defaultCacheType]].clear()
+export function clearAll(type?: CacheType): void {
+  window[cacheTypes[type || defaultCacheType]].clear()
 }

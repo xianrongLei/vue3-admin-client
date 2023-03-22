@@ -12,6 +12,8 @@ import "vfonts/FiraCode.css"
 // application style
 import "@/style/index"
 // application example
+import "./app.config"
+
 const app = createApp(App)
 // naiveUI
 app.use(naive)
