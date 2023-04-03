@@ -7,8 +7,8 @@
 
 <script lang="ts" setup>
 defineProps<{
-  headerHeight?: string
-}>()
+  headerHeight?: string;
+}>();
 </script>
 
 <style lang="scss" scoped>

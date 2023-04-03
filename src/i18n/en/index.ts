@@ -1,5 +1,5 @@
-import login from "./login"
-import project from "./project"
+import login from "./login";
+import project from "./project";
 
 const global = {
   title: "MAKU",
@@ -25,10 +25,10 @@ const global = {
   r_download: "Download",
   r_delete: "Delete",
   r_more: "More"
-}
+};
 
 export default {
   global,
   login,
   project
-}
+};

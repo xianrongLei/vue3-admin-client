@@ -1,10 +1,10 @@
-import { createI18n } from "vue-i18n" // 引入vue-i18n组件
-import zh from "./zh/index"
-import en from "./en/index"
-import { AnyObject } from "@/types/common"
+import { createI18n } from "vue-i18n"; // 引入vue-i18n组件
+import zh from "./zh/index";
+import en from "./en/index";
+import { AnyObject } from "@/types/common";
 
-const lang = "ZH"
-const langStorage: AnyObject = { lang }
+const lang = "ZH";
+const langStorage: AnyObject = { lang };
 // 语言数组
 export const langList = [
   {
@@ -15,7 +15,7 @@ export const langList = [
     label: "English",
     key: "EN"
   }
-]
+];
 
 const i18n = createI18n({
   locale: langStorage?.lang || lang,
@@ -25,6 +25,6 @@ const i18n = createI18n({
     ZH: zh,
     EN: en
   }
-})
+});
 
-export default i18n
+export default i18n;

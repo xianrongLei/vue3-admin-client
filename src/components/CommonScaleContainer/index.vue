@@ -28,15 +28,15 @@ import {
   Ref,
   withDefaults,
   defineExpose
-} from "vue"
-import { getResize, modeType, GetResize } from "./index"
+} from "vue";
+import { getResize, modeType, GetResize } from "./index";
 
 const props = withDefaults(
   defineProps<{
-    width?: number
-    height?: number
-    mode?: modeType
-    alignType?: string
+    width?: number;
+    height?: number;
+    mode?: modeType;
+    alignType?: string;
   }>(),
   {
     width: 1920,
@@ -44,17 +44,17 @@ const props = withDefaults(
     mode: 0,
     alignType: "top"
   }
-)
+);
 
 // 缩放函数 返回参数
-let resizeParams: GetResize
+let resizeParams: GetResize;
 // 父节点
-const parentNode: Ref = ref(null)
+const parentNode: Ref = ref(null);
 // 主容器
-const target: Ref = ref(null)
+const target: Ref = ref(null);
 // 初始化函数
 const init = (): void => {
-  if (props.mode === 2) return
+  if (props.mode === 2) return;
   const ResizeOption = {
     parentNode: parentNode.value.parentNode,
     target: target.value,
@@ -62,47 +62,47 @@ const init = (): void => {
     height: props.height,
     mode: props.mode,
     alignType: props.alignType
-  }
-  resizeParams = getResize(ResizeOption)
+  };
+  resizeParams = getResize(ResizeOption);
   switch (props.mode) {
     case 0:
-      resizeParams.stretch()
-      break
+      resizeParams.stretch();
+      break;
     case 1:
-      resizeParams.ratio()
-      break
+      resizeParams.ratio();
+      break;
     default:
-      resizeParams.stretch()
-      break
+      resizeParams.stretch();
+      break;
   }
-  resizeParams.parentResize()
-}
+  resizeParams.parentResize();
+};
 // 销毁函数
 const dispose = (): void => {
-  resizeParams?.unWindowResize()
-}
+  resizeParams?.unWindowResize();
+};
 
 // 暴露参数
 defineExpose({
   init,
   dispose
-})
+});
 
 watch(
   () => props.mode,
   async () => {
-    await nextTick(() => {})
-    dispose()
-    init()
+    await nextTick(() => {});
+    dispose();
+    init();
   },
   {
     immediate: true
   }
-)
+);
 // hook
 onUnmounted(() => {
-  resizeParams.unWindowResize()
-})
+  resizeParams.unWindowResize();
+});
 </script>
 
 <style lang="scss" scoped>

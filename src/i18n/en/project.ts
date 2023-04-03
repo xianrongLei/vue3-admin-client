@@ -12,4 +12,4 @@ export default {
   release: "Release",
   unreleased: "Unrelease",
   last_edit: "Last edit time"
-}
+};

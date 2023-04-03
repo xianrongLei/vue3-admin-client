@@ -1,19 +1,19 @@
-import { GlobalThemeOverrides } from "naive-ui"
-import "./index.scss"
-import "./theme.scss"
+import { GlobalThemeOverrides } from "naive-ui";
+import "./index.scss";
+import "./theme.scss";
 
 export const themeLightOverrides: GlobalThemeOverrides = {
   common: {
     primaryColor: "rgba(80, 120, 200, 1)",
     primaryColorHover: "rgba(80, 120, 200, 1)"
   }
-}
+};
 export const themeDarkOverrides: GlobalThemeOverrides = {
   common: {
     primaryColor: "rgba(80, 120, 200, 1)",
     primaryColorHover: "rgba(80, 120, 200, 1)"
   }
-}
+};
 const common: any = {
   fontFamily: "",
   fontFamilyMono: "",
@@ -117,4 +117,4 @@ const common: any = {
   boxShadow1: "",
   boxShadow2: "",
   boxShadow3: ""
-}
+};

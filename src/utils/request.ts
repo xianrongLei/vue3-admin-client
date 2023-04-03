@@ -1,7 +1,11 @@
-import axios from "axios"
+import axios, {
+  AxiosRequestConfig,
+  AxiosRequestHeaders,
+  AxiosResponse
+} from "axios";
 // import store from '@/store'
 // import cache from '@/utils/cache'
-import { appConfig } from "@/app.config"
+import { appConfig } from "@/app.config";
 
 // axios实例
 
@@ -9,45 +13,45 @@ const service = axios.create({
   baseURL: appConfig.axios.baseURL,
   timeout: appConfig.axios.timeout,
   headers: appConfig.axios.headers
-})
+});
 
 // 请求拦截器
 service.interceptors.request.use(
-  (config: any) => {
+  (config: AxiosRequestConfig) => {
     // 追加时间戳，防止GET请求缓存
     if (config.method?.toUpperCase() === "GET") {
-      config.params = { ...config.params, t: new Date().getTime() }
+      config.params = { ...config.params, t: new Date().getTime() };
     }
 
     if (
-      Object.values(config.headers).includes(
+      Object.values(config.headers as AxiosRequestHeaders).includes(
         "application/x-www-form-urlencoded"
       )
     ) {
       // config.data = qs.stringify(config.data);
     }
 
-    return config
+    return config;
   },
   (error) => Promise.reject(error)
-)
+);
 
 // 响应拦截器
 service.interceptors.response.use(
-  (response) => {
+  (response: AxiosResponse) => {
     if (response.status !== 200) {
-      return Promise.reject(response)
+      return Promise.reject(response);
     }
-    const res = response.data
+    const res = response.data;
     // 没有权限，如：未登录、登录过期等，需要跳转到登录页
     if (res.code === 401) {
-      window.location.reload()
+      window.location.reload();
     }
 
-    return res
+    return res;
   },
   (error) => Promise.reject(error)
-)
+);
 
 // 导出 axios 实例
-export default service
+export default service;

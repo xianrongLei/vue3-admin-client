@@ -11,10 +11,10 @@ export const awaitTo = (
   promise
     .then((data) => [null, data])
     .catch((err) => {
-      let parsedError = null
+      let parsedError = null;
       if (errorExt) {
-        parsedError = { ...err, ...errorExt }
-        return [parsedError, undefined]
+        parsedError = { ...err, ...errorExt };
+        return [parsedError, null];
       }
-      return [err, undefined]
-    })
+      return [err, null];
+    });

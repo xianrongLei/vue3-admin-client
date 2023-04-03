@@ -80,9 +80,9 @@
 
 <script lang="ts" setup>
 defineProps<{
-  footerHeight?: string
-  headerHeight?: string
-}>()
+  footerHeight?: string;
+  headerHeight?: string;
+}>();
 </script>
 
 <style lang="scss" scoped>

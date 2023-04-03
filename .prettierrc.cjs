@@ -4,7 +4,7 @@ module.exports = {
   tabWidth: 2, //缩进
   useTabs: false, //使用tab？
   singleQuote: false, //单引号？
-  semi: false, //行尾分号？
+  semi: true, //行尾分号？
   trailingComma: "none", //尾随逗号
   bracketSpacing: true, //花括号内部左右各加一个空格
   jsxSingleQuote: true, //jsx中使用单引号

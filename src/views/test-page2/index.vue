@@ -1,14 +1,14 @@
 <script lang="ts" setup>
-import { ref, Ref } from "vue"
-import CommonResizeBox from "@/components/CommonResizeBox/index.vue"
+import { ref, Ref } from "vue";
+import CommonResizeBox from "@/components/CommonResizeBox/index.vue";
 
-const mode: Ref = ref(0)
+const mode: Ref = ref(0);
 const checkMode = () => {
-  mode.value += 1
+  mode.value += 1;
   if (mode.value === 3) {
-    mode.value = 0
+    mode.value = 0;
   }
-}
+};
 </script>
 
 <template>

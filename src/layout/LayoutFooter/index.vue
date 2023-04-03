@@ -7,8 +7,8 @@
 
 <script lang="ts" setup>
 defineProps<{
-  footerHeight?: string
-}>()
+  footerHeight?: string;
+}>();
 </script>
 
 <style lang="scss" scoped>

@@ -107,11 +107,16 @@
 </template>
 
 <script lang="ts">
-import { ref, defineComponent, ComponentOptions } from "vue"
-import { Person, KeySharp, DiceSharp } from "@vicons/ionicons5"
-import { useI18n } from "vue-i18n"
-import { useMessage } from "naive-ui"
-import { useCaptchaApi, useSigninApi } from "./login.api"
+import { ref, defineComponent, ComponentOptions } from "vue";
+import { Person, KeySharp, DiceSharp } from "@vicons/ionicons5";
+import { useI18n } from "vue-i18n";
+import { useMessage } from "naive-ui";
+import {
+  useCaptchaApi,
+  UseCaptchaApiResult,
+  UseSigninApiResult,
+  useSigninApi
+} from "@/api/api.login";
 
 export default defineComponent({
   components: {
@@ -120,46 +125,49 @@ export default defineComponent({
     DiceSharp
   },
   mounted() {
-    this.initialize()
+    this.initialize();
   },
   methods: {
     async initialize() {
-      this.isExceed = false
-      const [error, result] = await useCaptchaApi({
+      this.isExceed = false;
+      const [error, data]: UseCaptchaApiResult = await useCaptchaApi({
         type: 1,
         color: true
-      })
-      if (error) throw new Error(error)
-
-      this.verifySrc = result.data
-      this.loginForm.uniCode = result.uniCode
+      });
+      if (error) {
+        throw new Error(error.message);
+      }
+      this.verifySrc = data?.svg;
+      this.loginForm.uniCode = data?.uniCode;
 
       setTimeout(() => {
-        this.isExceed = true
-      }, result.time * 1000)
+        this.isExceed = true;
+      }, (data?.time as number) * 1000);
     },
     async login() {
-      let isPass: boolean
+      let isPass: boolean;
       try {
-        await (this.$refs.loginFormRef as ComponentOptions).validate()
-        isPass = true
+        await (this.$refs.loginFormRef as ComponentOptions).validate();
+        isPass = true;
       } catch (error) {
-        isPass = false
+        isPass = false;
       }
       if (isPass) {
-        const [err, data]: any[] = await useSigninApi(this.loginForm)
-        if (err) {
-          this.initialize()
-          this.message.error(err.response.data.message)
+        const [error, data]: UseSigninApiResult = await useSigninApi(
+          this.loginForm
+        );
+        if (error) {
+          this.initialize();
+          this.message.error(error.message);
         } else {
-          this.message.success("登录成功")
-          console.log(data)
+          this.message.success("登录成功");
+          console.log(data);
         }
       }
     }
   },
   setup() {
-    const { t }: any = useI18n()
+    const { t }: Record<string, any> = useI18n();
     return {
       message: useMessage(),
       isExceed: ref(false),
@@ -187,9 +195,9 @@ export default defineComponent({
           trigger: "blur"
         }
       }
-    }
+    };
   }
-})
+});
 </script>
 
 <style lang="scss" scoped>

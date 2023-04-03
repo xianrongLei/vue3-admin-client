@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Add } from "@vicons/ionicons5"
+import { Add } from "@vicons/ionicons5";
 </script>
 
 <template>

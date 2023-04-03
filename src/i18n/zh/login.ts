@@ -10,4 +10,4 @@ export default {
   login_password_p: "请输入密码",
   login_captcha_p: "请输入验证码",
   login_captcha: "验证码"
-}
+};

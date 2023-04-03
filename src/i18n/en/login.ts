@@ -10,4 +10,4 @@ export default {
   login_password_p: "input password",
   login_captcha_p: "input captcha",
   login_captcha: "verity"
-}
+};

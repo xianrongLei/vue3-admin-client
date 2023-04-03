@@ -22,14 +22,14 @@
 </template>
 
 <script lang="ts" setup>
-import LayoutFooter from "./LayoutFooter/index.vue"
-import LayoutTabs from "./LayoutTabs/index.vue"
-import LayoutMain from "./LayoutMain/index.vue"
-import LayoutHeader from "./LayoutHeader/index.vue"
-import LayoutAside from "./LayoutAside/index.vue"
+import LayoutFooter from "./LayoutFooter/index.vue";
+import LayoutTabs from "./LayoutTabs/index.vue";
+import LayoutMain from "./LayoutMain/index.vue";
+import LayoutHeader from "./LayoutHeader/index.vue";
+import LayoutAside from "./LayoutAside/index.vue";
 
-const footerHeight = "2.5rem"
-const headerHeight = "3.75rem"
+const footerHeight = "2.5rem";
+const headerHeight = "3.75rem";
 </script>
 
 <style lang="scss" scoped>

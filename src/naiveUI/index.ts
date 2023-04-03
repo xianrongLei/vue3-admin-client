@@ -11,7 +11,7 @@ import {
   NMessageProvider,
   NConfigProvider,
   NThemeEditor
-} from "naive-ui"
+} from "naive-ui";
 
 export default create({
   components: [
@@ -27,4 +27,4 @@ export default create({
     NConfigProvider,
     NThemeEditor
   ]
-})
+});
