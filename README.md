@@ -10,14 +10,5 @@
   - 3.优化缓存操作的工具（localStorage,sessionStorage）
   - 4.动态路由完善
   - 5.优化布局，增加响应式布局
-  - 6.完善切换主题
-  - 7.完善国际化配置
   - 8.加入tailwind css
-document.addEventListener("visibilitychange", function() {
-  if (document.visibilityState === 'visible') {
-    console.log("回来了")
-  } else {
-    //visibilityState === 'hidden'
-    console.log("离开了")
-  }
-});
+  - 9.添加visibilitychange事件

@@ -1,18 +1,16 @@
 import service from "@/utils/request";
 import { awaitTo } from "@/utils/awaitTo";
-import { ApiResult } from "@/api/api.type";
+import { ApiResult } from "@/types/common";
 
-export type UseCaptchaApiResult = ApiResult<Record<string, any>>;
 export const useCaptchaApi = (
   params: Record<string, unknown>
-): Promise<UseCaptchaApiResult> =>
+): Promise<ApiResult> =>
   awaitTo(
     service.get("/auth/captcha", {
       params
     })
   );
 
-export type UseSigninApiResult = ApiResult<Record<string, any>>;
 export const useSigninApi = (
   data: Record<string, unknown>
-): Promise<UseSigninApiResult> => awaitTo(service.post("/auth/signin", data));
+): Promise<ApiResult> => awaitTo(service.post("/auth/signin", data));

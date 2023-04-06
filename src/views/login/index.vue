@@ -111,12 +111,8 @@ import { ref, defineComponent, ComponentOptions } from "vue";
 import { Person, KeySharp, DiceSharp } from "@vicons/ionicons5";
 import { useI18n } from "vue-i18n";
 import { useMessage } from "naive-ui";
-import {
-  useCaptchaApi,
-  UseCaptchaApiResult,
-  UseSigninApiResult,
-  useSigninApi
-} from "@/api/api.login";
+import { useCaptchaApi, useSigninApi } from "@/api/api.login";
+import { ApiResult } from "@/types/common";
 
 export default defineComponent({
   components: {
@@ -130,7 +126,7 @@ export default defineComponent({
   methods: {
     async initialize() {
       this.isExceed = false;
-      const [error, data]: UseCaptchaApiResult = await useCaptchaApi({
+      const [error, data]: ApiResult = await useCaptchaApi({
         type: 1,
         color: true
       });
@@ -139,7 +135,6 @@ export default defineComponent({
       }
       this.verifySrc = data?.svg;
       this.loginForm.uniCode = data?.uniCode;
-
       setTimeout(() => {
         this.isExceed = true;
       }, (data?.time as number) * 1000);
@@ -153,9 +148,7 @@ export default defineComponent({
         isPass = false;
       }
       if (isPass) {
-        const [error, data]: UseSigninApiResult = await useSigninApi(
-          this.loginForm
-        );
+        const [error, data]: ApiResult = await useSigninApi(this.loginForm);
         if (error) {
           this.initialize();
           this.message.error(error.message);
