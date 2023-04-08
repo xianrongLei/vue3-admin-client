@@ -12,8 +12,13 @@
     "prettier:fix": "prettier --config .prettierrc.cjs \"src/**/*.{vue,js,ts}\" --write"
   },
   "dependencies": {
+    "@apollo/client": "^3.7.11",
+    "@vue/apollo-composable": "4.0.0-beta.4",
+    "@vue/apollo-option": "4.0.0-beta.4",
     "@vueuse/core": "^9.10.0",
     "axios": "^0.27.2",
+    "graphql": "^16.6.0",
+    "graphql-tag": "^2.12.6",
     "pinia": "^2.0.11",
     "vue": "^3.2.47",
     "vue-i18n": "^9.1.9",

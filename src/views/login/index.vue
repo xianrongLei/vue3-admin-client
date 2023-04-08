@@ -68,27 +68,10 @@
               </n-icon>
             </template>
           </n-input>
-          <div
-            class="verify"
-            @click="initialize"
-          >
-            <div
-              v-show="!isExceed && verifySrc"
-              v-html="verifySrc"
-            ></div>
-            <div
-              class="tip"
-              v-show="!verifySrc"
-            >
-              <div class="content">获取验证码失败</div>
-            </div>
-            <div
-              class="tip"
-              v-show="isExceed"
-            >
-              <div class="content">验证码已过期<br />点击刷新</div>
-            </div>
-          </div>
+          <Captcha
+            ref="refCaptcha"
+            @captcha="(uniCode) => (loginForm.uniCode = uniCode)"
+          />
         </n-form-item>
         <n-form-item>
           <n-button
@@ -110,85 +93,93 @@
 import { ref, defineComponent, ComponentOptions } from "vue";
 import { Person, KeySharp, DiceSharp } from "@vicons/ionicons5";
 import { useI18n } from "vue-i18n";
-import { useMessage } from "naive-ui";
-import { useCaptchaApi, useSigninApi } from "@/api/api.login";
+import { useLoadingBar, useMessage } from "naive-ui";
+import { useMutation } from "@vue/apollo-composable";
+import { signinGql } from "./login.gql";
 import { ApiResult } from "@/types/common";
+import Captcha from "./captcha.vue";
+import { awaitTo } from "@/utils/awaitTo";
 
 export default defineComponent({
   components: {
     Person,
     KeySharp,
-    DiceSharp
+    DiceSharp,
+    Captcha
   },
-  mounted() {
-    this.initialize();
+  setup() {
+    const { t }: Record<string, any> = useI18n();
+    const loginForm = ref({
+      username: "admin",
+      password: "admin",
+      uniCode: "",
+      answer: ""
+    });
+    const loginRules = ref({
+      username: {
+        required: true,
+        message: t("login.login_username_p"),
+        trigger: "blur"
+      },
+      password: {
+        required: true,
+        message: t("login.login_password_p"),
+        trigger: "blur"
+      },
+      answer: {
+        required: true,
+        message: t("login.login_captcha_p"),
+        trigger: "blur"
+      }
+    });
+    const loadingBar = useLoadingBar();
+    return {
+      loadingBar,
+      message: useMessage(),
+      isExceed: ref(false),
+      verifySrc: ref(""),
+      loginForm,
+      loginRules
+    };
   },
   methods: {
-    async initialize() {
-      this.isExceed = false;
-      const [error, data]: ApiResult = await useCaptchaApi({
-        type: 1,
-        color: true
-      });
-      if (error) {
-        throw new Error(error.message);
-      }
-      this.verifySrc = data?.svg;
-      this.loginForm.uniCode = data?.uniCode;
-      setTimeout(() => {
-        this.isExceed = true;
-      }, (data?.time as number) * 1000);
-    },
     async login() {
+      this.loadingBar.start();
       let isPass: boolean;
       try {
         await (this.$refs.loginFormRef as ComponentOptions).validate();
         isPass = true;
       } catch (error) {
         isPass = false;
+        this.loadingBar.error();
       }
       if (isPass) {
-        const [error, data]: ApiResult = await useSigninApi(this.loginForm);
+        const { mutate: getSignin } = useMutation(signinGql, () => ({
+          variables: {
+            createAuthInput: {
+              user: {
+                username: this.loginForm.username,
+                password: this.loginForm.password
+              },
+              uniCode: this.loginForm.uniCode,
+              answer: this.loginForm.answer
+            }
+          }
+        }));
+        const [error, data]: ApiResult = await awaitTo(getSignin());
         if (error) {
-          this.initialize();
+          this.loginForm.uniCode = (
+            this.$refs.refCaptcha as ComponentOptions
+          ).getCaptcha();
           this.message.error(error.message);
+          this.loadingBar.error();
         } else {
           this.message.success("登录成功");
           console.log(data);
+          this.loadingBar.finish();
         }
       }
     }
-  },
-  setup() {
-    const { t }: Record<string, any> = useI18n();
-    return {
-      message: useMessage(),
-      isExceed: ref(false),
-      verifySrc: ref(""),
-      loginForm: ref({
-        username: "admin",
-        password: "admin123",
-        uniCode: "",
-        answer: ""
-      }),
-      loginRules: {
-        username: {
-          required: true,
-          message: t("login.login_username_p"),
-          trigger: "blur"
-        },
-        password: {
-          required: true,
-          message: t("login.login_password_p"),
-          trigger: "blur"
-        },
-        answer: {
-          required: true,
-          message: t("login.login_captcha_p"),
-          trigger: "blur"
-        }
-      }
-    };
   }
 });
 </script>
@@ -227,39 +218,6 @@ export default defineComponent({
   box-sizing: border-box;
   width: 440px;
   cursor: pointer;
-  :deep(.verify) {
-    width: 150px;
-    border: 1px solid var(--border-color);
-    height: 40px;
-    margin-left: 10px;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    position: relative;
-    > :nth-child(1) > svg {
-      pointer-events: none;
-      width: 100% !important;
-      height: 40px !important;
-    }
-    .tip {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      font-size: 12px;
-      line-height: 15px;
-      display: flex;
-      justify-content: center;
-      text-align: center;
-      align-items: center;
-      background-color: var(--mark-color);
-      color: var(--text-strong-color);
-      .content {
-        transform: scale(0.8);
-      }
-    }
-  }
 }
 .login-title {
   display: flex;

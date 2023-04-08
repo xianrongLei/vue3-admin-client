@@ -4,9 +4,11 @@
     :theme-overrides="themeOverrides"
   >
     <NThemeEditor v-if="showThemeEditor" />
-    <n-message-provider>
-      <router-view></router-view>
-    </n-message-provider>
+    <n-loading-bar-provider>
+      <n-message-provider>
+        <router-view></router-view>
+      </n-message-provider>
+    </n-loading-bar-provider>
   </n-config-provider>
 </template>
 

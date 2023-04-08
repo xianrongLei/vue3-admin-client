@@ -5,7 +5,7 @@ import {
   RouteRecordRaw
 } from "vue-router";
 import store from "@/store";
-import { isEmptyObj } from "@/utils/helpers";
+import * as _ from "@/utils/helpers";
 
 const getKeepAliveRoutes = (
   rs: RouteRecordRaw[],
@@ -76,7 +76,7 @@ export default router;
 const whiteList: string[] = ["/login"];
 // 路由加载前
 router.beforeEach(async (to, from, next) => {
-  if (!isEmptyObj(store.user.userInfo)) {
+  if (!_.isEmptyObj(store.user.userInfo)) {
     // 获取个人信息
     if (!store.state.shared.isInit) {
       console.log("router");

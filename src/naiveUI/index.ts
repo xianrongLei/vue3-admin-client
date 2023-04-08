@@ -10,7 +10,8 @@ import {
   NSpin,
   NMessageProvider,
   NConfigProvider,
-  NThemeEditor
+  NThemeEditor,
+  NLoadingBarProvider
 } from "naive-ui";
 
 export default create({
@@ -25,6 +26,7 @@ export default create({
     NSpin,
     NMessageProvider,
     NConfigProvider,
-    NThemeEditor
+    NThemeEditor,
+    NLoadingBarProvider
   ]
 });
