@@ -1,5 +1,4 @@
 import { createApp, provide, h } from "vue";
-import { createPinia } from "pinia";
 import { DefaultApolloClient } from "@vue/apollo-composable";
 import App from "./App.vue";
 import { registerStore } from "@/store";
@@ -30,8 +29,7 @@ const app = createApp({
 // naiveUI
 app.use(naive);
 // data manager
-app.use(createPinia());
-registerStore();
+registerStore(app.use);
 // router
 app.use(router);
 // 语言注册

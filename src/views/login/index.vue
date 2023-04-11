@@ -69,7 +69,7 @@
             </template>
           </n-input>
           <Captcha
-            ref="refCaptcha"
+            ref="captchaRef"
             @captcha="(uniCode) => (loginForm.uniCode = uniCode)"
           />
         </n-form-item>
@@ -96,9 +96,9 @@ import { useI18n } from "vue-i18n";
 import { useLoadingBar, useMessage } from "naive-ui";
 import { useMutation } from "@vue/apollo-composable";
 import { signinGql } from "./login.gql";
-import { ApiResult } from "@/types/common";
 import Captcha from "./captcha.vue";
-import { awaitTo } from "@/utils/awaitTo";
+import { awaitTo, AwaitToResult } from "@/utils/awaitTo";
+import { useLoginStore } from "@/store/modules/login";
 
 export default defineComponent({
   components: {
@@ -133,7 +133,20 @@ export default defineComponent({
       }
     });
     const loadingBar = useLoadingBar();
+    const { mutate: getSignin } = useMutation(signinGql, () => ({
+      variables: {
+        createAuthInput: {
+          user: {
+            username: loginForm.value.username,
+            password: loginForm.value.password
+          },
+          uniCode: loginForm.value.uniCode,
+          answer: loginForm.value.answer
+        }
+      }
+    }));
     return {
+      getSignin,
       loadingBar,
       message: useMessage(),
       isExceed: ref(false),
@@ -144,40 +157,31 @@ export default defineComponent({
   },
   methods: {
     async login() {
-      this.loadingBar.start();
-      let isPass: boolean;
       try {
+        this.loadingBar.start();
         await (this.$refs.loginFormRef as ComponentOptions).validate();
-        isPass = true;
-      } catch (error) {
-        isPass = false;
-        this.loadingBar.error();
-      }
-      if (isPass) {
-        const { mutate: getSignin } = useMutation(signinGql, () => ({
-          variables: {
-            createAuthInput: {
-              user: {
-                username: this.loginForm.username,
-                password: this.loginForm.password
-              },
-              uniCode: this.loginForm.uniCode,
-              answer: this.loginForm.answer
-            }
-          }
-        }));
-        const [error, data]: ApiResult = await awaitTo(getSignin());
+        const [error, data]: AwaitToResult = await awaitTo(this.getSignin());
         if (error) {
-          this.loginForm.uniCode = (
-            this.$refs.refCaptcha as ComponentOptions
-          ).getCaptcha();
+          const { getCaptcha } = this.$refs.captchaRef as ComponentOptions;
+          this.loginForm.uniCode = getCaptcha();
           this.message.error(error.message);
           this.loadingBar.error();
         } else {
-          this.message.success("登录成功");
-          console.log(data);
+          const loginStore = useLoginStore();
+          const userInfo = data.data.signin;
+          loginStore.useStateOperator({
+            stateKey: "login_userInfo",
+            value: {
+              ...userInfo.user,
+              access_token: userInfo.access_token,
+              refresh_token: userInfo.refresh_token
+            }
+          });
+          this.$router.push("/");
           this.loadingBar.finish();
         }
+      } catch (error: any) {
+        this.loadingBar.error();
       }
     }
   }

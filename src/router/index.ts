@@ -4,8 +4,7 @@ import {
   Router,
   RouteRecordRaw
 } from "vue-router";
-import store from "@/store";
-import * as _ from "@/utils/helpers";
+import { useLoginStore } from "@/store/modules/login";
 
 const getKeepAliveRoutes = (
   rs: RouteRecordRaw[],
@@ -50,9 +49,8 @@ const errorRoute: RouteRecordRaw[] = [
   }
 ];
 const asyncRoutes: RouteRecordRaw = {
-  path: "/",
+  path: "/home",
   component: () => import("@/layout/index.vue"),
-  redirect: "/home",
   children: [
     {
       path: "/home",
@@ -74,22 +72,35 @@ const router: Router = createRouter({
 export default router;
 
 const whiteList: string[] = ["/login"];
+// eslint-disable-next-line arrow-body-style
+const isEmpty = (value: any): boolean => {
+  return (
+    JSON.stringify(value) === "{}" || JSON.stringify(value) === "[]" || !value
+  );
+};
+
 // 路由加载前
 router.beforeEach(async (to, from, next) => {
-  if (!_.isEmptyObj(store.user.userInfo)) {
-    // 获取个人信息
-    if (!store.state.shared.isInit) {
-      console.log("router");
-    }
+  const loginStore = useLoginStore();
+  // 用户已登录
+  const userInfoEmpty = isEmpty(loginStore.$state.login_userInfo);
+
+  if (!userInfoEmpty) {
+    // 已登录 路由地址为login则跳转到首页
+    // console.log(to.path);
     if (to.path === "/login") {
       // 跳转到首页
       next("/home");
     } else {
       next();
     }
-  } else if (whiteList.indexOf(to.path) > -1) {
+  }
+  // 用户未登录 可以进入白名单
+  else if (whiteList.indexOf(to.path) > -1) {
     next();
-  } else {
+  }
+  // 用户未登录 路由地址不在白名单白名单 跳转到login
+  else {
     next("/login");
   }
 });

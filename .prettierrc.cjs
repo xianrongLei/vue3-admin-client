@@ -10,4 +10,4 @@ module.exports = {
   jsxSingleQuote: true, //jsx中使用单引号
   jsxBracketSameLine: false, //将>多行 JSX 元素的 放在最后一行的末尾
   arrowParens: "always" //箭头函数的参数括号尽可能省略
-}
+};

@@ -7,7 +7,7 @@ const cacheTypes: CacheTypes = {
   local: "localStorage",
   session: "sessionStorage"
 };
-const defaultCacheType: CacheType = "local";
+const defaultCacheType: CacheType = "session";
 export type Options = {
   key: string;
   type?: CacheType;
@@ -20,7 +20,7 @@ export type Options = {
 // eslint-disable-next-line no-unused-vars
 export function getCache(options: Options | string): unknown;
 // eslint-disable-next-line no-redeclare
-export function getCache(options: unknown): unknown {
+export function getCache(options: unknown) {
   if (typeof options === "string") {
     return JSON.parse(
       window[cacheTypes[defaultCacheType]].getItem(options) as string
@@ -36,9 +36,9 @@ export function getCache(options: unknown): unknown {
  * 设置浏览器缓存
  * @param { Options } options
  */
-export function setCache(
+export function setCache<T>(
   options: Options & {
-    value: string;
+    value: T;
   }
 ): void {
   const { key, type, value } = options;

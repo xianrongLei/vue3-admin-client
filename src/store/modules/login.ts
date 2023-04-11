@@ -1,9 +1,27 @@
 import { defineStore } from "pinia";
+import { UseStateOperatorInput } from "../index";
 
-export default defineStore("login", {
-  state: () => ({
-    userInfo: {}
+interface State {
+  login_userInfo: Record<string, any>;
+}
+
+export const useLoginStore = defineStore("login", {
+  state: (): State => ({
+    login_userInfo: {}
   }),
-  actions: {},
-  getters: {}
+  actions: {
+    useStateOperator({
+      stateKey,
+      value
+    }: UseStateOperatorInput<keyof State>): void {
+      this.$state[stateKey] = value;
+    }
+  },
+  cache: {
+    login_userInfo: {
+      type: "local",
+      default: {}
+    }
+  }
 });
+export default useLoginStore;
