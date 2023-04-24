@@ -40,6 +40,7 @@ module.exports = {
     "vue/attribute-hyphenation": 0,
     "vue/v-on-event-hyphenation": 0,
     "import/extensions": 0,
-    "import/no-absolute-path": 0
+    "import/no-absolute-path": 0,
+    camelcase: "off"
   }
 };

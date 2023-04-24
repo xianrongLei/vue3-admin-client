@@ -15,41 +15,65 @@
 <script lang="ts">
 import { NThemeEditor, darkTheme, GlobalThemeOverrides } from "naive-ui";
 import type { GlobalTheme } from "naive-ui";
-import { defineComponent, ref } from "vue";
+import { Ref, computed, defineComponent, ref } from "vue";
 import { themeLightOverrides, themeDarkOverrides } from "@/style/index";
-import userStore from "@/store/modules/user";
+import { useAppStore } from "@/store/modules/app";
 
 export default defineComponent({
   components: {
     NThemeEditor
   },
   setup() {
-    const { userInfo } = userStore();
+    const { app_themeEditor, app_theme, useAppStateOperator } = useAppStore();
     const theme = ref<GlobalTheme | null>(null);
-    const showThemeEditor = userInfo.themeEditor;
-    const themeOverrides = ref<GlobalThemeOverrides | null>(null);
-    const isLightTheme: boolean = userInfo.theme === "light";
-    const isDarkTheme: boolean = userInfo.theme === "dark";
+    const showThemeEditor: boolean = !!app_themeEditor;
+    const themeOverrides: Ref<GlobalThemeOverrides | null> = ref(null);
+    const isLightTheme: boolean = app_theme === "light";
+    const isDarkTheme: boolean = app_theme === "dark";
     const isWindowDarkMode: boolean = window.matchMedia(
       "(prefers-color-scheme: dark)"
     ).matches;
 
-    if (isLightTheme) {
-      theme.value = null;
-      themeOverrides.value = themeLightOverrides;
-    } else if (isDarkTheme) {
-      theme.value = darkTheme;
-      themeOverrides.value = themeDarkOverrides;
-    } else if (isWindowDarkMode) {
-      document.body.className = "dark";
-      themeOverrides.value = themeDarkOverrides;
-      theme.value = darkTheme;
-    } else {
-      document.body.className = "light";
-      themeOverrides.value = themeDarkOverrides;
-      theme.value = null;
-    }
+    type ThemeInfo = {
+      classNme: "light" | "dark";
+      naiveTheme: GlobalTheme | null;
+      overrides: GlobalThemeOverrides;
+    };
+    const themeInfo = computed((): ThemeInfo => {
+      let classNme: "light" | "dark";
+      let naiveTheme: GlobalTheme | null;
+      let overrides: GlobalThemeOverrides;
+      if (isLightTheme) {
+        classNme = "light";
+        naiveTheme = null;
+        overrides = themeLightOverrides;
+      } else if (isDarkTheme) {
+        classNme = "dark";
+        naiveTheme = darkTheme;
+        overrides = themeDarkOverrides;
+      } else if (isWindowDarkMode) {
+        classNme = "dark";
+        naiveTheme = darkTheme;
+        overrides = themeDarkOverrides;
+      } else {
+        classNme = "light";
+        naiveTheme = null;
+        overrides = themeLightOverrides;
+      }
+      return {
+        classNme,
+        naiveTheme,
+        overrides
+      };
+    });
 
+    document.body.className = themeInfo.value?.classNme;
+    theme.value = themeInfo.value?.naiveTheme;
+    themeOverrides.value = themeInfo.value?.overrides;
+    useAppStateOperator<"app_theme">({
+      key: "app_theme",
+      value: themeInfo.value?.classNme
+    });
     return {
       showThemeEditor,
       themeOverrides,

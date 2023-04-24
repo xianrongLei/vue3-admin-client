@@ -1,12 +1,8 @@
 import { Pinia, createPinia } from "pinia";
 import { cache } from "./plugin/cache";
 
-export interface UseStateOperatorInput<T> {
-  stateKey: T;
-  value?: any;
-}
-const files: Record<string, any> = import.meta.globEager("./modules/*.ts");
 export const pinia: Pinia = createPinia();
+const files: Record<string, any> = import.meta.globEager("./modules/*.ts");
 
 pinia.use(cache);
 

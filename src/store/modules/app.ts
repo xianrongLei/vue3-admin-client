@@ -1,9 +1,33 @@
 import { defineStore } from "pinia";
+import { UseStateOperatorInput } from "../types";
+
+export interface AppState {
+  app_theme?: "dark" | "light";
+  app_themeEditor?: boolean;
+}
 
 export const useAppStore = defineStore("app", {
-  state: () => ({
-    // 是否显示主题编辑
+  state: (): AppState => ({
+    app_theme: "dark",
+    app_themeEditor: false
   }),
-  actions: {}
+  actions: {
+    useAppStateOperator<V>({
+      key,
+      value
+    }: UseStateOperatorInput<AppState, V>): void {
+      (this as any)[key] = value;
+    }
+  },
+  cache: {
+    app_theme: {
+      type: "local",
+      default: "dark"
+    },
+    app_themeEditor: {
+      type: "local",
+      default: false
+    }
+  }
 });
 export default useAppStore;

@@ -98,7 +98,7 @@ import { useMutation } from "@vue/apollo-composable";
 import { signinGql } from "./login.gql";
 import Captcha from "./captcha.vue";
 import { awaitTo, AwaitToResult } from "@/utils/awaitTo";
-import { useLoginStore } from "@/store/modules/login";
+import { useUserStore } from "@/store/modules/user";
 
 export default defineComponent({
   components: {
@@ -157,31 +157,40 @@ export default defineComponent({
   },
   methods: {
     async login() {
+      const { loadingBar, $refs, $router, message, loginForm, getSignin } =
+        this;
       try {
-        this.loadingBar.start();
-        await (this.$refs.loginFormRef as ComponentOptions).validate();
-        const [error, data]: AwaitToResult = await awaitTo(this.getSignin());
+        loadingBar.start();
+        await ($refs.loginFormRef as ComponentOptions).validate();
+        const [error, data]: AwaitToResult = await awaitTo(getSignin());
         if (error) {
-          const { getCaptcha } = this.$refs.captchaRef as ComponentOptions;
-          this.loginForm.uniCode = getCaptcha();
-          this.message.error(error.message);
-          this.loadingBar.error();
+          const { getCaptcha } = $refs.captchaRef as ComponentOptions;
+          loginForm.uniCode = getCaptcha();
+          message.error(error.message);
+          loadingBar.error();
         } else {
-          const loginStore = useLoginStore();
+          const { useUserStateOperator } = useUserStore();
           const userInfo = data.data.signin;
-          loginStore.useStateOperator({
-            stateKey: "login_userInfo",
+          useUserStateOperator<"user_userInfo">({
+            key: "user_userInfo",
             value: {
               ...userInfo.user,
               access_token: userInfo.access_token,
               refresh_token: userInfo.refresh_token
             }
           });
-          this.$router.push("/");
-          this.loadingBar.finish();
+          useUserStateOperator<"user_token">({
+            key: "user_token",
+            value: {
+              access_token: userInfo.access_token,
+              refresh_token: userInfo.refresh_token
+            }
+          });
+          $router.push("/");
+          loadingBar.finish();
         }
       } catch (error: any) {
-        this.loadingBar.error();
+        loadingBar.error();
       }
     }
   }
