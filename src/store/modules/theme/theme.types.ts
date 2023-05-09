@@ -3,18 +3,17 @@ import { GlobalThemeOverrides } from "naive-ui";
 type Theme_mode = {
   dark: "dark";
   light: "light";
-  random: "random";
 };
 
 export interface ThemeState {
   /** 主题模式 */
-  theme_mode?: keyof Theme_mode;
+  theme_mode: keyof Theme_mode | "";
   /** naiveUI主题编辑器开关 */
-  theme_naiveEditor?: boolean;
+  theme_naiveEditor: boolean;
   /** naiveUI主题颜色覆盖 */
-  theme_naiveOverrides?: GlobalThemeOverrides;
+  theme_naiveOverrides: GlobalThemeOverrides;
   /** 全局主题css变量 */
-  theme_cssVar?: {
+  theme_cssVars: {
     /** 页面背景颜色 */
     "--bg-color"?: string;
 

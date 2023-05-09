@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useMutation } from "@vue/apollo-composable";
 import { defineExpose, onMounted, ref } from "vue";
-import { AwaitToResult, awaitTo } from "@/utils/awaitTo";
+import { AwaitToResult, awaitTo } from "@/utils/utils.awaitTo";
 import { captchaGql } from "./login.gql";
 
 const isExceed = ref(false);

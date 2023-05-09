@@ -97,7 +97,7 @@ import { useLoadingBar, useMessage } from "naive-ui";
 import { useMutation } from "@vue/apollo-composable";
 import { signinGql } from "./login.gql";
 import Captcha from "./captcha.vue";
-import { awaitTo, AwaitToResult } from "@/utils/awaitTo";
+import { awaitTo, AwaitToResult } from "@/utils/utils.awaitTo";
 import { useUserStore } from "@/store/modules/user";
 
 export default defineComponent({

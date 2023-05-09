@@ -4,7 +4,7 @@ import {
   Router,
   RouteRecordRaw
 } from "vue-router";
-import { mountGuard } from "./guard";
+import { mountGuard } from "./router.guard";
 
 const constantRoutes: RouteRecordRaw[] = [
   {

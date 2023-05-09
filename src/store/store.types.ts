@@ -1,4 +1,4 @@
-import { CacheType } from "@/utils/cache-operator";
+import { CacheType } from "@/utils/utils.cache-operator";
 
 /**
  * Store cache item

@@ -1,24 +1,16 @@
-import { AppConfig } from "./types";
+import { AppConfig } from "./config.types";
 
 export const appConfig: AppConfig = {
   appTitle: "MAKU",
-  axios: {
-    baseURL: "http://192.168.1.13/v1",
-    // baseURL: "http://10.15.15.137/v1",
-    timeout: 6000,
-    headers: {
-      "Content-Type": "application/json;charset=UTF-8"
-    }
-  },
   GraphQL: {
     name: "MAKU",
     url: "http://192.168.1.13/graphql"
   }
 };
 
-export const mountConfig = (
-  win: Record<string, unknown> & Window & any
-): void => {
-  win.appConfig = appConfig;
+export const mountConfig = (): void => {
+  const win: any = window;
+  // 为了打包后的项目能够灵活修改该全局配置
+  Object.assign(appConfig, win.appConfig);
   win.document.title = appConfig.appTitle;
 };

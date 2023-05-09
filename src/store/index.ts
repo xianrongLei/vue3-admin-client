@@ -1,5 +1,5 @@
 import { Pinia, createPinia } from "pinia";
-import { cache } from "./plugin/cache";
+import { cache } from "./plugin/plugin.cache";
 
 export const pinia: Pinia = createPinia();
 const files: Record<string, any> = import.meta.globEager(

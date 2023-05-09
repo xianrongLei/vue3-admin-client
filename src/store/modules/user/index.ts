@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
 import { useMutation } from "@vue/apollo-composable";
-import { UseStateOperatorInput } from "../../types";
+import { UseStateOperatorInput } from "../../store.types";
 import { getUserInfoGql } from "./gql";
-import { awaitTo } from "@/utils/awaitTo";
+import { awaitTo } from "@/utils/utils.awaitTo";
 
 export interface UserState {
   user_token: {
