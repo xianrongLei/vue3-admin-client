@@ -159,6 +159,7 @@ export default defineComponent({
     async login() {
       const { loadingBar, $refs, $router, message, loginForm, getSignin } =
         this;
+      const { useUserStateOperator } = useUserStore();
       try {
         loadingBar.start();
         await ($refs.loginFormRef as ComponentOptions).validate();
@@ -169,19 +170,11 @@ export default defineComponent({
           message.error(error.message);
           loadingBar.error();
         } else {
-          const { useUserStateOperator } = useUserStore();
           const userInfo = data.data.signin;
-          useUserStateOperator<"user_userInfo">({
-            key: "user_userInfo",
-            value: {
-              ...userInfo.user,
-              access_token: userInfo.access_token,
-              refresh_token: userInfo.refresh_token
-            }
-          });
           useUserStateOperator<"user_token">({
             key: "user_token",
             value: {
+              userId: userInfo.user.id,
               access_token: userInfo.access_token,
               refresh_token: userInfo.refresh_token
             }

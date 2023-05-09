@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { UseStateOperatorInput } from "../types";
+import { UseStateOperatorInput } from "../../types";
 
 export interface AppState {
   app_theme?: "dark" | "light";

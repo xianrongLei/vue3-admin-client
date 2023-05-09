@@ -27,8 +27,7 @@
     "src/**/*.vue",
     "types/**/*.d.ts",
     "types/**/*.ts",
-    "env.d.ts",
-    "env.d.ts"
+    "index.d.ts"
   ],
   "exclude": ["node_modules", "dist", "**/*.js"],
   "references": [

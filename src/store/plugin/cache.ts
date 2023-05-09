@@ -16,34 +16,35 @@ export const cache = (context: PiniaPluginContext) => {
     watch(
       () => context.store.$state[key],
       (newValue) => {
-        const newValueEmpty = isEmpty(newValue);
+        const isNewValueEmpty = isEmpty(newValue);
         const cacheValue = getCache({
           key,
           type: item?.type
         });
-        const cacheEmpty = isEmpty(cacheValue);
+        const isCacheEmpty = isEmpty(cacheValue);
+
         // 传入和缓存都是空
-        if (cacheEmpty && newValueEmpty) {
-          if (newValue?.toString() === (item?.default as any)?.toString()) {
+        if (isCacheEmpty && isNewValueEmpty) {
+          if (newValue?.toString() === item?.default?.toString()) {
             context.store.$state[key] = item?.default;
           }
           return;
         }
         // 传入和缓存都不是空 且传入等于缓存
         if (
-          !cacheEmpty &&
-          !newValueEmpty &&
+          !isCacheEmpty &&
+          !isNewValueEmpty &&
           JSON.stringify(cacheValue) === JSON.stringify(newValue)
         ) {
           return;
         }
         // 传入是空 缓存不是空
-        if (newValueEmpty) {
+        if (isNewValueEmpty) {
           context.store.$state[key] = cacheValue;
           return;
         }
         // 缓存是空 传入不是空
-        if (cacheEmpty) {
+        if (isCacheEmpty) {
           setCache({
             key,
             value: newValue,

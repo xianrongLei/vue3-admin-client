@@ -1,15 +1,15 @@
 import { defineStore } from "pinia";
-import { UseStateOperatorInput } from "../types";
+import { UseStateOperatorInput } from "../../types";
 
 export interface LoginState {}
 
 export const useLoginStore = defineStore("login", {
   state: (): LoginState => ({}),
   actions: {
-    useStateOperator<V>({
+    useStateOperator<Key>({
       key,
       value
-    }: UseStateOperatorInput<LoginState, V>): void {
+    }: UseStateOperatorInput<LoginState, Key>): void {
       (this as any)[key] = value;
     }
   },

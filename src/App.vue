@@ -17,19 +17,20 @@ import { NThemeEditor, darkTheme, GlobalThemeOverrides } from "naive-ui";
 import type { GlobalTheme } from "naive-ui";
 import { Ref, computed, defineComponent, ref } from "vue";
 import { themeLightOverrides, themeDarkOverrides } from "@/style/index";
-import { useAppStore } from "@/store/modules/app";
+import { useThemeStore } from "@/store/modules/theme";
 
 export default defineComponent({
   components: {
     NThemeEditor
   },
   setup() {
-    const { app_themeEditor, app_theme, useAppStateOperator } = useAppStore();
+    const { theme_naiveEditor, theme_mode, useThemeStateOperator } =
+      useThemeStore();
     const theme = ref<GlobalTheme | null>(null);
-    const showThemeEditor: boolean = !!app_themeEditor;
+    const showThemeEditor: boolean = !!theme_naiveEditor;
     const themeOverrides: Ref<GlobalThemeOverrides | null> = ref(null);
-    const isLightTheme: boolean = app_theme === "light";
-    const isDarkTheme: boolean = app_theme === "dark";
+    const isLightTheme: boolean = theme_mode === "light";
+    const isDarkTheme: boolean = theme_mode === "dark";
     const isWindowDarkMode: boolean = window.matchMedia(
       "(prefers-color-scheme: dark)"
     ).matches;
@@ -70,10 +71,10 @@ export default defineComponent({
     document.body.className = themeInfo.value?.classNme;
     theme.value = themeInfo.value?.naiveTheme;
     themeOverrides.value = themeInfo.value?.overrides;
-    useAppStateOperator<"app_theme">({
-      key: "app_theme",
-      value: themeInfo.value?.classNme
-    });
+    useThemeStateOperator<"theme_mode">(
+      "theme_mode",
+      themeInfo.value?.classNme
+    );
     return {
       showThemeEditor,
       themeOverrides,

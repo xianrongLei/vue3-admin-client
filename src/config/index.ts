@@ -1,21 +1,7 @@
-export interface AppConfig {
-  appTitle: string;
-  axios: {
-    baseURL: string;
-    timeout: number;
-    headers: {
-      "Content-Type": string;
-    };
-  };
-  GraphQL: {
-    name: string;
-    url: string;
-  };
-}
-const appTitle: string = "MAKU";
+import { AppConfig } from "./types";
 
 export const appConfig: AppConfig = {
-  appTitle,
+  appTitle: "MAKU",
   axios: {
     baseURL: "http://192.168.1.13/v1",
     // baseURL: "http://10.15.15.137/v1",
@@ -25,7 +11,14 @@ export const appConfig: AppConfig = {
     }
   },
   GraphQL: {
-    name: appTitle,
+    name: "MAKU",
     url: "http://192.168.1.13/graphql"
   }
+};
+
+export const mountConfig = (
+  win: Record<string, unknown> & Window & any
+): void => {
+  win.appConfig = appConfig;
+  win.document.title = appConfig.appTitle;
 };

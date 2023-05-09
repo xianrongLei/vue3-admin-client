@@ -14,7 +14,7 @@ import {
   NLoadingBarProvider
 } from "naive-ui";
 
-export default create({
+const naive = create({
   components: [
     NButton,
     NForm,
@@ -30,3 +30,7 @@ export default create({
     NLoadingBarProvider
   ]
 });
+
+export const mountNaive = (vueUse: Function): void => {
+  vueUse(naive);
+};

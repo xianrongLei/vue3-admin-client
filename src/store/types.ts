@@ -17,11 +17,11 @@ export type Cache<T> = {
 /**
  * Global “State Operator” input options type
  */
-export interface UseStateOperatorInput<State, V> {
+export interface UseStateOperatorInput<State, Key> {
   /** State key type */
   key: keyof State;
   /** State value type */
-  value?: State[V & keyof State];
+  value?: State[Key & keyof State];
 }
 declare module "pinia" {
   // eslint-disable-next-line no-unused-vars

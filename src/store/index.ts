@@ -2,11 +2,13 @@ import { Pinia, createPinia } from "pinia";
 import { cache } from "./plugin/cache";
 
 export const pinia: Pinia = createPinia();
-const files: Record<string, any> = import.meta.globEager("./modules/*.ts");
+const files: Record<string, any> = import.meta.globEager(
+  "./modules/*/index.ts"
+);
 
 pinia.use(cache);
 
-export const registerStore = (vueUse: Function) => {
+export const mountPinia = (vueUse: Function) => {
   // 注册
   vueUse(pinia);
   Object.keys(files).forEach((fileName) => {

@@ -4,7 +4,7 @@ import {
   InMemoryCache
 } from "@apollo/client/core";
 import { provideApolloClient } from "@vue/apollo-composable";
-import { appConfig } from "@/app.config";
+import { appConfig } from "@/config/index";
 // 与 API 的 HTTP 连接
 const httpLink = createHttpLink({
   // 你需要在这里使用绝对路径
