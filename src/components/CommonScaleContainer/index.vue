@@ -7,9 +7,7 @@
       ref="target"
       :class="[
         mode == 2 ? 'resizeBox-container-default' : 'resizeBox-container-scale',
-        alignType == 'middle'
-          ? 'resizeBox-container-align-middle'
-          : 'resizeBox-container-align-top'
+        alignType == 'middle' ? 'resizeBox-container-align-middle' : 'resizeBox-container-align-top'
       ]"
       class="resizeBox-container"
       :style="{ width: width + 'px', height: height + 'px' }"
@@ -20,15 +18,7 @@
 </template>
 
 <script lang="ts" setup>
-import {
-  ref,
-  nextTick,
-  watch,
-  onUnmounted,
-  Ref,
-  withDefaults,
-  defineExpose
-} from "vue";
+import { ref, nextTick, watch, onUnmounted, Ref, withDefaults, defineExpose } from "vue";
 import { getResize, modeType, GetResize } from "./index";
 
 const props = withDefaults(

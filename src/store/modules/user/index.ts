@@ -31,7 +31,7 @@ export const useUserStore = defineStore("user", {
         }
       }));
       const [err, data] = await awaitTo(mutate());
-      if (err) throw new Error(err as any);
+      if (err) throw new Error(err);
       this.useUserStateOperator<"user_userInfo">({
         key: "user_userInfo",
         value: {

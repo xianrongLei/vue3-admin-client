@@ -138,11 +138,11 @@ export const themeMap: any = {
     }
   }
 };
-type Result = {
+type ThemeInfo = {
   theme_cssVars: ThemeState["theme_cssVars"];
   theme_naiveOverrides: ThemeState["theme_naiveOverrides"];
 };
 // eslint-disable-next-line arrow-body-style
-export const getThemeConfig = (mode: ThemeState["theme_mode"]): Result => {
-  return themeMap[mode] ? themeMap[mode] : themeMap.dark;
+export const getThemeConfig = (mode: ThemeState["theme_mode"]): ThemeInfo => {
+  return themeMap[mode];
 };

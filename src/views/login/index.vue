@@ -97,7 +97,7 @@ import { useLoadingBar, useMessage } from "naive-ui";
 import { useMutation } from "@vue/apollo-composable";
 import { signinGql } from "./login.gql";
 import Captcha from "./captcha.vue";
-import { awaitTo, AwaitToResult } from "@/utils/utils.awaitTo";
+import { awaitTo } from "@/utils/utils.awaitTo";
 import { useUserStore } from "@/store/modules/user";
 
 export default defineComponent({
@@ -162,7 +162,7 @@ export default defineComponent({
       try {
         loadingBar.start();
         await ($refs.loginFormRef as ComponentOptions).validate();
-        const [error, data]: AwaitToResult = await awaitTo(getSignin());
+        const [error, data] = await awaitTo(getSignin());
         if (error) {
           const { getCaptcha } = $refs.captchaRef as ComponentOptions;
           loginForm.uniCode = getCaptcha();

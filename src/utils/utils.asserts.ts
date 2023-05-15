@@ -3,10 +3,7 @@
  * @param value
  * @param message
  */
-export function assertIsNonNullish<T>(
-  value: T,
-  message: string
-): asserts value is NonNullable<T> {
+export function assertIsNonNullish<T>(value: T, message: string): asserts value is NonNullable<T> {
   if (value === null || value === undefined) {
     throw Error(message);
   }
@@ -18,10 +15,7 @@ export function assertIsNonNullish<T>(
  * @param message
  */
 
-export function assertIsObject<T>(
-  value: T,
-  message: string
-): asserts value is T & object {
+export function assertIsObject<T>(value: T, message: string): asserts value is T & object {
   if (typeof value !== "object") {
     throw Error(message);
   }

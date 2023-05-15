@@ -5,9 +5,9 @@ type Theme_mode = {
   light: "light";
 };
 
-export interface ThemeState {
+export type ThemeState = {
   /** 主题模式 */
-  theme_mode: keyof Theme_mode | "";
+  theme_mode: keyof Theme_mode;
   /** naiveUI主题编辑器开关 */
   theme_naiveEditor: boolean;
   /** naiveUI主题颜色覆盖 */
@@ -98,4 +98,4 @@ export interface ThemeState {
     /** 浅色文本颜色的RGB值 */
     "--light-color-rgb"?: string;
   };
-}
+};

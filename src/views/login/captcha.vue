@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useMutation } from "@vue/apollo-composable";
 import { defineExpose, onMounted, ref } from "vue";
-import { AwaitToResult, awaitTo } from "@/utils/utils.awaitTo";
+import { awaitTo } from "@/utils/utils.awaitTo";
 import { captchaGql } from "./login.gql";
 
 const isExceed = ref(false);
@@ -17,7 +17,7 @@ const { mutate } = useMutation(captchaGql, () => ({
 const emits = defineEmits(["captcha"]);
 const getCaptcha = async () => {
   isExceed.value = false;
-  const [error, data]: AwaitToResult = await awaitTo(mutate());
+  const [error, data] = await awaitTo(mutate());
   if (error) {
     throw new Error(error.message);
   }

@@ -4,7 +4,7 @@ import { getThemeConfig } from "./theme.map";
 
 export const useThemeStore = defineStore("theme", {
   state: (): ThemeState => ({
-    theme_mode: "",
+    theme_mode: "light",
     theme_naiveEditor: true,
     theme_cssVars: {},
     theme_naiveOverrides: {}

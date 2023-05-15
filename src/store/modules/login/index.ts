@@ -6,10 +6,7 @@ export interface LoginState {}
 export const useLoginStore = defineStore("login", {
   state: (): LoginState => ({}),
   actions: {
-    useStateOperator<Key>({
-      key,
-      value
-    }: UseStateOperatorInput<LoginState, Key>): void {
+    useStateOperator<Key>({ key, value }: UseStateOperatorInput<LoginState, Key>): void {
       (this as any)[key] = value;
     }
   },

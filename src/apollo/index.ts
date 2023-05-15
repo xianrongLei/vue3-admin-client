@@ -1,12 +1,5 @@
-import {
-  ApolloClient,
-  createHttpLink,
-  InMemoryCache
-} from "@apollo/client/core";
-import {
-  provideApolloClient,
-  DefaultApolloClient
-} from "@vue/apollo-composable";
+import { ApolloClient, createHttpLink, InMemoryCache } from "@apollo/client/core";
+import { provideApolloClient, DefaultApolloClient } from "@vue/apollo-composable";
 import { provide } from "vue";
 import { appConfig } from "@/config/index";
 
@@ -27,6 +20,6 @@ export const mountApollo = (): void => {
   });
   // 允许在组件之外使用
   provideApolloClient(apolloClient);
-  // provide
+  // 在选项式api中使用
   provide(DefaultApolloClient, apolloClient);
 };

@@ -12,10 +12,7 @@ export const useAppStore = defineStore("app", {
     app_themeEditor: false
   }),
   actions: {
-    useAppStateOperator<V>({
-      key,
-      value
-    }: UseStateOperatorInput<AppState, V>): void {
+    useAppStateOperator<V>({ key, value }: UseStateOperatorInput<AppState, V>): void {
       (this as any)[key] = value;
     }
   },

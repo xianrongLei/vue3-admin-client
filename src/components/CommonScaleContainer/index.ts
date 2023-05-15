@@ -16,8 +16,7 @@ export interface GetResize {
 }
 export function getResize(resizeOption: ResizeOption): GetResize {
   // 对其方式
-  const translate: string =
-    resizeOption.alignType === "middle" ? "-50%, -50%" : "-50%, 0";
+  const translate: string = resizeOption.alignType === "middle" ? "-50%, -50%" : "-50%, 0";
   // * 定时函数
   let timeout: any;
   // * 默认缩放值
@@ -34,15 +33,11 @@ export function getResize(resizeOption: ResizeOption): GetResize {
   let parentWidth: number = resizeOption.parentNode.clientWidth;
   let parentHeight: number = resizeOption.parentNode.clientHeight;
   // * 需保持的比例（默认1.77778）
-  const baseProportion: number = parseFloat(
-    (baseWidth / baseHeight).toFixed(5)
-  );
+  const baseProportion: number = parseFloat((baseWidth / baseHeight).toFixed(5));
   // 固定比例缩放
   const ratio = (): void => {
     // 当前宽高比
-    const currentRate: number = parseFloat(
-      (parentWidth / parentHeight).toFixed(5)
-    );
+    const currentRate: number = parseFloat((parentWidth / parentHeight).toFixed(5));
     if (resizeOption.target) {
       if (currentRate > baseProportion) {
         // 表示更宽
@@ -90,10 +85,7 @@ export function getResize(resizeOption: ResizeOption): GetResize {
     timer = setInterval(() => {
       const queryParentWidth: number = resizeOption.parentNode.clientWidth;
       const queryParentHeight: number = resizeOption.parentNode.clientHeight;
-      if (
-        parentWidth !== queryParentWidth &&
-        parentHeight !== queryParentHeight
-      ) {
+      if (parentWidth !== queryParentWidth && parentHeight !== queryParentHeight) {
         resize();
         parentWidth = queryParentWidth;
         parentHeight = queryParentHeight;
