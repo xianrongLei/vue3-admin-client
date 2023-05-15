@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { useMutation } from "@vue/apollo-composable";
 import { UseStateOperatorInput } from "../../store.types";
-import { getUserInfoGql } from "./gql";
+import { getUserInfoGql } from "./user.gql";
 import { awaitTo } from "@/utils/utils.awaitTo";
 
 export interface UserState {
@@ -21,10 +21,7 @@ export const useUserStore = defineStore("user", {
     user_token: {}
   }),
   actions: {
-    useUserStateOperator<V>({
-      key,
-      value
-    }: UseStateOperatorInput<UserState, V>): void {
+    useUserStateOperator<V>({ key, value }: UseStateOperatorInput<UserState, V>): void {
       this.$state[key] = value as UserState[V & keyof UserState];
     },
     async useGetUserInfo(userId?: string) {

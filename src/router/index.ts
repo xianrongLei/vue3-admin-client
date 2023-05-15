@@ -1,9 +1,4 @@
-import {
-  createRouter,
-  createWebHashHistory,
-  Router,
-  RouteRecordRaw
-} from "vue-router";
+import { createRouter, createWebHashHistory, Router, RouteRecordRaw } from "vue-router";
 import { mountGuard } from "./router.guard";
 
 const constantRoutes: RouteRecordRaw[] = [
@@ -25,7 +20,7 @@ const constantRoutes: RouteRecordRaw[] = [
   },
   {
     path: "/redirect/:pathMatch(.*)",
-    component: () => import("@/layout/Router/Redirect.vue")
+    component: () => import("@/layout/routerRedirect/Redirect.vue")
   },
   {
     path: "/:pathMatch(.*)",

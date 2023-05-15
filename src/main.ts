@@ -1,5 +1,5 @@
 import { createApp, h } from "vue";
-import App from "./main.vue";
+import App from "./App.vue";
 import { mountPinia } from "@/store";
 import { mountRouter } from "./router/index";
 import { mountI18n } from "@/i18n/index";

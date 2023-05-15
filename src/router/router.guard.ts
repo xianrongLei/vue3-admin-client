@@ -1,14 +1,19 @@
-import { Router } from "vue-router";
-import { createDiscreteApi } from "naive-ui";
-import useRouterStore from "@/store/modules/router";
-import useUserStore from "@/store/modules/user";
+import type { Router } from "vue-router";
+import { createDiscreteApi, useOsTheme, lightTheme, darkTheme } from "naive-ui";
+import { useRouterStore } from "@/store/modules/router";
+import { useUserStore } from "@/store/modules/user";
+import { clearCache } from "@/utils/utils.cache-operator";
 
 // 解决刷新动态路由丢失
 const isRefresh = { value: true };
 // 白名单
 const whiteList: string[] = ["/login"];
 // 路由加载条
-const { loadingBar, message } = createDiscreteApi(["loadingBar", "message"]);
+const { loadingBar, message } = createDiscreteApi(["loadingBar", "message"], {
+  configProviderProps: {
+    theme: useOsTheme().value === "light" ? lightTheme : darkTheme
+  }
+});
 
 export const mountGuard = (router: Router): void => {
   // 路由加载前
@@ -26,6 +31,11 @@ export const mountGuard = (router: Router): void => {
           await useGetUserInfo(user_token.userId);
         } catch (error: any) {
           message.error(error.message);
+          clearCache({
+            key: "user_token",
+            type: "local"
+          });
+          next("/login");
         }
         // 设置动态路由
         router_asyncRoutes.forEach((route) => {
@@ -34,8 +44,8 @@ export const mountGuard = (router: Router): void => {
         if (to.path === "/login") {
           next("/home");
         } else if (isRefresh.value) {
-          next({ ...to, replace: true });
           isRefresh.value = false;
+          next({ ...to, replace: true });
         } else {
           next();
         }

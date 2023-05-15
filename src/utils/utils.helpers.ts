@@ -1,14 +1,15 @@
-/* RGB转换为16进制 */
+/**
+ * RGB转换为16进制
+ * @param rgbStr
+ * @returns
+ */
 export const colorRgbToHex = (rgbStr: string) => {
   // 十六进制颜色值的正则表达式
-  const reg =
-    /^(rgba|rgb|RGBA|RGB)\([\s]*[0-9]+[\s]*,[\s]*[0-9]+[\s]*,[\s]*[0-9]+[\s]*(,[\s]*[0-9.]+[\s]*)*\)$/;
+  const reg = /^(rgba|rgb|RGBA|RGB)\([\s]*[0-9]+[\s]*,[\s]*[0-9]+[\s]*,[\s]*[0-9]+[\s]*(,[\s]*[0-9.]+[\s]*)*\)$/;
   if (!reg.test(rgbStr)) {
     return rgbStr;
   }
-  const rgbArray = rgbStr
-    .replace(/(?:\(|\)|rgba|rgb|RGBA|RGB)*/g, "")
-    .split(",");
+  const rgbArray = rgbStr.replace(/(?:\(|\)|rgba|rgb|RGBA|RGB)*/g, "").split(",");
   let strHex = "#";
   for (let i = 0; i < rgbArray.length; i += 1) {
     if (i !== 3) {
@@ -27,12 +28,15 @@ export const colorRgbToHex = (rgbStr: string) => {
   }
   return strHex.slice(0, 9);
 };
-
-/* 16进制转换为RGB */
+/**
+ * 16进制转换为RGB
+ * @param hexStr
+ * @param opacity
+ * @returns
+ */
 export const colorHexToRgb = (hexStr: string, opacity?: boolean) => {
   // rgb颜色值的正则表达式
-  const reg =
-    /^#([0-9a-fA-f]{3}|[0-9a-fA-f]{6}|[0-9a-fA-f]{8}|[0-9a-fA-f]{6}[0-9]{2})$/;
+  const reg = /^#([0-9a-fA-f]{3}|[0-9a-fA-f]{6}|[0-9a-fA-f]{8}|[0-9a-fA-f]{6}[0-9]{2})$/;
   if (!reg.test(hexStr)) {
     return hexStr;
   }
@@ -52,28 +56,21 @@ export const colorHexToRgb = (hexStr: string, opacity?: boolean) => {
     }
     if (i >= 7 && opacity) {
       const str = hexStr.slice(i, i + 2);
-      rgbArray.push(
-        /^[a-f0-9]{2}$/.test(str)
-          ? parseInt(`0x${str}`, 16) / 255
-          : (Number(str) / 100).toString()
-      );
+      rgbArray.push(/^[a-f0-9]{2}$/.test(str) ? parseInt(`0x${str}`, 16) / 255 : (Number(str) / 100).toString());
     }
   }
   return `${(opacity ? "rgba(" : "rgb(") + rgbArray.join(",")})`;
 };
 
-/**
- * 判断是否是空对象
- * @param obj
- * @returns
- */
-export const isEmptyObj = (obj: unknown): boolean =>
-  JSON.stringify(obj) === "{}";
-/**
- * 判断是否是空数组
- * @param obj
- *
- * @returns
- */
-export const isEmptyArr = (arr: unknown): boolean =>
-  JSON.stringify(arr) === "[]";
+// 柯里化
+// function curry(fn) {
+//   return function curried(...args) {
+//     if (args.length >= fn.length) {
+//       return fn.apply(this, args);
+//     } else {
+//       return function(...args2) {
+//         return curried.apply(this, args.concat(args2));
+//       };
+//     }
+//   };
+// }

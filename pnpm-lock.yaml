@@ -3,6 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@apollo/client': ^3.7.11
   '@types/eslint': ^8.4.10
+  '@types/lodash': ^4.14.194
   '@types/node': ^18.11.18
   '@typescript-eslint/eslint-plugin': ^5.48.0
   '@typescript-eslint/parser': ^5.48.0
@@ -23,6 +24,7 @@ specifiers:
   graphql-tag: ^2.12.6
   husky: ^8.0.3
   lint-staged: ^13.1.0
+  lodash: ^4.17.21
   naive-ui: ^2.34.3
   pinia: ^2.0.11
   prettier: ^2.8.2
@@ -44,6 +46,7 @@ dependencies:
   axios: 0.27.2
   graphql: 16.6.0
   graphql-tag: 2.12.6_graphql@16.6.0
+  lodash: 4.17.21
   pinia: 2.0.28_yq2pyqi2yjztetnx45sawcgrle
   vue: 3.2.47
   vue-i18n: 9.2.2_vue@3.2.47
@@ -51,6 +54,7 @@ dependencies:
 
 devDependencies:
   '@types/eslint': 8.4.10
+  '@types/lodash': 4.14.194
   '@types/node': 18.11.18
   '@typescript-eslint/eslint-plugin': 5.48.0_k73wpmdolxikpyqun3p36akaaq
   '@typescript-eslint/parser': 5.48.0_iukboom6ndih5an6iafl45j2fe
@@ -320,11 +324,11 @@ packages:
   /@types/lodash-es/4.17.6:
     resolution: {integrity: sha512-R+zTeVUKDdfoRxpAryaQNRKk3105Rrgx2CFRClIgRGaqDTdjsm8h6IYA8ir584W3ePzkZfst5xIgDwYrlh9HLg==}
     dependencies:
-      '@types/lodash': 4.14.191
+      '@types/lodash': 4.14.194
     dev: true
 
-  /@types/lodash/4.14.191:
-    resolution: {integrity: sha512-BdZ5BCCvho3EIXw6wUCXHe7rS53AIDPLE+JzwgT+OsJk53oBfbSmZZ7CX4VaRoN78N+TJpFi9QPlfIVNmJYWxQ==}
+  /@types/lodash/4.14.194:
+    resolution: {integrity: sha512-r22s9tAS7imvBt2lyHC9B8AGwWnXaYb1tY09oyLkXDs4vArpYJzw09nj8MLx5VfciBPGIb+ZwG0ssYnEPJxn/g==}
     dev: true
 
   /@types/node/18.11.18:
@@ -2325,7 +2329,6 @@ packages:
 
   /lodash/4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
-    dev: true
 
   /log-update/4.0.0:
     resolution: {integrity: sha512-9fkkDevMefjg0mmzWFBW8YkFP91OrizzkW3diF7CpG+S2EYdy4+TVfGwz1zeF8x7hCx1ovSPTOE9Ngib74qqUg==}
@@ -2421,7 +2424,7 @@ packages:
       '@css-render/plugin-bem': 0.15.12_css-render@0.15.12
       '@css-render/vue3-ssr': 0.15.12_vue@3.2.47
       '@types/katex': 0.14.0
-      '@types/lodash': 4.14.191
+      '@types/lodash': 4.14.194
       '@types/lodash-es': 4.17.6
       async-validator: 4.2.5
       css-render: 0.15.12

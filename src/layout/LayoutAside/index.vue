@@ -1,109 +1,76 @@
 <template>
-  <div class="layout-aside">
+  <div
+    class="layout-aside"
+    :style="{ width: asideWidth, maxWidth: asideWidth, minWidth: asideWidth }"
+  >
+    <!-- 窄菜单 -->
     <div
-      class="logo-container"
-      :style="{ height: headerHeight }"
-    ></div>
-    <div
-      class="menu-container"
-      :style="{
-        height: `calc(100% -  ${headerHeight})`,
-        maxHeight: `calc(100% -  ${headerHeight})`
-      }"
+      class="layout-aside-narrowMenu"
+      :style="{ width: narrowMenuWidth }"
     >
-      1<br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      12<br />
+      <div
+        class="logo-container"
+        :style="{ height: logoHeight }"
+        @click="router.push('/')"
+      >
+        <img src="@/assets/logo.png" />
+      </div>
+    </div>
+    <!-- 收缩菜单 -->
+    <div
+      class="layout-aside-contractMenu"
+      :style="{ width: menuWidth, maxWidth: menuWidth, minWidth: menuWidth }"
+    >
+      <div
+        class="title-container"
+        :style="{ height: logoHeight }"
+      >
+        sdf
+      </div>
+      <div class="menu-container">士大夫感到</div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-defineProps<{
-  footerHeight?: string;
-  headerHeight?: string;
-}>();
+import { router } from "@/router/index";
+import { useLayoutStore } from "@/store/modules/layout";
+
+const { layout_asideWidth, layout_headerHeight, layout_menuWidth, layout_narrowMenuWidth } = useLayoutStore();
+// 侧边栏宽
+const asideWidth = `${layout_asideWidth}px`;
+// logo和appName高度 与导航栏保持一致
+const logoHeight = `${layout_headerHeight}px`;
+// 收缩菜单宽
+const menuWidth = `${layout_menuWidth}px`;
+// 窄菜单宽
+const narrowMenuWidth = `${layout_narrowMenuWidth}px`;
 </script>
 
 <style lang="scss" scoped>
 .layout-aside {
-  width: 13.75rem;
-  min-width: 13.75rem;
-  max-width: 13.75rem;
-  background: #ffffff;
-
-  .logo-container {
-    background: #ffffff;
-    border-bottom: 1px solid #dcdfe6;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  .layout-aside-narrowMenu {
+    height: 100%;
+    border-right: 1px solid var(--border-color);
+    .logo-container {
+      cursor: pointer;
+      padding: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      img {
+        max-height: 100%;
+        max-width: 100%;
+      }
+    }
   }
-
-  .menu-container {
-    overflow-x: hidden;
-    overflow-y: auto;
-    border-right: 1px solid #e2e3e5;
+  .layout-aside-contractMenu {
+    height: 100%;
+    .title-container {
+      border-bottom: 1px solid var(--border-color);
+    }
   }
 }
 </style>

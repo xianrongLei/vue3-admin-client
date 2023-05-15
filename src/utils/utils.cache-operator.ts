@@ -15,21 +15,17 @@ export type Options = {
 
 /**
  * 获取浏览器缓存
- * @param { Options } options
+ * @param { Options | string } options
  */
 // eslint-disable-next-line no-unused-vars
 export function getCache(options: Options | string): unknown;
 // eslint-disable-next-line no-redeclare
 export function getCache(options: unknown) {
   if (typeof options === "string") {
-    return JSON.parse(
-      window[cacheTypes[defaultCacheType]].getItem(options) as string
-    );
+    return JSON.parse(window[cacheTypes[defaultCacheType]].getItem(options) as string);
   }
   const { type, key } = options as Options;
-  return JSON.parse(
-    window[cacheTypes[type || defaultCacheType]].getItem(key) as string
-  );
+  return JSON.parse(window[cacheTypes[type || defaultCacheType]].getItem(key) as string);
 }
 
 /**
@@ -42,10 +38,7 @@ export function setCache<T>(
   }
 ): void {
   const { key, type, value } = options;
-  window[cacheTypes[type || defaultCacheType]].setItem(
-    key,
-    JSON.stringify(value)
-  );
+  window[cacheTypes[type || defaultCacheType]].setItem(key, JSON.stringify(value));
 }
 
 /**

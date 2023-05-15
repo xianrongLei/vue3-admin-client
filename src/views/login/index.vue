@@ -157,8 +157,7 @@ export default defineComponent({
   },
   methods: {
     async login() {
-      const { loadingBar, $refs, $router, message, loginForm, getSignin } =
-        this;
+      const { loadingBar, $refs, $router, message, loginForm, getSignin } = this;
       const { useUserStateOperator } = useUserStore();
       try {
         loadingBar.start();

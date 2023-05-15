@@ -14,17 +14,12 @@ export const useThemeStore = defineStore("theme", {
      * state 操作器
      * @param param0
      */
-    useThemeStateOperator<Key>(
-      key: keyof ThemeState,
-      value: ThemeState[Key & keyof ThemeState]
-    ): void {
+    useThemeStateOperator<Key>(key: keyof ThemeState, value: ThemeState[Key & keyof ThemeState]): void {
       (this as any)[key] = value;
     },
     /**
      * 设置 app 主题
-     * @param mode
-     * @param cssVar
-     * @param naiveOverrides
+     * @param mode "light" | "dark"
      */
     useThemeSetMode(mode: ThemeState["theme_mode"]) {
       if (mode === this.theme_mode) return;
@@ -33,10 +28,7 @@ export const useThemeStore = defineStore("theme", {
       this.theme_cssVars = theme_cssVars;
       this.theme_naiveOverrides = theme_naiveOverrides;
       Object.keys(theme_cssVars).forEach((key) => {
-        window.document.body.style.setProperty(
-          key,
-          (this.theme_cssVars as any)[key]
-        );
+        window.document.body.style.setProperty(key, (theme_cssVars as any)[key]);
       });
     }
   }

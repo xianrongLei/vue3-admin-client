@@ -2,7 +2,9 @@
   <div
     class="layout-header"
     :style="{ height: headerHeight, minHeight: headerHeight }"
-  ></div>
+  >
+    <button>test</button>
+  </div>
 </template>
 
 <script lang="ts" setup>

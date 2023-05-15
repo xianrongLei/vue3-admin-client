@@ -10,7 +10,7 @@
     "sourceMap": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "lib": ["esnext", "dom"],
+    "typeRoots": [],
     "baseUrl": "./", // 用于设置解析非相对模块名称的基本目录，相对模块不会受到baseUrl的影响
     "paths": {
       // 用于设置模块名到基于baseUrl的路径映射
@@ -25,8 +25,6 @@
     "src/**/*.d.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
-    "types/**/*.d.ts",
-    "types/**/*.ts",
     "index.d.ts"
   ],
   "exclude": ["node_modules", "dist", "**/*.js"],

@@ -3,7 +3,6 @@ import { AppConfig } from "./config.types";
 export const appConfig: AppConfig = {
   appTitle: "MAKU",
   GraphQL: {
-    name: "MAKU",
     url: "http://192.168.1.13/graphql"
   }
 };
