@@ -19,7 +19,7 @@
         />
         <div
           class="title-container"
-          v-show="!layoutStore.layout_isLargeWindow"
+          v-show="!layoutStore.layout_isLargeWindow && layoutStore.layout_isMenuExpand"
         >
           {{ appConfig.appTitle }}
         </div>
@@ -35,13 +35,16 @@
     <!-- 收缩菜单 -->
     <div
       ref="layout_menuRef"
-      class="layout-aside-contractMenu"
+      class="layout-aside-menu"
     >
       <div
         class="title-container"
-        :style="{ height: logoHeight }"
+        :style="{ height: logoHeight, width: menuWidth }"
       >
         {{ appConfig.appTitle }}
+        <n-divider title-placement="center">
+          {{ appConfig.appTitle }}
+        </n-divider>
       </div>
       <div class="menu-container">士大夫感到</div>
     </div>
@@ -61,6 +64,7 @@ const layout_menuRef = ref(null);
 const layout_maskRef = ref(null);
 
 const logoHeight = computed(() => `${layoutStore.layout_headerHeight}px`);
+const menuWidth = computed(() => `${layoutStore.layout_menuWidth}px`);
 
 // 初始化侧边栏
 onMounted(() => {
@@ -79,28 +83,35 @@ onMounted(() => {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(var(--shadow-color-rgb), 0.8);
-  z-index: 1;
+  background-color: var(--mask-color);
+  z-index: 3;
 }
 </style>
 
 <style lang="scss" scoped>
 .layout-aside {
+  height: 100%;
   border-right: 1px solid var(--border-color);
+  box-shadow: 0px 0px 15px 2px rgba(var(--shadow-color-rgb), 0.2);
   display: flex;
   flex-shrink: 0;
   flex-grow: 0;
   overflow: hidden;
   transition: width 0.2s;
   position: relative;
-  z-index: 2;
+  top: 0;
+  left: 0;
+  z-index: 4;
   overflow: hidden;
+  background-color: var(--bg-color);
   .layout-aside-xMenu {
     overflow: hidden;
     flex-shrink: 0;
     flex-grow: 0;
     height: 100%;
     border-right: 1px solid var(--border-color);
+    background-color: var(--bg-color);
+    z-index: 2;
     .logo-container {
       cursor: pointer;
       display: flex;
@@ -110,18 +121,32 @@ onMounted(() => {
       }
       .title-container {
         margin-left: 10px;
-        border: none;
       }
     }
   }
-  .layout-aside-contractMenu {
+  .layout-aside-menu {
     overflow: hidden;
     flex-shrink: 0;
     flex-grow: 0;
     height: 100%;
+    background-color: var(--bg-color);
+    z-index: 1;
+    .title-container {
+      position: relative;
+      :deep(.n-divider) {
+        padding: 0 10px;
+        margin: 0;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        font-size: 12px;
+        font-weight: 400;
+        letter-spacing: normal;
+        transform: translateY(50%);
+      }
+    }
   }
   .title-container {
-    border-bottom: 1px solid var(--border-color);
     display: flex;
     justify-content: center;
     align-items: center;

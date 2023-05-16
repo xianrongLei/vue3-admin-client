@@ -1,11 +1,13 @@
 :root {
   --bg-color: rgba(32, 32, 32, 1); /* 背景颜色 */
+  --subtle-color: rgba(34, 36, 41, 1); /* 柔和颜色*/
   --text-color: rgba(221, 223, 228, 1); /* 文字颜色 */
+  --shadow-color: rgba(0, 0, 0, 1); /* 阴影颜色 */
+
+  
   --text-soft-color: rgba(185, 187, 193, 1); /* 柔和文字颜色 */
   --text-strong-color: rgba(187, 187, 187, 1); /* 强烈文字颜色 */
-  --subtle-color: rgba(34, 36, 41, 1); /* 柔和颜色 可用于衬托背景色 */
   --border-color: rgba(43, 48, 61, 1); /* 边框颜色 */
-  --shadow-color: rgba(0, 0, 0, 1); /* 阴影颜色 */
   --input-color: rgba(28, 28, 28, 1); /* 输入框颜色 */
   --outline-color: rgba(129, 159, 219, 1); /* 轮廓颜色 */
   --mark-color: rgba(99, 139, 210, 0.08); /* 标记颜色 */

@@ -4,8 +4,11 @@ import type { ThemeState } from "./theme.types";
 export const themeMap: any = {
   dark: {
     theme_cssVars: {
+      // 遮罩颜色
+      "--mask-color": "rgba(0, 0, 0, 0.3)",
+
       // 页面背景颜色
-      "--bg-color": "rgba(32, 32, 32, 1)",
+      "--bg-color": "rgba(32, 32, 32, 0.9)",
 
       // 文本颜色
       "--text-color": "rgba(221, 223, 228, 1)",
@@ -16,8 +19,8 @@ export const themeMap: any = {
       // 强烈的文本颜色
       "--text-strong-color": "rgba(187, 187, 187, 1)",
 
-      // 柔和的颜色
-      "--subtle-color": "rgba(34, 36, 41, 1)",
+      // 柔和的颜色 用于和背景颜色相衬
+      "--subtle-color": "rgba(24, 24, 28, 1)",
 
       // 边框颜色
       "--border-color": "rgba(43, 48, 61, 1)",
@@ -99,11 +102,13 @@ export const themeMap: any = {
   },
   light: {
     theme_cssVars: {
-      "--bg-color": "rgba(255, 255, 255, 1)",
+      // 遮罩颜色
+      "--mask-color": "rgba(0, 0, 0, 0.3)",
+      "--bg-color": "rgba(255, 255, 255, 0.9)",
       "--text-color": "rgba(40, 48, 66, 1)",
       "--text-soft-color": "rgba(69, 74, 87, 1)",
       "--text-strong-color": "rgba(74, 74, 74, 1)",
-      "--subtle-color": "rgba(248, 249, 253, 1)",
+      "--subtle-color": "rgba(246, 248, 249, 1)",
       "--border-color": "rgba(225, 231, 247, 1)",
       "--shadow-color": "rgba(179, 191, 222, 1)",
       "--input-color": "rgba(255, 255, 255, 1)",

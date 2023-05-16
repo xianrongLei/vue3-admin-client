@@ -100,6 +100,8 @@ export const useLayoutStore = defineStore("layout", {
         const menuRef = this.layout_menuRef as HTMLElement;
         const xMenuRef = this.layout_xMenuRef as HTMLElement;
         const maskRef = this.layout_maskRef as HTMLElement;
+        // 初始化遮罩
+        maskRef.style.display = "none";
         // 大窗口
         if (this.layout_isLargeWindow) {
           // 初始化侧边栏宽度
@@ -108,8 +110,7 @@ export const useLayoutStore = defineStore("layout", {
           menuRef.style.width = `${layout_menuWidth}px`;
           // 初始化窄菜单宽度
           xMenuRef.style.width = `${layout_asideWidth - layout_menuWidth}px`;
-          // 初始化遮罩
-          maskRef.style.display = "none";
+          asideRef.style.position = "relative";
         } else {
           asideRef.style.width = `0px`;
         }
@@ -118,6 +119,7 @@ export const useLayoutStore = defineStore("layout", {
     /**
      * 响应菜单展开关闭
      */
+    // eslint-disable-next-line no-unused-vars, func-names
     useMenuExpand() {
       // 取反对应收缩开关
       this.layout_isMenuExpand = !this.layout_isMenuExpand;
@@ -130,20 +132,24 @@ export const useLayoutStore = defineStore("layout", {
       if (layout_isMenuExpand) {
         // 大窗口
         if (layout_isLargeWindow) {
+          asideRef.style.position = "relative";
           asideRef.style.width = `${layout_asideWidth - layout_menuWidth}px`;
         } else {
           xMenuRef.style.width = `${layout_asideWidth}px`;
           menuRef.style.width = "0px";
           maskRef.style.display = "block";
           asideRef.style.width = `${layout_asideWidth}px`;
+          asideRef.style.position = "absolute";
         }
       } else {
         // 大窗口
         // eslint-disable-next-line no-lonely-if
         if (layout_isLargeWindow) {
+          asideRef.style.position = "relative";
           xMenuRef.style.width = `${layout_asideWidth - layout_menuWidth}px`;
           asideRef.style.width = `${layout_asideWidth}px`;
         } else {
+          asideRef.style.position = "absolute";
           maskRef.style.display = "none";
           asideRef.style.width = `0px`;
         }

@@ -1,5 +1,9 @@
 import {
   create,
+  useOsTheme,
+  lightTheme,
+  darkTheme,
+  createDiscreteApi,
   NButton,
   NInput,
   NForm,
@@ -12,10 +16,7 @@ import {
   NConfigProvider,
   NThemeEditor,
   NLoadingBarProvider,
-  useOsTheme,
-  lightTheme,
-  darkTheme,
-  createDiscreteApi
+  NDivider
 } from "naive-ui";
 
 const naive = create({
@@ -31,7 +32,8 @@ const naive = create({
     NMessageProvider,
     NConfigProvider,
     NThemeEditor,
-    NLoadingBarProvider
+    NLoadingBarProvider,
+    NDivider
   ]
 });
 

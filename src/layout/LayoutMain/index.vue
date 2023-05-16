@@ -1,5 +1,8 @@
 <template>
-  <div class="layout-main">
+  <div
+    class="layout-main"
+    :style="{ height: mainHeight }"
+  >
     <router-view v-slot="{ Component }">
       <transition
         name="app-main"
@@ -16,11 +19,18 @@
   </div>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { computed } from "vue";
+import useLayoutStore from "@/store/modules/layout";
+
+const layoutStore = useLayoutStore();
+const mainHeight = computed(
+  () => `calc(100vh - (${layoutStore.layout_headerHeight + layoutStore.layout_tabsHeight}px))`
+);
+</script>
 
 <style lang="scss" scoped>
 .layout-main {
   overflow: auto;
-  background-color: var(--subtle-color);
 }
 </style>

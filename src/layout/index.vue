@@ -2,7 +2,7 @@
   <div class="app-layout">
     <div class="layout-container">
       <LayoutAside />
-      <div class="layout-container">
+      <div class="layout-main-container">
         <LayoutHeader />
         <LayoutTabs />
         <LayoutMain />
@@ -26,14 +26,15 @@ layoutStore.useInitLayout();
 .app-layout {
   height: 100vh;
   width: 100%;
-  background-color: var(--bg-color);
+  background-color: var(--subtle-color);
   > .layout-container {
+    position: relative;
     height: 100%;
     max-height: 100%;
     display: flex;
     overflow: hidden;
-
-    > .layout-container {
+    .layout-main-container {
+      z-index: 2;
       width: 100%;
       display: flex;
       flex-direction: column;
