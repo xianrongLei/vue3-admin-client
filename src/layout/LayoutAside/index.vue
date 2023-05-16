@@ -44,8 +44,9 @@ layoutStore.useLayoutStateOperator<"layout_menuRef">("layout_menuRef", layout_me
 <style lang="scss" scoped>
 .layout-aside {
   border-right: 1px solid var(--border-color);
-  display: flex;
+  display: flex 0 0;
   overflow: hidden;
+  transition: width 0.3s ease-out;
   .layout-aside-narrowMenu {
     height: 100%;
     border-right: 1px solid var(--border-color);

@@ -19,7 +19,7 @@ import LayoutAside from "./layoutAside/index.vue";
 import { useLayoutStore } from "@/store/modules/layout";
 
 const layoutStore = useLayoutStore();
-layoutStore.useInitLayout.call(layoutStore);
+layoutStore.useInitLayout();
 </script>
 
 <style lang="scss" scoped>

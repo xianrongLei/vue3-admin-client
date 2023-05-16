@@ -1,13 +1,13 @@
 <template>
   <div class="layout-header">
-    <button @click="useMenuExpand()">test</button>
+    <button @click="layoutStore.useMenuExpand()">test</button>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { useLayoutStore } from "@/store/modules/layout";
 
-const { useMenuExpand } = useLayoutStore();
+const layoutStore = useLayoutStore();
 </script>
 
 <style lang="scss" scoped>

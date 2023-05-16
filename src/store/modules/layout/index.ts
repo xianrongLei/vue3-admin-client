@@ -1,6 +1,6 @@
 import { once, debounce } from "lodash";
 import { defineStore } from "pinia";
-import { ComponentOptions, nextTick } from "vue";
+import { ComponentOptions, nextTick, ref, watch } from "vue";
 
 export type LayoutState = {
   /**
@@ -67,35 +67,43 @@ export const useLayoutStore = defineStore("layout", {
       (this as any)[key] = value;
     },
     /**
-     * 初始化layout 只会调用一次
+     * window resize 事件
      */
     // eslint-disable-next-line no-unused-vars, func-names
-    useInitLayout: once(function (this: LayoutState) {
-      const { layout_minWidth, layout_asideWidth } = this;
+    useWindowResize: once(function (this: LayoutState & { useInitLayout: () => void }) {
       window.addEventListener(
         "resize",
         debounce(() => {
-          const mediaQuery = window.matchMedia(`(min-width: ${layout_minWidth}px)`);
-          const layout_asideRef = this.layout_asideRef as HTMLElement & ComponentOptions;
-          this.layout_isLargeWindow = mediaQuery.matches;
-          if (this.layout_isLargeWindow) {
-            layout_asideRef.style.width = `${layout_asideWidth}px`;
-          } else {
-            layout_asideRef.style.width = `0px`;
-          }
+          this.layout_isLargeWindow = window.matchMedia(`(min-width: ${this.layout_minWidth}px)`).matches;
+          this.useInitLayout();
         }, 50)
       );
-      // 解决绑定事件时不会触发resize事件的问题
-      this.layout_isLargeWindow = window.matchMedia(`(min-width: ${layout_minWidth}px)`).matches;
+    }),
+    /**
+     * 初始化layout 只会调用一次
+     */
+    useInitLayout() {
+      this.useWindowResize();
+      const mediaQuery = window.matchMedia(`(min-width: ${this.layout_minWidth}px)`);
+      this.layout_isLargeWindow = mediaQuery.matches;
+      const { layout_asideWidth, layout_menuWidth } = this;
       nextTick(() => {
-        const layout_asideRef = this.layout_asideRef as HTMLElement & ComponentOptions;
+        const asideRef = this.layout_asideRef as HTMLElement & ComponentOptions;
+        const menuRef = this.layout_menuRef as HTMLElement & ComponentOptions;
+        const xMenuRef = this.layout_xMenuRef as HTMLElement & ComponentOptions;
+        // 大窗口
         if (this.layout_isLargeWindow) {
-          layout_asideRef.style.width = `${layout_asideWidth}px`;
+          // 初始化侧边栏宽度
+          asideRef.style.width = `${layout_asideWidth}px`;
+          // 初始化宽菜单宽度
+          menuRef.style.width = `${layout_menuWidth}px`;
+          // 初始化窄菜单宽度
+          xMenuRef.style.width = `${layout_asideWidth - layout_menuWidth}px`;
         } else {
-          layout_asideRef.style.width = `0px`;
+          asideRef.style.width = `0px`;
         }
       });
-    }),
+    },
     /**
      * 响应菜单展开关闭
      */
