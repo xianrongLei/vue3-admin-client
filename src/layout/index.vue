@@ -2,7 +2,10 @@
   <div class="app-layout">
     <div class="layout-container">
       <LayoutAside />
-      <div class="layout-main-container">
+      <div
+        class="layout-main-container"
+        :style="{ zIndex: layoutStore.layout_isLargeWindow ? 4 : 2 }"
+      >
         <LayoutHeader />
         <LayoutTabs />
         <LayoutMain />
@@ -34,9 +37,9 @@ layoutStore.useInitLayout();
     display: flex;
     overflow: hidden;
     .layout-main-container {
-      z-index: 2;
-      width: 100%;
       display: flex;
+      flex-shrink: 0;
+      flex-grow: 1;
       flex-direction: column;
     }
   }

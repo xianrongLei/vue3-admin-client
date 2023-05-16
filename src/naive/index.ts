@@ -16,7 +16,8 @@ import {
   NConfigProvider,
   NThemeEditor,
   NLoadingBarProvider,
-  NDivider
+  NDivider,
+  NScrollbar
 } from "naive-ui";
 
 const naive = create({
@@ -33,7 +34,8 @@ const naive = create({
     NConfigProvider,
     NThemeEditor,
     NLoadingBarProvider,
-    NDivider
+    NDivider,
+    NScrollbar
   ]
 });
 

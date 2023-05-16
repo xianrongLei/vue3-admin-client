@@ -20,6 +20,10 @@ export type LayoutState = {
    */
   readonly layout_tabsHeight: number;
   /**
+   *  底部信息栏的高度 单位px
+   */
+  readonly layout_footerHeight: number;
+  /**
    * 窗口多大时隐藏侧边栏
    */
   readonly layout_minWidth: number;
@@ -55,6 +59,7 @@ export const useLayoutStore = defineStore("layout", {
     layout_menuWidth: 210,
     layout_headerHeight: 55,
     layout_tabsHeight: 40,
+    layout_footerHeight: 65,
     layout_minWidth: 1000,
     layout_isLargeWindow: false,
     layout_isMenuExpand: false,

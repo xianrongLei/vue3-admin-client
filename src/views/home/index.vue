@@ -9,7 +9,11 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="home-container"></div>
+  <div class="home-container">
+    <br />dfsgdfsg <br />dfsgdfsg <br />dfsgdfsg <br />dfsgdfsg <br />dfsgdfsg <br />dfsgdfsg <br />dfsgdfsg
+    <br />dfsgdfsg <br />dfsgdfsg <br />dfsgdfsg <br />dfsgdfsg <br />dfsgdfsg <br />dfsgdfsg <br />dfsgdfsg
+    <br />dfsgdfsg <br />dfsgdfsg <br />dfsgdfsg <br />dfsgdfsg <br />dfsgdfsg <br />dfsgdfsg <br />dfsgdfsg
+  </div>
 </template>
 
 <style lang="scss" scoped>

@@ -20,6 +20,8 @@ const headerHeight = computed(() => `${layoutStore.layout_headerHeight}px`);
 
 <style lang="scss" scoped>
 .layout-header {
+  flex-shrink: 0;
+  flex-grow: 0;
   z-index: 2;
   background-color: var(--bg-color);
   border-bottom: 1px solid var(--border-color);
