@@ -1,16 +1,13 @@
 <template>
-  <div
-    class="layout-header"
-    :style="{ height: headerHeight, minHeight: headerHeight }"
-  >
-    <button>test</button>
+  <div class="layout-header">
+    <button @click="useMenuExpand()">test</button>
   </div>
 </template>
 
 <script lang="ts" setup>
-defineProps<{
-  headerHeight?: string;
-}>();
+import { useLayoutStore } from "@/store/modules/layout";
+
+const { useMenuExpand } = useLayoutStore();
 </script>
 
 <style lang="scss" scoped>

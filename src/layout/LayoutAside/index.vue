@@ -1,16 +1,15 @@
 <template>
   <div
+    ref="layout_asideRef"
     class="layout-aside"
-    :style="{ width: asideWidth, maxWidth: asideWidth, minWidth: asideWidth }"
   >
     <!-- 窄菜单 -->
     <div
+      ref="layout_xMenuRef"
       class="layout-aside-narrowMenu"
-      :style="{ width: narrowMenuWidth }"
     >
       <div
         class="logo-container"
-        :style="{ height: logoHeight }"
         @click="router.push('/')"
       >
         <img src="@/assets/logo.png" />
@@ -18,39 +17,35 @@
     </div>
     <!-- 收缩菜单 -->
     <div
+      ref="layout_menuRef"
       class="layout-aside-contractMenu"
-      :style="{ width: menuWidth, maxWidth: menuWidth, minWidth: menuWidth }"
     >
-      <div
-        class="title-container"
-        :style="{ height: logoHeight }"
-      >
-        sdf
-      </div>
+      <div class="title-container">sdf</div>
       <div class="menu-container">士大夫感到</div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { ref } from "vue";
 import { router } from "@/router/index";
 import { useLayoutStore } from "@/store/modules/layout";
 
-const { layout_asideWidth, layout_headerHeight, layout_menuWidth, layout_narrowMenuWidth } = useLayoutStore();
-// 侧边栏宽
-const asideWidth = `${layout_asideWidth}px`;
-// logo和appName高度 与导航栏保持一致
-const logoHeight = `${layout_headerHeight}px`;
-// 收缩菜单宽
-const menuWidth = `${layout_menuWidth}px`;
-// 窄菜单宽
-const narrowMenuWidth = `${layout_narrowMenuWidth}px`;
+const layoutStore = useLayoutStore();
+const layout_xMenuRef = ref(null);
+const layout_asideRef = ref(null);
+const layout_menuRef = ref(null);
+// 初始化侧边栏
+layoutStore.useLayoutStateOperator<"layout_asideRef">("layout_asideRef", layout_asideRef);
+layoutStore.useLayoutStateOperator<"layout_xMenuRef">("layout_xMenuRef", layout_xMenuRef);
+layoutStore.useLayoutStateOperator<"layout_menuRef">("layout_menuRef", layout_menuRef);
 </script>
 
 <style lang="scss" scoped>
 .layout-aside {
   border-right: 1px solid var(--border-color);
   display: flex;
+  overflow: hidden;
   .layout-aside-narrowMenu {
     height: 100%;
     border-right: 1px solid var(--border-color);

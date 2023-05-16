@@ -1,12 +1,9 @@
 <template>
   <div class="app-layout">
     <div class="layout-container">
-      <LayoutAside
-        :footer-height="footerHeight"
-        :header-height="headerHeight"
-      />
+      <LayoutAside />
       <div class="layout-container">
-        <LayoutHeader :header-height="headerHeight" />
+        <LayoutHeader />
         <LayoutTabs />
         <LayoutMain />
       </div>
@@ -19,9 +16,10 @@ import LayoutTabs from "./layoutTabs/index.vue";
 import LayoutMain from "./layoutMain/index.vue";
 import LayoutHeader from "./layoutHeader/index.vue";
 import LayoutAside from "./layoutAside/index.vue";
+import { useLayoutStore } from "@/store/modules/layout";
 
-const footerHeight = "0rem";
-const headerHeight = "3.75rem";
+const layoutStore = useLayoutStore();
+layoutStore.useInitLayout.call(layoutStore);
 </script>
 
 <style lang="scss" scoped>
