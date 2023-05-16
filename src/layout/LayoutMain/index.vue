@@ -21,5 +21,6 @@
 <style lang="scss" scoped>
 .layout-main {
   overflow: auto;
+  background-color: var(--subtle-color);
 }
 </style>

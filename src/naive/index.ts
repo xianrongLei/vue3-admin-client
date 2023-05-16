@@ -11,7 +11,11 @@ import {
   NMessageProvider,
   NConfigProvider,
   NThemeEditor,
-  NLoadingBarProvider
+  NLoadingBarProvider,
+  useOsTheme,
+  lightTheme,
+  darkTheme,
+  createDiscreteApi
 } from "naive-ui";
 
 const naive = create({
@@ -34,3 +38,11 @@ const naive = create({
 export const mountNaive = (vueUse: Function): void => {
   vueUse(naive);
 };
+/**
+ * naive 全局独立api
+ */
+export const { loadingBar, message } = createDiscreteApi(["loadingBar", "message"], {
+  configProviderProps: {
+    theme: useOsTheme().value === "light" ? lightTheme : darkTheme
+  }
+});

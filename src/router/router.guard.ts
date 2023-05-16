@@ -1,19 +1,14 @@
 import type { Router } from "vue-router";
-import { createDiscreteApi, useOsTheme, lightTheme, darkTheme } from "naive-ui";
 import { useRouterStore } from "@/store/modules/router";
 import { useUserStore } from "@/store/modules/user";
 import { clearCache } from "@/utils/utils.cache-operator";
+import { loadingBar, message } from "@/naive";
 
 // 解决刷新动态路由丢失
 const isRefresh = { value: true };
 // 白名单
 const whiteList: string[] = ["/login"];
 // 路由加载条
-const { loadingBar, message } = createDiscreteApi(["loadingBar", "message"], {
-  configProviderProps: {
-    theme: useOsTheme().value === "light" ? lightTheme : darkTheme
-  }
-});
 
 export const mountGuard = (router: Router): void => {
   // 路由加载前

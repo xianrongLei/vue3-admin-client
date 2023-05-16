@@ -6,67 +6,128 @@
     <!-- 窄菜单 -->
     <div
       ref="layout_xMenuRef"
-      class="layout-aside-narrowMenu"
+      class="layout-aside-xMenu"
     >
       <div
         class="logo-container"
+        :style="{ height: logoHeight }"
         @click="router.push('/')"
       >
-        <img src="@/assets/logo.png" />
+        <img
+          src="@/assets/logo.png"
+          :style="{ maxWidth: logoHeight, maxHeight: logoHeight }"
+        />
+        <div
+          class="title-container"
+          v-show="!layoutStore.layout_isLargeWindow"
+        >
+          {{ appConfig.appTitle }}
+        </div>
       </div>
     </div>
+    <teleport to="body">
+      <div
+        ref="layout_maskRef"
+        class="layout-aside-xMenu-mask"
+        @click="layoutStore.useMenuExpand()"
+      ></div>
+    </teleport>
     <!-- 收缩菜单 -->
     <div
       ref="layout_menuRef"
       class="layout-aside-contractMenu"
     >
-      <div class="title-container">sdf</div>
+      <div
+        class="title-container"
+        :style="{ height: logoHeight }"
+      >
+        {{ appConfig.appTitle }}
+      </div>
       <div class="menu-container">士大夫感到</div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { router } from "@/router/index";
 import { useLayoutStore } from "@/store/modules/layout";
+import { appConfig } from "@/config/index";
 
 const layoutStore = useLayoutStore();
 const layout_xMenuRef = ref(null);
 const layout_asideRef = ref(null);
 const layout_menuRef = ref(null);
+const layout_maskRef = ref(null);
+
+const logoHeight = computed(() => `${layoutStore.layout_headerHeight}px`);
+
 // 初始化侧边栏
-layoutStore.useLayoutStateOperator<"layout_asideRef">("layout_asideRef", layout_asideRef);
-layoutStore.useLayoutStateOperator<"layout_xMenuRef">("layout_xMenuRef", layout_xMenuRef);
-layoutStore.useLayoutStateOperator<"layout_menuRef">("layout_menuRef", layout_menuRef);
+onMounted(() => {
+  layoutStore.useLayoutStateOperator("layout_asideRef", layout_asideRef.value);
+  layoutStore.useLayoutStateOperator("layout_xMenuRef", layout_xMenuRef.value);
+  layoutStore.useLayoutStateOperator("layout_menuRef", layout_menuRef.value);
+  layoutStore.useLayoutStateOperator("layout_maskRef", layout_maskRef.value);
+});
 </script>
+
+<style>
+.layout-aside-xMenu-mask {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(var(--shadow-color-rgb), 0.8);
+  z-index: 1;
+}
+</style>
 
 <style lang="scss" scoped>
 .layout-aside {
   border-right: 1px solid var(--border-color);
-  display: flex 0 0;
+  display: flex;
+  flex-shrink: 0;
+  flex-grow: 0;
   overflow: hidden;
-  transition: width 0.3s ease-out;
-  .layout-aside-narrowMenu {
+  transition: width 0.2s;
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+  .layout-aside-xMenu {
+    overflow: hidden;
+    flex-shrink: 0;
+    flex-grow: 0;
     height: 100%;
     border-right: 1px solid var(--border-color);
     .logo-container {
       cursor: pointer;
-      padding: 5px;
       display: flex;
-      align-items: center;
       justify-content: center;
       img {
-        max-height: 100%;
-        max-width: 100%;
+        margin: 10px;
+      }
+      .title-container {
+        margin-left: 10px;
+        border: none;
       }
     }
   }
   .layout-aside-contractMenu {
+    overflow: hidden;
+    flex-shrink: 0;
+    flex-grow: 0;
     height: 100%;
-    .title-container {
-      border-bottom: 1px solid var(--border-color);
-    }
+  }
+  .title-container {
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    font-weight: bolder;
+    letter-spacing: 10px;
   }
 }
 </style>

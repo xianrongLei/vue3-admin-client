@@ -1,13 +1,21 @@
 <template>
-  <div class="layout-tabs"></div>
+  <div
+    class="layout-tabs"
+    :style="{ height: tabsHeight }"
+  ></div>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { computed } from "vue";
+import useLayoutStore from "@/store/modules/layout";
+
+const layoutStore = useLayoutStore();
+const tabsHeight = computed(() => `${layoutStore.layout_tabsHeight}px`);
+</script>
 
 <style lang="scss" scoped>
 .layout-tabs {
-  background-color: #fff;
-  height: 3rem;
-  border-bottom: 1px solid #e2e3e5;
+  background: var(--bg-color);
+  border-bottom: 1px solid var(--border-color);
 }
 </style>

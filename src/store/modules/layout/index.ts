@@ -1,6 +1,6 @@
 import { once, debounce } from "lodash";
 import { defineStore } from "pinia";
-import { ComponentOptions, nextTick, ref, watch } from "vue";
+import { nextTick } from "vue";
 
 export type LayoutState = {
   /**
@@ -8,7 +8,7 @@ export type LayoutState = {
    */
   readonly layout_asideWidth: number;
   /**
-   *  收缩菜单的宽度 单位px
+   *  宽菜单的宽度 单位px
    */
   readonly layout_menuWidth: number;
   /**
@@ -20,7 +20,7 @@ export type LayoutState = {
    */
   readonly layout_tabsHeight: number;
   /**
-   * 多小算小窗口
+   * 窗口多大时隐藏侧边栏
    */
   readonly layout_minWidth: number;
   /**
@@ -32,31 +32,36 @@ export type LayoutState = {
    */
   layout_isMenuExpand: boolean;
   /**
-   * 侧边栏组件
+   * 侧边栏
    */
-  layout_asideRef: null | ComponentOptions;
+  layout_asideRef: null | HTMLElement;
   /**
-   * 收缩菜单组件
+   * 宽菜单
    */
-  layout_menuRef: null | ComponentOptions;
+  layout_menuRef: null | HTMLElement;
   /**
-   * 窄菜单组件
+   * 窄菜单
    */
-  layout_xMenuRef: null | ComponentOptions;
+  layout_xMenuRef: null | HTMLElement;
+  /**
+   * 遮罩
+   */
+  layout_maskRef: null | HTMLElement;
 };
 
 export const useLayoutStore = defineStore("layout", {
   state: (): LayoutState => ({
     layout_asideWidth: 260,
     layout_menuWidth: 210,
-    layout_headerHeight: 60,
+    layout_headerHeight: 55,
     layout_tabsHeight: 40,
     layout_minWidth: 1000,
     layout_isLargeWindow: false,
     layout_isMenuExpand: false,
     layout_asideRef: null,
     layout_menuRef: null,
-    layout_xMenuRef: null
+    layout_xMenuRef: null,
+    layout_maskRef: null
   }),
   actions: {
     /**
@@ -67,7 +72,8 @@ export const useLayoutStore = defineStore("layout", {
       (this as any)[key] = value;
     },
     /**
-     * window resize 事件
+     * 添加 WindowResize 事件 只会调用一次
+     * 防止无限增加 WindowResize 事件，选择单独抽离封装
      */
     // eslint-disable-next-line no-unused-vars, func-names
     useWindowResize: once(function (this: LayoutState & { useInitLayout: () => void }) {
@@ -80,17 +86,20 @@ export const useLayoutStore = defineStore("layout", {
       );
     }),
     /**
-     * 初始化layout 只会调用一次
+     * 初始化layout
      */
     useInitLayout() {
       this.useWindowResize();
+      const { layout_asideWidth, layout_menuWidth } = this;
       const mediaQuery = window.matchMedia(`(min-width: ${this.layout_minWidth}px)`);
       this.layout_isLargeWindow = mediaQuery.matches;
-      const { layout_asideWidth, layout_menuWidth } = this;
+      // 重置菜单收缩状态
+      this.layout_isMenuExpand = false;
       nextTick(() => {
-        const asideRef = this.layout_asideRef as HTMLElement & ComponentOptions;
-        const menuRef = this.layout_menuRef as HTMLElement & ComponentOptions;
-        const xMenuRef = this.layout_xMenuRef as HTMLElement & ComponentOptions;
+        const asideRef = this.layout_asideRef as HTMLElement;
+        const menuRef = this.layout_menuRef as HTMLElement;
+        const xMenuRef = this.layout_xMenuRef as HTMLElement;
+        const maskRef = this.layout_maskRef as HTMLElement;
         // 大窗口
         if (this.layout_isLargeWindow) {
           // 初始化侧边栏宽度
@@ -99,6 +108,8 @@ export const useLayoutStore = defineStore("layout", {
           menuRef.style.width = `${layout_menuWidth}px`;
           // 初始化窄菜单宽度
           xMenuRef.style.width = `${layout_asideWidth - layout_menuWidth}px`;
+          // 初始化遮罩
+          maskRef.style.display = "none";
         } else {
           asideRef.style.width = `0px`;
         }
@@ -108,25 +119,33 @@ export const useLayoutStore = defineStore("layout", {
      * 响应菜单展开关闭
      */
     useMenuExpand() {
+      // 取反对应收缩开关
       this.layout_isMenuExpand = !this.layout_isMenuExpand;
-      const layout_asideRef = this.layout_asideRef as HTMLElement & ComponentOptions;
-      const layout_menuRef = this.layout_menuRef as HTMLElement & ComponentOptions;
-      const { layout_asideWidth, layout_menuWidth } = this;
-      // 收菜单
-      if (this.layout_isMenuExpand) {
+      const asideRef = this.layout_asideRef as HTMLElement;
+      const menuRef = this.layout_menuRef as HTMLElement;
+      const maskRef = this.layout_maskRef as HTMLElement;
+      const xMenuRef = this.layout_xMenuRef as HTMLElement;
+      const { layout_asideWidth, layout_menuWidth, layout_isLargeWindow, layout_isMenuExpand } = this;
+      // 是否是折叠起菜单
+      if (layout_isMenuExpand) {
         // 大窗口
-        if (this.layout_isLargeWindow) {
-          layout_asideRef.style.width = `${layout_asideWidth - layout_menuWidth}px`;
-          layout_menuRef.style.width = `0px`;
+        if (layout_isLargeWindow) {
+          asideRef.style.width = `${layout_asideWidth - layout_menuWidth}px`;
         } else {
-          layout_asideRef.style.width = `0px`;
+          xMenuRef.style.width = `${layout_asideWidth}px`;
+          menuRef.style.width = "0px";
+          maskRef.style.display = "block";
+          asideRef.style.width = `${layout_asideWidth}px`;
         }
       } else {
+        // 大窗口
         // eslint-disable-next-line no-lonely-if
-        if (this.layout_isLargeWindow) {
-          layout_asideRef.style.width = `${this.layout_asideWidth}px`;
+        if (layout_isLargeWindow) {
+          xMenuRef.style.width = `${layout_asideWidth - layout_menuWidth}px`;
+          asideRef.style.width = `${layout_asideWidth}px`;
         } else {
-          layout_asideRef.style.width = `${layout_asideWidth - layout_menuWidth}px`;
+          maskRef.style.display = "none";
+          asideRef.style.width = `0px`;
         }
       }
     }
