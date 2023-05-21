@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { useMutation } from "@vue/apollo-composable";
 import { defineExpose, onMounted, ref } from "vue";
+import { useMessage } from "naive-ui";
 import { awaitTo } from "@/utils/utils.awaitTo";
 import { captchaGql } from "./login.gql";
 
@@ -15,18 +16,20 @@ const { mutate } = useMutation(captchaGql, () => ({
   }
 }));
 const emits = defineEmits(["captcha"]);
+const message = useMessage();
 const getCaptcha = async () => {
   isExceed.value = false;
-  const [error, data] = await awaitTo(mutate());
+  const [error, data] = await awaitTo(mutate(), { message: "获取验证码失败" });
   if (error) {
+    message.error(error.message);
     throw new Error(error.message);
   }
-  const { captcha } = data.data;
-  verifySrc.value = captcha?.svg;
+  const { captcha } = data?.data || {};
+  verifySrc.value = captcha.svg;
   setTimeout(() => {
     isExceed.value = true;
-  }, (captcha?.time as number) * 1000);
-  emits("captcha", captcha?.uniCode);
+  }, (captcha.time as number) * 1000);
+  emits("captcha", captcha.uniCode);
 };
 onMounted(() => {
   getCaptcha();

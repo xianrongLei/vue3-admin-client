@@ -13,8 +13,12 @@ export const themeMap: any = {
       // 边框颜色
       "--border-color": "rgba(43, 48, 61, 1)",
       // 遮罩颜色
-      "--mask-color": "rgba(0, 0, 0, 0.3)"
+      "--mask-color": "rgba(0, 0, 0, 0.3)",
+      // 特殊颜色
+      "--special-color": "rgba(99, 139, 210 ,1)"
 
+      // 特殊颜色的RGB值
+      // "--special-color-rgb": "99, 139, 210"
       // 柔和的文本颜色
       // "--text-soft-color": "rgba(185, 187, 193, 1)",
 
@@ -32,9 +36,6 @@ export const themeMap: any = {
 
       // 标记颜色
       // "--mark-color": "rgba(99, 139, 210, 0.08)",
-
-      // 特殊颜色
-      // "--special-color": "rgba(99, 139, 210, 1)",
 
       // 特殊背景颜色
       // "--special-bg-color": "rgba(69, 99, 152, 1)",
@@ -63,9 +64,6 @@ export const themeMap: any = {
       // 柔和的颜色的RGB值
       // "--subtle-color-rgb": "34, 36, 41",
 
-      // 特殊颜色的RGB值
-      // "--special-color-rgb": "99, 139, 210",
-
       // 特殊文本颜色的RGB值
       // "--special-text-color-rgb": "221, 223, 228",
 
@@ -91,8 +89,10 @@ export const themeMap: any = {
       ...darkTheme,
       common: {
         ...darkTheme.common,
-        primaryColor: "rgba(80, 120, 200, 1)",
-        primaryColorHover: "rgba(80, 120, 200, 1)"
+        // primaryColor: "rgba(80, 120, 200, 1)",
+        primaryColor: "#111111",
+        // primaryColorHover: "rgba(80, 120, 200, 1)"
+        primaryColorHover: "#111111"
       }
     }
   },
@@ -103,17 +103,17 @@ export const themeMap: any = {
       "--subtle-color": "rgba(246, 248, 249, 1)",
       "--text-color": "rgba(40, 48, 66, 1)",
       "--border-color": "rgba(225, 231, 247, 1)",
-      "--mask-color": "rgba(0, 0, 0, 0.3)"
+      "--mask-color": "rgba(0, 0, 0, 0.3)",
+      "--special-color": "rgba(74, 127, 208, 1)"
 
+      // "--special-text-color": "rgba(255, 255, 255, 1)",
       // "--text-soft-color": "rgba(69, 74, 87, 1)",
       // "--text-strong-color": "rgba(74, 74, 74, 1)",
       // "--shadow-color": "rgba(179, 191, 222, 1)",
       // "--input-color": "rgba(255, 255, 255, 1)",
       // "--outline-color": "rgba(175, 191, 231, 1)",
       // "--mark-color": "rgba(74, 127, 208, 0.08)",
-      // "--special-color": "rgba(74, 127, 208, 1)",
       // "--special-bg-color": "rgba(77, 131, 214, 1)",
-      // "--special-text-color": "rgba(255, 255, 255, 1)",
       // "--special-shadow-color": "rgba(78, 89, 114, 1)",
       // "--special-mark-color": "rgba(255, 255, 255, 0.08)",
       // "--light-color": "rgba(240, 243, 252, 1)",

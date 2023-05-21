@@ -70,7 +70,7 @@ export const useLayoutStore = defineStore("layout", {
   }),
   actions: {
     /**
-     * state 操作器
+     * State Operator
      * @param param0
      */
     useLayoutStateOperator<Key>(key: keyof LayoutState, value: LayoutState[Key & keyof LayoutState]): void {
@@ -133,9 +133,9 @@ export const useLayoutStore = defineStore("layout", {
       const maskRef = this.layout_maskRef as HTMLElement;
       const xMenuRef = this.layout_xMenuRef as HTMLElement;
       const { layout_asideWidth, layout_menuWidth, layout_isLargeWindow, layout_isMenuExpand } = this;
-      // 是否是折叠起菜单
+      // layout_isMenuExpand 为真表示菜单折起 假则为收起
       if (layout_isMenuExpand) {
-        // 大窗口
+        // layout_isLargeWindow 为真表示当前是大窗口 假则为小窗口
         if (layout_isLargeWindow) {
           asideRef.style.position = "relative";
           asideRef.style.width = `${layout_asideWidth - layout_menuWidth}px`;
@@ -147,7 +147,7 @@ export const useLayoutStore = defineStore("layout", {
           asideRef.style.position = "absolute";
         }
       } else {
-        // 大窗口
+        // layout_isLargeWindow 为真表示当前是大窗口 假则为小窗口
         // eslint-disable-next-line no-lonely-if
         if (layout_isLargeWindow) {
           asideRef.style.position = "relative";

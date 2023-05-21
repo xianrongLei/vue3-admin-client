@@ -2,11 +2,21 @@
  * @param {Promise} promise
  * @return {Promise} Promise
  */
-export const to = (promise: Promise<any>): Promise<any> =>
-  promise.then((data) => [null, data]).catch((err) => [err, undefined]);
-// eslint-disable-next-line arrow-body-style
-export const awaitTo = (promise: Promise<unknown>, errorExt?: Record<string, any>): Promise<[any, any]> => {
+export type AwaitToResult = Promise<[Record<string, any> | null, Record<string, any> | null]>;
+
+export const awaitTo = (
+  promise: Promise<unknown> | any,
+  extantErr?: Record<string, any>
+  // eslint-disable-next-line arrow-body-style
+): AwaitToResult => {
+  if (!(promise instanceof Promise)) {
+    throw new Error("Parameter one must be a promise!");
+  }
   return promise
-    .then((data) => [null, data])
-    .catch((err) => [errorExt ? { ...errorExt, ...err } : err, null]) as Promise<[any, any]>;
+    .then((data) => [null, data || { data }])
+    .catch((err) => {
+      const sourceErr = typeof err === "object" ? err : { message: err };
+      const Err = extantErr ? { ...extantErr, ...sourceErr } : { ...sourceErr };
+      return [Err, null];
+    }) as AwaitToResult;
 };

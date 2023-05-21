@@ -6,8 +6,8 @@ export default {
   form_button: "Login",
   login_success: "Login success",
   login_message: "Please complete the letter",
-  login_username_p: "input username",
-  login_password_p: "input password",
-  login_captcha_p: "input captcha",
+  login_username_p: "Please input a name",
+  login_password_p: "Please input a password",
+  login_captcha_p: "Please input a captcha",
   login_captcha: "verity"
 };

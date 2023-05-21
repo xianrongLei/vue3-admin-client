@@ -89,104 +89,86 @@
   </div>
 </template>
 
-<script lang="ts">
-import { ref, defineComponent, ComponentOptions } from "vue";
+<script lang="ts" setup>
+import { computed, ref } from "vue";
 import { Person, KeySharp, DiceSharp } from "@vicons/ionicons5";
 import { useI18n } from "vue-i18n";
 import { useLoadingBar, useMessage } from "naive-ui";
 import { useMutation } from "@vue/apollo-composable";
+import { useRouter } from "vue-router";
 import { signinGql } from "./login.gql";
 import Captcha from "./captcha.vue";
 import { awaitTo } from "@/utils/utils.awaitTo";
 import { useUserStore } from "@/store/modules/user";
 
-export default defineComponent({
-  components: {
-    Person,
-    KeySharp,
-    DiceSharp,
-    Captcha
+const { t } = useI18n();
+const loginForm = ref({
+  username: "admin",
+  password: "admin",
+  uniCode: "",
+  answer: ""
+});
+const loginRules = computed(() => ({
+  username: {
+    required: true,
+    message: t("login.login_username_p"),
+    trigger: "blur"
   },
-  setup() {
-    const { t }: Record<string, any> = useI18n();
-    const loginForm = ref({
-      username: "admin",
-      password: "admin",
-      uniCode: "",
-      answer: ""
-    });
-    const loginRules = ref({
-      username: {
-        required: true,
-        message: t("login.login_username_p"),
-        trigger: "blur"
-      },
-      password: {
-        required: true,
-        message: t("login.login_password_p"),
-        trigger: "blur"
-      },
-      answer: {
-        required: true,
-        message: t("login.login_captcha_p"),
-        trigger: "blur"
-      }
-    });
-    const loadingBar = useLoadingBar();
-    const { mutate: getSignin } = useMutation(signinGql, () => ({
-      variables: {
-        createAuthInput: {
-          user: {
-            username: loginForm.value.username,
-            password: loginForm.value.password
-          },
-          uniCode: loginForm.value.uniCode,
-          answer: loginForm.value.answer
-        }
-      }
-    }));
-    return {
-      getSignin,
-      loadingBar,
-      message: useMessage(),
-      isExceed: ref(false),
-      verifySrc: ref(""),
-      loginForm,
-      loginRules
-    };
+  password: {
+    required: true,
+    message: t("login.login_password_p"),
+    trigger: "blur"
   },
-  methods: {
-    async login() {
-      const { loadingBar, $refs, $router, message, loginForm, getSignin } = this;
-      const { useUserStateOperator } = useUserStore();
-      try {
-        loadingBar.start();
-        await ($refs.loginFormRef as ComponentOptions).validate();
-        const [error, data] = await awaitTo(getSignin());
-        if (error) {
-          const { getCaptcha } = $refs.captchaRef as ComponentOptions;
-          loginForm.uniCode = getCaptcha();
-          message.error(error.message);
-          loadingBar.error();
-        } else {
-          const userInfo = data.data.signin;
-          useUserStateOperator<"user_token">({
-            key: "user_token",
-            value: {
-              userId: userInfo.user.id,
-              access_token: userInfo.access_token,
-              refresh_token: userInfo.refresh_token
-            }
-          });
-          $router.push("/");
-          loadingBar.finish();
-        }
-      } catch (error: any) {
-        loadingBar.error();
-      }
+  answer: {
+    required: true,
+    message: t("login.login_captcha_p"),
+    trigger: "blur"
+  }
+}));
+const { mutate: getSignin } = useMutation(signinGql, () => ({
+  variables: {
+    createAuthInput: {
+      user: {
+        username: loginForm.value.username,
+        password: loginForm.value.password
+      },
+      uniCode: loginForm.value.uniCode,
+      answer: loginForm.value.answer
     }
   }
-});
+}));
+const loadingBar = useLoadingBar();
+const $router = useRouter();
+const message = useMessage();
+const loginFormRef = ref<(HTMLElement & { validate: () => Promise<void> }) | null>(null);
+const captchaRef = ref<(HTMLElement & { getCaptcha: () => string }) | null>(null);
+const { useUserStateOperator } = useUserStore();
+async function login() {
+  loadingBar.start();
+  const [formErr] = await awaitTo(loginFormRef.value?.validate());
+  if (formErr) {
+    loadingBar.finish();
+    return;
+  }
+  const [error, data] = await awaitTo(getSignin());
+  if (error) {
+    loginForm.value.uniCode = captchaRef.value?.getCaptcha() || "";
+    message.error(error.message);
+    loadingBar.error();
+    return;
+  }
+  const userInfo = data?.data.signin;
+  useUserStateOperator<"user_token">({
+    key: "user_token",
+    value: {
+      userId: userInfo.user.id,
+      access_token: userInfo.access_token,
+      refresh_token: userInfo.refresh_token
+    }
+  });
+  $router.push("/");
+  loadingBar.finish();
+}
 </script>
 
 <style lang="scss" scoped>
