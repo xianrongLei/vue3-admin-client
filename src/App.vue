@@ -1,5 +1,8 @@
 <template>
-  <n-config-provider :theme-overrides="themeStore.theme_naiveOverrides">
+  <n-config-provider
+    style="height: 100vh"
+    :theme-overrides="themeStore.theme_naiveOverrides"
+  >
     <NThemeEditor v-if="themeStore.theme_naiveEditor" />
     <n-loading-bar-provider>
       <n-message-provider>

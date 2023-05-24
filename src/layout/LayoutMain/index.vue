@@ -18,12 +18,12 @@
             </keep-alive>
           </transition>
         </router-view>
-      </div>
-      <div
-        class="layout-footer"
-        :style="{ height: footerHeight }"
-      >
-        Pink 2023 Vue3 Admin Starter
+        <div
+          class="layout-footer"
+          :style="{ height: footerHeight }"
+        >
+          Pink 2023 Vue3 Admin Starter
+        </div>
       </div>
     </n-scrollbar>
   </div>
@@ -41,11 +41,9 @@ const scrollbarHeight = computed(
   () => `calc(100vh - (${layoutStore.layout_headerHeight + layoutStore.layout_tabsHeight + 2}px))`
 );
 // 主容器区域高度 不包含footer 额外减去3条边框
-const mainHeight = computed(() => {
-  const otherHeight =
-    layoutStore.layout_headerHeight + layoutStore.layout_tabsHeight + layoutStore.layout_footerHeight + 3;
-  return `calc(100vh - (${otherHeight}px))`;
-});
+const mainHeight = computed(
+  () => `calc(100vh - (${layoutStore.layout_headerHeight + layoutStore.layout_tabsHeight + 2}px))`
+);
 </script>
 
 <style lang="scss" scoped>
@@ -54,16 +52,21 @@ const mainHeight = computed(() => {
   flex-shrink: 0;
   flex-grow: 0;
   z-index: 2;
-  .layout-footer {
-    position: relative;
-    box-shadow: 0 0 5px 5px rgba(var(--shadow-color-rgb), 0.1);
-    border-top: 1px solid var(--border-color);
-    background-color: var(--bg-color);
+  .layout-main-wrapper {
     display: flex;
-    flex-shrink: 0;
-    flex-grow: 0;
-    align-items: center;
-    justify-content: center;
+    flex-direction: column;
+    .layout-footer {
+      margin-top: auto;
+      position: relative;
+      box-shadow: 0 0 5px 5px rgba(var(--shadow-color-rgb), 0.1);
+      border-top: 1px solid var(--border-color);
+      background-color: var(--bg-color);
+      display: flex;
+      flex-shrink: 0;
+      flex-grow: 0;
+      align-items: center;
+      justify-content: center;
+    }
   }
 }
 </style>

@@ -21,8 +21,12 @@ export const useUserStore = defineStore("user", {
     user_token: {}
   }),
   actions: {
-    useUserStateOperator<V>({ key, value }: UseStateOperatorInput<UserState, V>): void {
-      this.$state[key] = value as UserState[V & keyof UserState];
+    /**
+     * state 操作器
+     * @param param0
+     */
+    useUserStateOperator<Key>(key: keyof UserState, value: UserState[Key & keyof UserState]): void {
+      (this as any)[key] = value;
     },
     async useGetUserInfo(userId?: string) {
       const { mutate } = useMutation(getUserInfoGql, () => ({
@@ -30,13 +34,12 @@ export const useUserStore = defineStore("user", {
           userId
         }
       }));
-      const [err, data] = await awaitTo(mutate());
-      if (err) throw new Error(err);
-      this.useUserStateOperator<"user_userInfo">({
-        key: "user_userInfo",
-        value: {
-          ...data.data.user
-        }
+      const [err, result] = await awaitTo(mutate());
+      console.log(result);
+
+      if (err) throw new Error(err.message);
+      this.useUserStateOperator<"user_userInfo">("user_userInfo", {
+        ...result?.data?.user
       });
     }
   },

@@ -90,7 +90,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from "vue";
+import { ref } from "vue";
 import { Person, KeySharp, DiceSharp } from "@vicons/ionicons5";
 import { useI18n } from "vue-i18n";
 import { useLoadingBar, useMessage } from "naive-ui";
@@ -108,23 +108,23 @@ const loginForm = ref({
   uniCode: "",
   answer: ""
 });
-const loginRules = computed(() => ({
+const loginRules = ref({
   username: {
     required: true,
-    message: t("login.login_username_p"),
-    trigger: "blur"
+    trigger: "blur",
+    renderMessage: () => t("login.login_username_p")
   },
   password: {
     required: true,
-    message: t("login.login_password_p"),
-    trigger: "blur"
+    trigger: "blur",
+    renderMessage: () => t("login.login_password_p")
   },
   answer: {
     required: true,
-    message: t("login.login_captcha_p"),
-    trigger: "blur"
+    trigger: "blur",
+    renderMessage: () => t("login.login_captcha_p")
   }
-}));
+});
 const { mutate: getSignin } = useMutation(signinGql, () => ({
   variables: {
     createAuthInput: {
@@ -158,13 +158,10 @@ async function login() {
     return;
   }
   const userInfo = data?.data.signin;
-  useUserStateOperator<"user_token">({
-    key: "user_token",
-    value: {
-      userId: userInfo.user.id,
-      access_token: userInfo.access_token,
-      refresh_token: userInfo.refresh_token
-    }
+  useUserStateOperator<"user_token">("user_token", {
+    userId: userInfo.user.id,
+    access_token: userInfo.access_token,
+    refresh_token: userInfo.refresh_token
   });
   $router.push("/");
   loadingBar.finish();
@@ -177,7 +174,7 @@ async function login() {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  height: 100vh;
+  height: 100%;
 }
 .login-intro {
   display: flex;
@@ -211,7 +208,7 @@ async function login() {
   justify-content: center;
   margin-bottom: 35px;
   font-size: 24px;
-  color: #444;
+  color: var(--text-color);
   letter-spacing: 4px;
 }
 .login-captcha {
@@ -229,6 +226,7 @@ async function login() {
     display: none;
   }
   .login-form {
+    background-color: transparent;
     flex: 0 1 auto;
     border-radius: 0;
     box-shadow: none;
