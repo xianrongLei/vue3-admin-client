@@ -115,6 +115,7 @@ export const useLayoutStore = defineStore("layout", {
           menuRef.style.width = `${layout_menuWidth}px`;
           // 初始化窄菜单宽度
           xMenuRef.style.width = `${layout_asideWidth - layout_menuWidth}px`;
+          // 初始化菜单定位类型
           asideRef.style.position = "relative";
         } else {
           asideRef.style.width = `0px`;

@@ -30,6 +30,7 @@ export const mountGuard = (router: Router): void => {
             key: "user_token",
             type: "local"
           });
+          // next({ ...to, replace: true, path: "/login" });
           next("/login");
         }
         // 设置动态路由

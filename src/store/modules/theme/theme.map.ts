@@ -1,7 +1,11 @@
 import { darkTheme, lightTheme } from "naive-ui";
 import type { ThemeState } from "./theme.types";
 
-export const themeMap: any = {
+type ThemeInfo = {
+  theme_cssVars: ThemeState["theme_cssVars"];
+  theme_naiveOverrides: ThemeState["theme_naiveOverrides"];
+};
+export const themeMap: Record<ThemeState["theme_mode"], ThemeInfo> = {
   dark: {
     theme_cssVars: {
       // 背景颜色
@@ -14,7 +18,7 @@ export const themeMap: any = {
       "--border-color": "rgba(43, 48, 61, 1)",
       // 遮罩颜色
       "--mask-color": "rgba(0, 0, 0, 0.3)",
-      // 特殊颜色
+      // 主题颜色
       "--special-color": "rgba(99, 139, 210 ,1)"
 
       // 特殊颜色的RGB值
@@ -140,10 +144,7 @@ export const themeMap: any = {
     }
   }
 };
-type ThemeInfo = {
-  theme_cssVars: ThemeState["theme_cssVars"];
-  theme_naiveOverrides: ThemeState["theme_naiveOverrides"];
-};
+
 // eslint-disable-next-line arrow-body-style
 export const getThemeConfig = (mode: ThemeState["theme_mode"]): ThemeInfo => {
   return themeMap[mode];

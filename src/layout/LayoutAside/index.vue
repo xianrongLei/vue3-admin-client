@@ -11,7 +11,10 @@
       <div
         class="logo-container"
         :style="{ height: logoHeight }"
-        @click="router.push('/')"
+        @click="
+          $router.push('/');
+          layoutStore.useInitLayout();
+        "
       >
         <img
           src="@/assets/logo.png"
@@ -46,14 +49,22 @@
           {{ appConfig.appTitle }}
         </n-divider>
       </div>
-      <div class="menu-container">士大夫感到</div>
+      <div class="menu-container">
+        <button @click="$router.push('/user')">user</button><br />
+        <button @click="$router.push('/organ')">organ</button><br />
+        <button @click="$router.push('/role')">role</button><br />
+        <button @click="$router.push('/department')">department</button><br />
+        <button @click="$router.push('/post')">post</button><br />
+        <button @click="$router.push('/dictEntry')">dictEntry</button><br />
+        <button @click="$router.push('/dictionary')">dictionary</button><br />
+        <button @click="$router.push('/menu')">menu</button><br />
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { computed, onMounted, ref } from "vue";
-import { router } from "@/router/index";
 import { useLayoutStore } from "@/store/modules/layout";
 import { appConfig } from "@/config/index";
 
@@ -144,6 +155,9 @@ onMounted(() => {
         letter-spacing: normal;
         transform: translateY(50%);
       }
+    }
+    .menu-container {
+      border: 1px solid #000;
     }
   }
   .title-container {

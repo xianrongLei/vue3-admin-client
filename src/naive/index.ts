@@ -17,7 +17,10 @@ import {
   NThemeEditor,
   NLoadingBarProvider,
   NDivider,
-  NScrollbar
+  NScrollbar,
+  NTab,
+  NTable,
+  NDataTable
 } from "naive-ui";
 
 const naive = create({
@@ -35,7 +38,10 @@ const naive = create({
     NThemeEditor,
     NLoadingBarProvider,
     NDivider,
-    NScrollbar
+    NScrollbar,
+    NTab,
+    NTable,
+    NDataTable
   ]
 });
 

@@ -46,6 +46,7 @@
     "prettier": "^2.8.2",
     "sass": "^1.43.4",
     "typescript": "^4.5.4",
+    "unocss": "^0.52.3",
     "vfonts": "^0.0.3",
     "vite": "^2.8.0",
     "vite-plugin-eslint": "^1.8.1",

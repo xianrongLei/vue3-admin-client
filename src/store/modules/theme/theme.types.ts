@@ -1,4 +1,4 @@
-import { GlobalThemeOverrides } from "naive-ui";
+import { GlobalTheme } from "naive-ui";
 
 type Theme_mode = {
   dark: "dark";
@@ -11,26 +11,25 @@ export type ThemeState = {
   /** naiveUI主题编辑器开关 */
   theme_naiveEditor: boolean;
   /** naiveUI主题颜色覆盖 */
-  theme_naiveOverrides: GlobalThemeOverrides;
+  theme_naiveOverrides: GlobalTheme;
   /** 全局主题css变量 */
   theme_cssVars: {
     /** 页面背景颜色 */
     "--bg-color"?: string;
-
+    /** 用于和背景颜色相衬 */
+    "--subtle-color"?: string;
     /** 文本颜色 */
     "--text-color"?: string;
+    /** 边框颜色，适合用于边框、分割线或强调元素 */
+    "--border-color"?: string;
+    // 遮罩颜色
+    "--mask-color"?: string;
 
     /** 柔和的文本颜色，适合用于正文或次要文本 */
     "--text-soft-color"?: string;
 
     /** 强烈的文本颜色，适合用于标题、重点和重要信息 */
     "--text-strong-color"?: string;
-
-    /** 柔和的颜色，适合用于页面背景或次要元素 */
-    "--subtle-color"?: string;
-
-    /** 边框颜色，适合用于边框、分割线或强调元素 */
-    "--border-color"?: string;
 
     /** 阴影颜色，适合用于阴影效果或强调元素 */
     "--shadow-color"?: string;

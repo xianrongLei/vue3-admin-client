@@ -1,6 +1,5 @@
 import { defineStore } from "pinia";
 import { useMutation } from "@vue/apollo-composable";
-import { UseStateOperatorInput } from "../../store.types";
 import { getUserInfoGql } from "./user.gql";
 import { awaitTo } from "@/utils/utils.awaitTo";
 
@@ -35,8 +34,6 @@ export const useUserStore = defineStore("user", {
         }
       }));
       const [err, result] = await awaitTo(mutate());
-      console.log(result);
-
       if (err) throw new Error(err.message);
       this.useUserStateOperator<"user_userInfo">("user_userInfo", {
         ...result?.data?.user
