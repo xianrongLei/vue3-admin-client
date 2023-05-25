@@ -41,64 +41,39 @@ defineExpose({
 
 <template>
   <div
-    class="verify"
+    class="w-150px h-40px m-l-10px flex justify-center items-center relative"
+    style="border: 1px solid var(--border-color)"
     @click="getCaptcha"
   >
     <div
+      class="svg-container"
       v-show="!isExceed && verifySrc"
       v-html="verifySrc"
     ></div>
     <div
-      class="tip"
+      class="absolute top-0 left-0 w-full h-full text-12px line-height-[15px] flex justify-center items-center text-center"
       v-show="!verifySrc"
     >
       <div class="content">获取验证码失败</div>
     </div>
     <div
-      class="tip"
+      class="absolute top-0 left-0 w-full h-full text-12px line-height-[15px] flex justify-center items-center text-center"
       v-show="isExceed"
     >
-      <div class="content">验证码已过期<br />点击刷新</div>
+      <div style="transform: scale(0.8)">验证码已过期<br />点击刷新</div>
     </div>
   </div>
 </template>
 
 <style lang="scss">
 .verify {
-  width: 150px;
-  border: 1px solid var(--border-color);
-  height: 40px;
-  margin-left: 10px;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  position: relative;
-
-  > :nth-child(1) {
+  .svg-container {
     pointer-events: none;
     width: 100% !important;
     height: 40px !important;
-    > svg {
+    svg {
       width: 100% !important;
       height: 40px !important;
-    }
-  }
-  .tip {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    font-size: 12px;
-    line-height: 15px;
-    display: flex;
-    justify-content: center;
-    text-align: center;
-    align-items: center;
-    background-color: var(--mark-color);
-    color: var(--text-strong-color);
-    .content {
-      transform: scale(0.8);
     }
   }
 }

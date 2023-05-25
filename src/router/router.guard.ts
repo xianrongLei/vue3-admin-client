@@ -14,7 +14,7 @@ export const mountGuard = (router: Router): void => {
   // 路由加载前
   router.beforeEach(async (to, _from, next) => {
     loadingBar.start();
-    const { user_token, user_userInfo, useGetUserInfo } = useUserStore();
+    const { user_token, user_userInfo, useGetUserInfo, useUserStateOperator } = useUserStore();
     const { router_asyncRoutes } = useRouterStore();
 
     // 用户已登录
@@ -26,11 +26,13 @@ export const mountGuard = (router: Router): void => {
           await useGetUserInfo(user_token.userId);
         } catch (error: any) {
           message.error(error.message);
+          // 清除缓存token
           clearCache({
             key: "user_token",
             type: "local"
           });
-          // next({ ...to, replace: true, path: "/login" });
+          // 清除内存token
+          useUserStateOperator<"user_token">("user_token", {});
           next("/login");
         }
         // 设置动态路由

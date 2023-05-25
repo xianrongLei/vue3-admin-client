@@ -1,6 +1,6 @@
 <template>
   <n-config-provider
-    style="height: 100vh"
+    class="h-screen"
     :theme-overrides="themeStore.theme_naiveOverrides"
   >
     <NThemeEditor v-if="themeStore.theme_naiveEditor" />

@@ -9,8 +9,7 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script lang="ts" setup>
 import { DataTableColumns } from "naive-ui";
 
 type RowData = {
@@ -76,14 +75,9 @@ const data: RowData[] = [
     address: "London No. 2 Lake Park"
   }
 ];
-
-export default defineComponent({
-  setup() {
-    return {
-      data,
-      columns,
-      pagination: { pageSize: 3 }
-    };
-  }
-});
+const pagination = {
+  "show-quick-jumper": true,
+  "show-size-picker": true,
+  "page-sizes": [5, 10, 20, 50, 100]
+};
 </script>

@@ -1,6 +1,7 @@
 <template>
   <div
-    class="layout-header"
+    style="background-color: var(--bg-color); border-bottom: 1px solid var(--border-color)"
+    class="layout-header relative z-1 flex-shrink-0 flex-grow-0"
     :style="{ height: headerHeight }"
   >
     <button @click="layoutStore.useMenuExpand()">menu</button>
@@ -24,13 +25,3 @@ const checkLang = () => {
   locale.value = locale.value === "zh" ? "en" : "zh";
 };
 </script>
-
-<style lang="scss" scoped>
-.layout-header {
-  flex-shrink: 0;
-  flex-grow: 0;
-  z-index: 2;
-  background-color: var(--bg-color);
-  border-bottom: 1px solid var(--border-color);
-}
-</style>

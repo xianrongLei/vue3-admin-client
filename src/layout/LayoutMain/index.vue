@@ -1,8 +1,8 @@
 <template>
-  <div class="layout-main">
+  <div class="overflow-hidden flex-shrink-0 flex-grow-0 z-3">
     <n-scrollbar :style="{ maxHeight: scrollbarHeight }">
       <div
-        class="layout-main-wrapper"
+        class="flex flex-col"
         :style="{ minHeight: mainHeight }"
       >
         <router-view v-slot="{ Component }">
@@ -19,8 +19,13 @@
           </transition>
         </router-view>
         <div
-          class="layout-footer"
+          style="
+            box-shadow: 0 0 5px 5px rgba(var(--shadow-color-rgb), 0.1);
+            border-top: 1px solid var(--border-color);
+            background-color: var(--bg-color);
+          "
           :style="{ height: footerHeight }"
+          class="layout-footer relative z-1 m-t-a flex flex-shrink-0 flex-grow-0 flex-items-center justify-center"
         >
           Pink 2023 Vue3 Admin Starter
         </div>
@@ -45,28 +50,3 @@ const mainHeight = computed(
   () => `calc(100vh - (${layoutStore.layout_headerHeight + layoutStore.layout_tabsHeight + 2}px))`
 );
 </script>
-
-<style lang="scss" scoped>
-.layout-main {
-  overflow: hidden;
-  flex-shrink: 0;
-  flex-grow: 0;
-  z-index: 2;
-  .layout-main-wrapper {
-    display: flex;
-    flex-direction: column;
-    .layout-footer {
-      margin-top: auto;
-      position: relative;
-      box-shadow: 0 0 5px 5px rgba(var(--shadow-color-rgb), 0.1);
-      border-top: 1px solid var(--border-color);
-      background-color: var(--bg-color);
-      display: flex;
-      flex-shrink: 0;
-      flex-grow: 0;
-      align-items: center;
-      justify-content: center;
-    }
-  }
-}
-</style>

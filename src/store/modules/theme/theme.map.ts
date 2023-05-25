@@ -19,7 +19,9 @@ export const themeMap: Record<ThemeState["theme_mode"], ThemeInfo> = {
       // 遮罩颜色
       "--mask-color": "rgba(0, 0, 0, 0.3)",
       // 主题颜色
-      "--special-color": "rgba(99, 139, 210 ,1)"
+      "--special-color": "rgba(99, 139, 210 ,1)",
+      // 阴影颜色的RGB值
+      "--shadow-color-rgb": "0, 0, 0"
 
       // 特殊颜色的RGB值
       // "--special-color-rgb": "99, 139, 210"
@@ -74,9 +76,6 @@ export const themeMap: Record<ThemeState["theme_mode"], ThemeInfo> = {
       // 特殊背景颜色的RGB值
       // "--special-bg-color-rgb": "69, 99, 152",
 
-      // 阴影颜色的RGB值
-      // "--shadow-color-rgb": "0, 0, 0",
-
       // 特殊阴影颜色的RGB值
       // "--special-shadow-color-rgb": "26, 30, 41",
 
@@ -108,7 +107,8 @@ export const themeMap: Record<ThemeState["theme_mode"], ThemeInfo> = {
       "--text-color": "rgba(40, 48, 66, 1)",
       "--border-color": "rgba(225, 231, 247, 1)",
       "--mask-color": "rgba(0, 0, 0, 0.3)",
-      "--special-color": "rgba(74, 127, 208, 1)"
+      "--special-color": "rgba(74, 127, 208, 1)",
+      "--shadow-color-rgb": "179, 191, 222"
 
       // "--special-text-color": "rgba(255, 255, 255, 1)",
       // "--text-soft-color": "rgba(69, 74, 87, 1)",

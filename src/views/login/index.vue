@@ -1,13 +1,27 @@
 <template>
-  <div class="login-container">
-    <div class="login-intro">
-      <h1>{{ $t("global.title") }}</h1>
-      <div class="desc">
+  <div
+    class="login-container flex justify-evenly items-center h-full"
+    style="background-color: var(--bg-color)"
+  >
+    <div class="login-intro flex flex-col flex-shrink-1 flex-grow-0 flex-basis-a w-520px">
+      <h1 style="color: var(--special-color)">{{ $t("global.title") }}</h1>
+      <div
+        class="p-y-15 line-height-[32px]"
+        style="color: var(--text-color)"
+      >
         {{ $t("login.login_description") }}
       </div>
-      <div class="login-bg"><img src="@/assets/login.png" /></div>
+      <div class="login-bg">
+        <img
+          class="w-[520px]"
+          src="@/assets/login.png"
+        />
+      </div>
     </div>
-    <div class="login-form">
+    <div
+      class="flex flex-grow-0 flex-shrink-1 flex-basis-a p-40px b-rd-6px box-border w-440px cursor-pointer"
+      style="background-color: var(--bg-color); box-shadow: 1px 1px 8px var(--shadow-color)"
+    >
       <n-form
         ref="loginFormRef"
         :model="loginForm"
@@ -17,11 +31,14 @@
         require-mark-placement="right-hanging"
         @keyup.enter="login"
         size="large"
-        :style="{
-          maxWidth: '640px'
-        }"
+        style="max-width: 640px"
       >
-        <div class="login-title">{{ $t("login.title") }}</div>
+        <div
+          class="login-title flex justify-center m-b-35px text-24px tracking-4px"
+          style="color: var(--text-color)"
+        >
+          {{ $t("login.title") }}
+        </div>
         <n-form-item path="username">
           <!-- <n-button attr-type="button"> 验证 </n-button> -->
           <n-input
@@ -170,66 +187,26 @@ async function login() {
 
 <style lang="scss" scoped>
 .login-container {
-  background-color: var(--bg-color);
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  height: 100%;
-}
-.login-intro {
-  display: flex;
-  flex-direction: column;
-  width: 520px;
-  flex: 0 1 auto;
-}
-.login-intro h1 {
-  color: var(--special-color);
-}
-.login-intro .desc {
-  color: var(--text-color);
-  line-height: 32px;
-  padding: 15px 0;
-}
-.login-bg img {
-  width: 520px;
-}
-.login-form {
-  background-color: var(--bg-color);
-  flex: 0 1 auto;
-  padding: 40px;
-  border-radius: 6px;
-  box-shadow: 1px 1px 8px var(--shadow-color);
-  box-sizing: border-box;
-  width: 440px;
-  cursor: pointer;
-}
-.login-title {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 35px;
-  font-size: 24px;
-  color: var(--text-color);
-  letter-spacing: 4px;
-}
-.login-captcha {
-  :deep(.n-input) {
-    width: 200px;
+  .login-captcha {
+    :deep(.n-input) {
+      width: 200px;
+    }
   }
-}
-@media only screen and (max-width: 992px) {
-  .login-intro {
-    display: none;
+  @media only screen and (max-width: 995px) {
+    .login-intro {
+      display: none;
+    }
   }
-}
-@media only screen and (max-width: 768px) {
-  .login-intro {
-    display: none;
-  }
-  .login-form {
-    background-color: transparent;
-    flex: 0 1 auto;
-    border-radius: 0;
-    box-shadow: none;
+  @media only screen and (max-width: 765px) {
+    .login-intro {
+      display: none;
+    }
+    .login-form {
+      background-color: transparent;
+      flex: 0 1 auto;
+      border-radius: 0;
+      box-shadow: none;
+    }
   }
 }
 </style>

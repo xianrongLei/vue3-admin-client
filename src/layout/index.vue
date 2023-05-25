@@ -1,9 +1,12 @@
 <template>
-  <div class="app-layout">
-    <div class="layout-container">
+  <div
+    style="background-color: var(--subtle-color)"
+    class="app-layout-container h-screen w-full"
+  >
+    <div class="h-full max-h-full flex relative overflow-hidden">
       <LayoutAside />
       <div
-        class="layout-main-container"
+        class="flex-col flex-shrink-0 flex-grow-1"
         :style="{ zIndex: layoutStore.layout_isLargeWindow ? 4 : 2 }"
       >
         <LayoutHeader />
@@ -24,24 +27,3 @@ import { useLayoutStore } from "@/store/modules/layout";
 const layoutStore = useLayoutStore();
 layoutStore.useInitLayout();
 </script>
-
-<style lang="scss" scoped>
-.app-layout {
-  height: 100vh;
-  width: 100%;
-  background-color: var(--subtle-color);
-  > .layout-container {
-    position: relative;
-    height: 100%;
-    max-height: 100%;
-    display: flex;
-    overflow: hidden;
-    .layout-main-container {
-      display: flex;
-      flex-shrink: 0;
-      flex-grow: 1;
-      flex-direction: column;
-    }
-  }
-}
-</style>
