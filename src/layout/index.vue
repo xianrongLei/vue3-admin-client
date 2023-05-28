@@ -9,8 +9,17 @@
         class="flex-col flex-shrink-0 flex-grow-1"
         :style="{ zIndex: layoutStore.layout_isLargeWindow ? 4 : 2 }"
       >
-        <LayoutHeader />
-        <LayoutTabs />
+        <div
+          class="z-4 relative"
+          style="
+            box-shadow: 6px 0 5px 2px rgba(var(--shadow-color-rgb), 0.2);
+            background-color: var(--bg-color);
+            border-bottom: 1px solid var(--border-color);
+          "
+        >
+          <LayoutHeader />
+          <LayoutTabs />
+        </div>
         <LayoutMain />
       </div>
     </div>

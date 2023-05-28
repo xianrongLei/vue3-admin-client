@@ -3,7 +3,7 @@
     ref="layout_asideRef"
     style="
       border-right: 1px solid var(--border-color);
-      box-shadow: 0px 0px 15px 2px rgba(var(--shadow-color-rgb), 0.2);
+      box-shadow: var(--shadow-shallow);
       transition: width 0.2s;
       background-color: var(--bg-color);
     "

@@ -1,5 +1,5 @@
 <template>
-  <div class="user-container p-4">
+  <div class="user-container m-15px">
     <n-data-table
       pagination-behavior-on-filter="first"
       :columns="columns"

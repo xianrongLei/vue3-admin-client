@@ -2,11 +2,6 @@
   <div
     class="flex-shrink-0 flex-grow-0"
     :style="{ height: tabsHeight }"
-    style="
-      box-shadow: 5px 0 5px 2px rgba(var(--shadow-color-rgb), 0.2);
-      background-color: var(--bg-color);
-      border-bottom: 1px solid var(--border-color);
-    "
   ></div>
 </template>
 

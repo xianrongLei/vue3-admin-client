@@ -13,14 +13,14 @@
       </div>
       <div class="login-bg">
         <img
-          class="w-[520px]"
-          src="@/assets/login.png"
+          class="w-520px h-400px"
+          src="@/assets/login/illustration-1.jpg"
         />
       </div>
     </div>
     <div
       class="flex flex-grow-0 flex-shrink-1 flex-basis-a p-40px b-rd-6px box-border w-440px cursor-pointer"
-      style="background-color: var(--bg-color); box-shadow: 1px 1px 8px var(--shadow-color)"
+      style="background-color: var(--bg-color); box-shadow: var(--shadow-shallow)"
     >
       <n-form
         ref="loginFormRef"

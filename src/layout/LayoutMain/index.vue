@@ -20,7 +20,7 @@
         </router-view>
         <div
           style="
-            box-shadow: 0 0 5px 5px rgba(var(--shadow-color-rgb), 0.1);
+            box-shadow: var(--shadow-shallow);
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-color);
           "

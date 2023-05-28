@@ -19,10 +19,15 @@ export const themeMap: Record<ThemeState["theme_mode"], ThemeInfo> = {
       // 遮罩颜色
       "--mask-color": "rgba(0, 0, 0, 0.3)",
       // 主题颜色
-      "--special-color": "rgba(99, 139, 210 ,1)",
+      "--special-color": "rgba(99, 139, 210, 1)",
       // 阴影颜色的RGB值
-      "--shadow-color-rgb": "0, 0, 0"
+      "--shadow-color-rgb": "0, 0, 0",
+      // 浅阴影颜色
+      "--shadow-shallow": "0 2px 12px 0 rgba(0, 0, 0, 0.1)",
+      // 主要阴影颜色
+      "--shadow-base": "0 2px 4px rgba(179, 191, 222, 0.12), 0 0 6px rgba(179, 191, 222, 0.04)"
 
+      // !! 下面为暂时没有用到的
       // 特殊颜色的RGB值
       // "--special-color-rgb": "99, 139, 210"
       // 柔和的文本颜色
@@ -101,15 +106,17 @@ export const themeMap: Record<ThemeState["theme_mode"], ThemeInfo> = {
   },
   light: {
     theme_cssVars: {
-      // 遮罩颜色
       "--bg-color": "rgba(255, 255, 255, 0.9)",
       "--subtle-color": "rgba(246, 248, 249, 1)",
       "--text-color": "rgba(40, 48, 66, 1)",
       "--border-color": "rgba(225, 231, 247, 1)",
       "--mask-color": "rgba(0, 0, 0, 0.3)",
       "--special-color": "rgba(74, 127, 208, 1)",
-      "--shadow-color-rgb": "179, 191, 222"
+      "--shadow-color-rgb": "179, 191, 222",
+      "--shadow-shallow": "0 2px 12px 0 rgba(179, 191, 222, 0.1)",
+      "--shadow-base": "0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04)"
 
+      // !! 下面为暂时没有用到的
       // "--special-text-color": "rgba(255, 255, 255, 1)",
       // "--text-soft-color": "rgba(69, 74, 87, 1)",
       // "--text-strong-color": "rgba(74, 74, 74, 1)",

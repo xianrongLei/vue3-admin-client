@@ -1,7 +1,7 @@
 <template>
   <div
-    style="background-color: var(--bg-color); border-bottom: 1px solid var(--border-color)"
-    class="layout-header relative z-1 flex-shrink-0 flex-grow-0"
+    style="border-bottom: 1px solid var(--border-color)"
+    class="layout-header flex-shrink-0 flex-grow-0"
     :style="{ height: headerHeight }"
   >
     <button @click="layoutStore.useMenuExpand()">menu</button>

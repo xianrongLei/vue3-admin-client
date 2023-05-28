@@ -3,6 +3,7 @@ import { GlobalTheme } from "naive-ui";
 type Theme_mode = {
   dark: "dark";
   light: "light";
+  "": "";
 };
 
 export type ThemeState = {
@@ -11,7 +12,7 @@ export type ThemeState = {
   /** naiveUI主题编辑器开关 */
   theme_naiveEditor: boolean;
   /** naiveUI主题颜色覆盖 */
-  theme_naiveOverrides: GlobalTheme;
+  theme_naiveOverrides: GlobalTheme | {};
   /** 全局主题css变量 */
   theme_cssVars: {
     /** 页面背景颜色 */
@@ -22,9 +23,18 @@ export type ThemeState = {
     "--text-color"?: string;
     /** 边框颜色，适合用于边框、分割线或强调元素 */
     "--border-color"?: string;
-    // 遮罩颜色
+    /** 遮罩颜色 */
     "--mask-color"?: string;
+    /** 阴影颜色的RGB值 */
+    "--shadow-color-rgb"?: string;
+    /** 基础阴影 */
+    "--shadow-base"?: string;
+    /** 浅色阴影 */
+    "--shadow-shallow"?: string;
+    /** 特殊颜色，适合用于特殊元素或强调元素 */
+    "--special-color"?: string;
 
+    // !! 下面为暂时没有用到的
     /** 柔和的文本颜色，适合用于正文或次要文本 */
     "--text-soft-color"?: string;
 
@@ -42,9 +52,6 @@ export type ThemeState = {
 
     /** 标记颜色，适合用于高亮或标记文本 */
     "--mark-color"?: string;
-
-    /** 特殊颜色，适合用于特殊元素或强调元素 */
-    "--special-color"?: string;
 
     /** 特殊背景颜色，适合用于特殊背景元素或强调元素 */
     "--special-bg-color"?: string;
@@ -81,9 +88,6 @@ export type ThemeState = {
 
     /** 特殊背景颜色的RGB值 */
     "--special-bg-color-rgb"?: string;
-
-    /** 阴影颜色的RGB值 */
-    "--shadow-color-rgb"?: string;
 
     /** 特殊阴影颜色的RGB值 */
     "--special-shadow-color-rgb"?: string;
