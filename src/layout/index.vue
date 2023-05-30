@@ -1,19 +1,15 @@
 <template>
-  <div
-    style="background-color: var(--subtle-color)"
-    class="app-layout-container h-screen w-full"
-  >
+  <div class="app-layout-container h-screen w-full bg-[var(--subtle-color)]">
     <div class="h-full max-h-full flex relative overflow-hidden">
       <LayoutAside />
       <div
-        class="flex-col flex-shrink-0 flex-grow-1"
+        class="flex-col flex-shrink-0 flex-grow-1 shadow-y-1px"
         :style="{ zIndex: layoutStore.layout_isLargeWindow ? 4 : 2 }"
       >
         <div
-          class="z-4 relative"
+          class="z-4 relative bg-[var(--bg-color)]"
           style="
             box-shadow: 6px 0 5px 2px rgba(var(--shadow-color-rgb), 0.2);
-            background-color: var(--bg-color);
             border-bottom: 1px solid var(--border-color);
           "
         >

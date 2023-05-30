@@ -1,19 +1,14 @@
 <template>
   <div
     ref="layout_asideRef"
-    style="
-      border-right: 1px solid var(--border-color);
-      box-shadow: var(--shadow-shallow);
-      transition: width 0.2s;
-      background-color: var(--bg-color);
-    "
-    class="layout-aside-container h-full flex flex-shrink-0 flex-grow-0 overflow-hidden relative top-0 left-0 z-4"
+    style="box-shadow: var(--shadow-shallow); transition: width 0.2s; border-right: 1px solid var(--border-color)"
+    class="layout-aside-container h-full flex flex-shrink-0 flex-grow-0 overflow-hidden relative top-0 left-0 z-4 bg-[var(--bg-color)]"
   >
     <!-- 窄菜单 -->
     <div
       ref="layout_xMenuRef"
-      style="border-right: 1px solid var(--border-color); background-color: var(--bg-color)"
-      class="flex-shrink-0 flex-grow-0 overflow-hidden h-full z-2"
+      style="border-right: 1px solid var(--border-color)"
+      class="flex-shrink-0 flex-grow-0 overflow-hidden h-full z-2 bg-[var(--bg-color)]"
     >
       <div
         class="cursor-pointer flex justify-center"
@@ -39,8 +34,7 @@
     <!-- 收缩菜单 -->
     <div
       ref="layout_menuRef"
-      style="background-color: var(--bg-color)"
-      class="overflow-hidden flex-shrink-0 flex-grow-0 h-full z-1"
+      class="overflow-hidden flex-shrink-0 flex-grow-0 h-full z-1 bg-[var(--bg-color)]"
     >
       <div
         class="relative flex flex-items-center justify-center font-500 text-7 tracking-3"

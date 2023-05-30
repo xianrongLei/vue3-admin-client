@@ -1,17 +1,11 @@
 <template>
-  <div
-    class="login-container flex justify-evenly items-center h-full"
-    style="background-color: var(--bg-color)"
-  >
+  <div class="login-container flex justify-evenly items-center h-full bg-[var(--bg-color)]">
     <div class="login-intro flex flex-col flex-shrink-1 flex-grow-0 flex-basis-a w-520px">
-      <h1 style="color: var(--special-color)">{{ $t("global.title") }}</h1>
-      <div
-        class="p-y-15 line-height-[32px]"
-        style="color: var(--text-color)"
-      >
+      <h1 class="text-[var(--special-color)]">{{ $t("global.title") }}</h1>
+      <div class="p-y-15 line-height-[32px] text-[var(--text-color)]">
         {{ $t("login.login_description") }}
       </div>
-      <div class="login-bg">
+      <div>
         <img
           class="w-520px h-400px"
           src="@/assets/login/illustration-1.jpg"
@@ -19,8 +13,8 @@
       </div>
     </div>
     <div
-      class="flex flex-grow-0 flex-shrink-1 flex-basis-a p-40px b-rd-6px box-border w-440px cursor-pointer"
-      style="background-color: var(--bg-color); box-shadow: var(--shadow-shallow)"
+      class="flex flex-grow-0 flex-shrink-1 flex-basis-a p-40px b-rd-6px box-border w-440px cursor-pointer bg-[var(--bg-color)]"
+      style="box-shadow: var(--shadow-shallow)"
     >
       <n-form
         ref="loginFormRef"
@@ -31,12 +25,9 @@
         require-mark-placement="right-hanging"
         @keyup.enter="login"
         size="large"
-        style="max-width: 640px"
+        class="max-w-640px"
       >
-        <div
-          class="login-title flex justify-center m-b-35px text-24px tracking-4px"
-          style="color: var(--text-color)"
-        >
+        <div class="flex justify-center m-b-35px text-24px tracking-4px text-[var(--text-color)]">
           {{ $t("login.title") }}
         </div>
         <n-form-item path="username">
@@ -93,7 +84,7 @@
         <n-form-item>
           <n-button
             @click="login"
-            style="width: 100%"
+            class="w-full"
             strong
             secondary
             type="primary"

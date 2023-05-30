@@ -19,13 +19,9 @@
           </transition>
         </router-view>
         <div
-          style="
-            box-shadow: var(--shadow-shallow);
-            border-top: 1px solid var(--border-color);
-            background-color: var(--bg-color);
-          "
+          style="box-shadow: var(--shadow-shallow); border-top: 1px solid var(--border-color)"
           :style="{ height: footerHeight }"
-          class="layout-footer relative z-1 m-t-a flex flex-shrink-0 flex-grow-0 flex-items-center justify-center"
+          class="layout-footer relative z-1 m-t-a flex flex-shrink-0 flex-grow-0 flex-items-center justify-center bg-[var(--bg-color)]"
         >
           Pink 2023 Vue3 Admin Starter
         </div>

@@ -1,8 +1,8 @@
 <template>
   <div
-    style="border-bottom: 1px solid var(--border-color)"
     class="layout-header flex-shrink-0 flex-grow-0"
     :style="{ height: headerHeight }"
+    style="border-bottom: 1px solid var(--border-color)"
   >
     <button @click="layoutStore.useMenuExpand()">menu</button>
     <button @click="themeStore.useThemeSetMode(themeStore.theme_mode === 'dark' ? 'light' : 'dark')">mode</button>
