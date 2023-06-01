@@ -1,7 +1,7 @@
 import gql from "graphql-tag";
 
 export const getUserInfoGql = gql`
-  query Query($userId: ID!) {
+  query User($userId: ID!) {
     user(id: $userId) {
       id
       createdAt
@@ -10,17 +10,18 @@ export const getUserInfoGql = gql`
       updater
       username
       password
-      nickname
       email
+      nickname
       phone
-      sex
       age
+      sex
       admin
       avatar
-      organId
-      posts
-      roles
+      sort
       state
+      roleId
+      creatorName
+      updaterName
     }
   }
 `;

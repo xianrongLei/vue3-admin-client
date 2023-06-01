@@ -104,7 +104,7 @@ import { useI18n } from "vue-i18n";
 import { useLoadingBar, useMessage } from "naive-ui";
 import { useMutation } from "@vue/apollo-composable";
 import { useRouter } from "vue-router";
-import { signinGql } from "./login.gql";
+import { signInGql } from "./login.gql";
 import Captcha from "./captcha.vue";
 import { awaitTo } from "@/utils/utils.awaitTo";
 import { useUserStore } from "@/store/modules/user";
@@ -133,16 +133,9 @@ const loginRules = ref({
     renderMessage: () => t("login.login_captcha_p")
   }
 });
-const { mutate: getSignin } = useMutation(signinGql, () => ({
+const { mutate: getSignIn } = useMutation(signInGql, () => ({
   variables: {
-    createAuthInput: {
-      user: {
-        username: loginForm.value.username,
-        password: loginForm.value.password
-      },
-      uniCode: loginForm.value.uniCode,
-      answer: loginForm.value.answer
-    }
+    signInInput: loginForm.value
   }
 }));
 const loadingBar = useLoadingBar();
@@ -158,14 +151,16 @@ async function login() {
     loadingBar.finish();
     return;
   }
-  const [error, data] = await awaitTo(getSignin());
+  const [error, data] = await awaitTo(getSignIn());
   if (error) {
     loginForm.value.uniCode = captchaRef.value?.getCaptcha() || "";
     message.error(error.message);
     loadingBar.error();
     return;
   }
-  const userInfo = data?.data.signin;
+  console.log(data?.data);
+
+  const userInfo = data?.data.signIn;
   useUserStateOperator<"user_token">("user_token", {
     userId: userInfo.user.id,
     access_token: userInfo.access_token,

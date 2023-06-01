@@ -5,11 +5,11 @@ const constantRoutes: RouteRecordRaw[] = [
   {
     path: "/",
     name: "/",
-    redirect: "/home",
+    redirect: "/index",
     component: () => import("@/layout/index.vue"),
     children: [
       {
-        path: "/home",
+        path: "/index",
         component: () => import("@/views/home/index.vue")
       }
     ]

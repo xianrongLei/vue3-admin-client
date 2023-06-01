@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useMutation } from "@vue/apollo-composable";
-import { defineExpose, onMounted, ref } from "vue";
+import { onMounted, ref } from "vue";
 import { useMessage } from "naive-ui";
 import { awaitTo } from "@/utils/utils.awaitTo";
 import { captchaGql } from "./login.gql";

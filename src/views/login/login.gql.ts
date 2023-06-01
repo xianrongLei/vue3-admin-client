@@ -1,8 +1,8 @@
 import gql from "graphql-tag";
 
-export const signinGql = gql`
-  mutation Signin($createAuthInput: CreateAuthInput!) {
-    signin(createAuthInput: $createAuthInput) {
+export const signInGql = gql`
+  mutation SignIn($signInInput: SignInInput!) {
+    signIn(signInInput: $signInInput) {
       user {
         id
         createdAt
@@ -11,17 +11,18 @@ export const signinGql = gql`
         updater
         username
         password
-        nickname
         email
+        nickname
         phone
-        sex
         age
+        sex
         admin
         avatar
-        organId
-        posts
-        roles
+        sort
         state
+        roleId
+        creatorName
+        updaterName
       }
       access_token
       refresh_token

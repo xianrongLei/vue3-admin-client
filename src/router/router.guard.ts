@@ -1,7 +1,7 @@
 import type { Router } from "vue-router";
 import { useRouterStore } from "@/store/modules/router";
 import { useUserStore } from "@/store/modules/user";
-import { clearCache } from "@/utils/utils.cache-operator";
+import { clearAll } from "@/utils/utils.cache-operator";
 import { loadingBar, message } from "@/naive";
 
 // 解决刷新动态路由丢失
@@ -27,12 +27,8 @@ export const mountGuard = (router: Router): void => {
         } catch (error: any) {
           message.error(error.message);
           // 清除缓存token
-          clearCache({
-            key: "user_token",
-            type: "local"
-          });
-          // 清除内存token
-          useUserStateOperator<"user_token">("user_token", {});
+          clearAll("local");
+          useUserStateOperator("user_token", {});
           next("/login");
         }
         // 设置动态路由
@@ -40,7 +36,7 @@ export const mountGuard = (router: Router): void => {
           router.addRoute("/", route);
         });
         if (to.path === "/login") {
-          next("/home");
+          next("/");
         } else if (isRefresh.value) {
           isRefresh.value = false;
           next({ ...to, replace: true });
@@ -48,7 +44,7 @@ export const mountGuard = (router: Router): void => {
           next();
         }
       } else if (to.path === "/login") {
-        next("/home");
+        next("/");
       } else {
         next();
       }

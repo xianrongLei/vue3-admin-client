@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, nextTick, watch, onUnmounted, Ref, withDefaults, defineExpose } from "vue";
+import { ref, nextTick, watch, onUnmounted, Ref, withDefaults } from "vue";
 import { getResize, modeType, GetResize } from "./index";
 
 const props = withDefaults(
