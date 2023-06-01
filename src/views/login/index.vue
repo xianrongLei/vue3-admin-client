@@ -98,69 +98,89 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { ComponentOptions, ref } from "vue";
 import { Person, KeySharp, DiceSharp } from "@vicons/ionicons5";
 import { useI18n } from "vue-i18n";
 import { useLoadingBar, useMessage } from "naive-ui";
-import { useMutation } from "@vue/apollo-composable";
 import { useRouter } from "vue-router";
-import { signInGql } from "./login.gql";
+import { useSignInApi } from "./login.gql";
 import Captcha from "./captcha.vue";
 import { awaitTo } from "@/utils/utils.awaitTo";
 import { useUserStore } from "@/store/modules/user";
 
-const { t } = useI18n();
-const loginForm = ref({
-  username: "admin",
-  password: "admin",
-  uniCode: "",
-  answer: ""
+/**
+ * UI组件
+ */
+const [loadingBar, message] = [useLoadingBar(), useMessage()];
+/**
+ * 核心模块
+ */
+const [$router, { t }, { useUserStateOperator }] = [useRouter(), useI18n(), useUserStore()];
+/**
+ * 组件引用据
+ */
+const [loginFormRef, captchaRef] = [ref<ComponentOptions | null>(null), ref<ComponentOptions | null>(null)];
+/**
+ * 页面数据
+ */
+const [loginForm, loginRules] = [
+  ref({
+    username: "admin",
+    password: "admin",
+    uniCode: "",
+    answer: ""
+  }),
+  ref({
+    username: {
+      required: true,
+      trigger: "blur",
+      renderMessage: () => t("login.login_username_p")
+    },
+    password: {
+      required: true,
+      trigger: "blur",
+      renderMessage: () => t("login.login_password_p")
+    },
+    answer: {
+      required: true,
+      trigger: "blur",
+      renderMessage: () => t("login.login_captcha_p")
+    }
+  })
+];
+/**
+ * api
+ */
+const SignInApi = useSignInApi({
+  signInInput: loginForm.value
 });
-const loginRules = ref({
-  username: {
-    required: true,
-    trigger: "blur",
-    renderMessage: () => t("login.login_username_p")
-  },
-  password: {
-    required: true,
-    trigger: "blur",
-    renderMessage: () => t("login.login_password_p")
-  },
-  answer: {
-    required: true,
-    trigger: "blur",
-    renderMessage: () => t("login.login_captcha_p")
-  }
-});
-const { mutate: getSignIn } = useMutation(signInGql, () => ({
-  variables: {
-    signInInput: loginForm.value
-  }
-}));
-const loadingBar = useLoadingBar();
-const $router = useRouter();
-const message = useMessage();
-const loginFormRef = ref<(HTMLElement & { validate: () => Promise<void> }) | null>(null);
-const captchaRef = ref<(HTMLElement & { getCaptcha: () => string }) | null>(null);
-const { useUserStateOperator } = useUserStore();
+/**
+ * 登录
+ */
 async function login() {
   loadingBar.start();
+  /**
+   * 校验表单
+   */
   const [formErr] = await awaitTo(loginFormRef.value?.validate());
   if (formErr) {
     loadingBar.finish();
     return;
   }
-  const [error, data] = await awaitTo(getSignIn());
+  /**
+   * 调用接口
+   */
+  const [error, data] = await awaitTo(SignInApi.mutate());
   if (error) {
-    loginForm.value.uniCode = captchaRef.value?.getCaptcha() || "";
+    loginForm.value.uniCode = captchaRef.value?.useCaptcha() || "";
     message.error(error.message);
     loadingBar.error();
     return;
   }
-  console.log(data?.data);
-
   const userInfo = data?.data.signIn;
+  /**
+   * 缓存token
+   */
   useUserStateOperator<"user_token">("user_token", {
     userId: userInfo.user.id,
     access_token: userInfo.access_token,

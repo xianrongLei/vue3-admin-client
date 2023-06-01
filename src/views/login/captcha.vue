@@ -1,25 +1,32 @@
 <script lang="ts" setup>
-import { useMutation } from "@vue/apollo-composable";
 import { onMounted, ref } from "vue";
 import { useMessage } from "naive-ui";
 import { awaitTo } from "@/utils/utils.awaitTo";
-import { captchaGql } from "./login.gql";
-
-const isExceed = ref(false);
-const verifySrc = ref("");
-const { mutate } = useMutation(captchaGql, () => ({
-  variables: {
-    createCaptchaInput: {
-      type: 1,
-      color: true
-    }
-  }
-}));
-const emits = defineEmits(["captcha"]);
+import { useCaptchaApi } from "./login.gql";
+/**
+ * 数据
+ */
+const [isExceed, verifySrc] = [ref(false), ref(false)];
+/**
+ * UI组件
+ */
 const message = useMessage();
-const getCaptcha = async () => {
+/**
+ * api
+ */
+const CaptchaApi = useCaptchaApi({
+  createCaptchaInput: {
+    type: 1,
+    color: true
+  }
+});
+const emits = defineEmits(["captcha"]);
+/**
+ * 获取验证码
+ */
+const useCaptcha = async () => {
   isExceed.value = false;
-  const [error, data] = await awaitTo(mutate(), { message: "获取验证码失败" });
+  const [error, data] = await awaitTo(CaptchaApi.mutate(), { message: "获取验证码失败" });
   if (error) {
     message.error(error.message);
     throw new Error(error.message);
@@ -32,10 +39,10 @@ const getCaptcha = async () => {
   emits("captcha", captcha.uniCode);
 };
 onMounted(() => {
-  getCaptcha();
+  useCaptcha();
 });
 defineExpose({
-  getCaptcha
+  useCaptcha
 });
 </script>
 
@@ -43,7 +50,7 @@ defineExpose({
   <div
     class="w-150px h-40px m-l-10px flex justify-center items-center relative"
     style="border: 1px solid var(--border-color)"
-    @click="getCaptcha"
+    @click="useCaptcha"
   >
     <div
       class="svg-container"
