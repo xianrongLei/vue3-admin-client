@@ -3,7 +3,6 @@ import { GlobalTheme } from "naive-ui";
 type Theme_mode = {
   dark: "dark";
   light: "light";
-  "": "";
 };
 
 export type ThemeState = {

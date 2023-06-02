@@ -2,71 +2,46 @@ export type CacheTypes = {
   local: "localStorage";
   session: "sessionStorage";
 };
-export type CacheType = keyof CacheTypes;
 const cacheTypes: CacheTypes = {
   local: "localStorage",
   session: "sessionStorage"
 };
-const defaultCacheType: CacheType = "session";
-export type Options = {
-  key: string;
-  type?: CacheType;
-};
+export type CacheType = keyof CacheTypes;
+const defaultType: CacheType = "session";
 
 /**
- * 获取浏览器缓存
- * @param { Options | string } options
+ * 获取缓存
+ * @param key
+ * @param type
+ * @returns
  */
-// eslint-disable-next-line no-unused-vars
-export function getCache(options: Options | string): unknown;
-// eslint-disable-next-line no-redeclare
-export function getCache(options: unknown) {
-  if (typeof options === "string") {
-    return JSON.parse(window[cacheTypes[defaultCacheType]].getItem(options) as string);
-  }
-  const { type, key } = options as Options;
-  return JSON.parse(window[cacheTypes[type || defaultCacheType]].getItem(key) as string);
+export function getCache(key: string, type?: CacheType) {
+  return JSON.parse(window[cacheTypes[type || defaultType]].getItem(key) as string);
 }
 
 /**
- * 设置浏览器缓存
- * @param { Options } options
+ * 设置缓存
+ * @param key
+ * @param value
+ * @param type
  */
-export function setCache<T>(
-  options: Options & {
-    value: T;
-  }
-): void {
-  const { key, type, value } = options;
-  window[cacheTypes[type || defaultCacheType]].setItem(key, JSON.stringify(value));
+export function setCache(key: string, value: unknown, type?: CacheType): void {
+  window[cacheTypes[type || defaultType]].setItem(key, JSON.stringify(value));
 }
 
 /**
  * 清除缓存
- * @param { Options | Options[] } options
+ * @param key
+ * @param type
  */
-// eslint-disable-next-line no-unused-vars
-export function clearCache(options: Options | Options[]): void;
-// eslint-disable-next-line no-redeclare
-export function clearCache(options: unknown): void {
-  if (typeof options === "string") {
-    window[cacheTypes[defaultCacheType]].removeItem(options);
-  } else if (typeof options === "object") {
-    const { type, key } = options as Options;
-    window[cacheTypes[type || defaultCacheType]].removeItem(key);
-  } else {
-    const arr = options as Options[];
-    arr.forEach(({ type, key }: Options) => {
-      window[cacheTypes[type || defaultCacheType]].removeItem(key);
-    });
-  }
+export function clearCache(key: string, type?: CacheType): void {
+  window[cacheTypes[type || defaultType]].removeItem(key);
 }
 
 /**
- * 清除session或local中的所有缓存
+ * 清除所有缓存
  * @param { CacheType } type
- * clearAll("local" | "local")
  */
 export function clearAll(type?: CacheType): void {
-  window[cacheTypes[type || defaultCacheType]].clear();
+  window[cacheTypes[type || defaultType]].clear();
 }

@@ -1,6 +1,5 @@
 import { defineStore } from "pinia";
-import { useMutation } from "@vue/apollo-composable";
-import { getUserInfoGql } from "./user.gql";
+import { useUserInfoApi } from "./user.gql";
 import { awaitTo } from "@/utils/utils.awaitTo";
 
 export interface UserState {
@@ -11,6 +10,24 @@ export interface UserState {
   };
   user_userInfo: {
     id?: string;
+    createdAt?: string;
+    updatedAt?: string;
+    creator?: string;
+    updater?: string;
+    username?: string;
+    password?: string;
+    email?: string;
+    nickname?: string;
+    phone?: string;
+    age?: string;
+    sex?: string;
+    admin?: string;
+    avatar?: string;
+    sort?: string;
+    state?: string;
+    roleId?: string;
+    creatorName?: string;
+    updaterName?: string;
   };
 }
 
@@ -19,6 +36,12 @@ export const useUserStore = defineStore("user", {
     user_userInfo: {},
     user_token: {}
   }),
+  cache: {
+    user_token: {
+      type: "local",
+      default: {}
+    }
+  },
   actions: {
     /**
      * state 操作器
@@ -27,23 +50,19 @@ export const useUserStore = defineStore("user", {
     useUserStateOperator<Key>(key: keyof UserState, value: UserState[Key & keyof UserState]): void {
       (this as any)[key] = value;
     },
+    /**
+     * 获取用户信息
+     * @param userId
+     */
     async useGetUserInfo(userId?: string) {
-      const { mutate } = useMutation(getUserInfoGql, () => ({
-        variables: {
-          userId
-        }
-      }));
-      const [err, result] = await awaitTo(mutate());
+      const userInfoApi = useUserInfoApi({
+        userId
+      });
+      const [err, result] = await awaitTo(userInfoApi.mutate());
       if (err) throw new Error(err.message);
       this.useUserStateOperator<"user_userInfo">("user_userInfo", {
         ...result?.data?.user
       });
-    }
-  },
-  cache: {
-    user_token: {
-      type: "local",
-      default: {}
     }
   }
 });

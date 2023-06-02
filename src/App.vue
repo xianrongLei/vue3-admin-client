@@ -18,5 +18,4 @@ import { useThemeStore } from "@/store/modules/theme/index";
 
 const themeStore = useThemeStore();
 // 初始化主题
-themeStore.useThemeSetMode("light");
 </script>

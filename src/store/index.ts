@@ -1,10 +1,10 @@
 import { Pinia, createPinia } from "pinia";
-import { cache } from "./plugin/plugin.cache";
+import { cacheManager } from "./plugin/plugin.cache";
 
 export const pinia: Pinia = createPinia();
 const files: Record<string, any> = import.meta.globEager("./modules/*/index.ts");
 
-pinia.use(cache);
+pinia.use(cacheManager);
 
 export const mountPinia = (vueUse: Function) => {
   // 注册

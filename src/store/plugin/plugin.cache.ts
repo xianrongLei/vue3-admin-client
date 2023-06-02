@@ -1,50 +1,46 @@
-import type { PiniaPluginContext } from "pinia";
+import type { PiniaPlugin, PiniaPluginContext } from "pinia";
 import { watch } from "vue";
 import { isEmpty } from "lodash";
 import type { CacheItem } from "./plugin.types";
 import { getCache, setCache } from "@/utils/utils.cache-operator";
 
-export const cache = (context: PiniaPluginContext) => {
-  if (typeof context.options.cache !== "object") return;
+export const cacheManager: PiniaPlugin = (context: PiniaPluginContext) => {
   context.store.$cache = context.options.cache;
-  Object.keys(context.options.cache).forEach((key: string) => {
-    if (typeof context.options.cache !== "object") return;
-    const cacheOptions: CacheItem | undefined = context.options.cache[key];
+  if (!context.options.cache) return;
+  const $cache = context.options.cache as Record<string, CacheItem>;
+  Object.keys($cache).forEach((key: string) => {
+    const cache = $cache[key];
+    $cache[key].init?.bind(context.store)(getCache(key, cache?.type));
     watch(
       () => context.store.$state[key],
       (newValue) => {
-        const cacheValue = getCache({
-          key,
-          type: cacheOptions?.type
-        });
+        const cacheValue = getCache(key, cache?.type);
         const isCacheEmpty = isEmpty(cacheValue);
         const isNewValueEmpty = isEmpty(newValue);
 
-        // 传入和缓存都不是空 且传入等于缓存
-        if (!isCacheEmpty && !isNewValueEmpty && JSON.stringify(cacheValue) === JSON.stringify(newValue)) {
-          return;
+        // 传入和缓存都不是空
+        if (!isCacheEmpty && !isNewValueEmpty) {
+          // 且传入不等于缓存
+          if (JSON.stringify(cacheValue) !== JSON.stringify(newValue)) {
+            setCache(key, newValue, cache?.type);
+          }
         }
         // 传入和缓存都是空
-        if (isCacheEmpty && isNewValueEmpty) {
-          context.store.$state[key] = cacheOptions?.default;
-          return;
+        else if (isCacheEmpty && isNewValueEmpty) {
+          context.store.$state[key] = cache?.default;
         }
-        // 传入是空 缓存不是空
-        if (isNewValueEmpty) {
+        // 传入是空
+        else if (isNewValueEmpty) {
           context.store.$state[key] = cacheValue;
-          return;
         }
-        // 缓存是空 传入不是空
-        if (isCacheEmpty) {
-          setCache({
-            key,
-            value: newValue,
-            type: cacheOptions?.type
-          });
+        // 缓存是空
+        else {
+          setCache(key, newValue, cache?.type);
         }
       },
       {
-        immediate: true
+        immediate: true,
+        deep: true
       }
     );
   });

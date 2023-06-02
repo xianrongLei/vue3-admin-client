@@ -1,14 +1,24 @@
 import { defineStore } from "pinia";
 import { ThemeState } from "./theme.types";
 import { getThemeConfig } from "./theme.map";
+import { getCache } from "@/utils/utils.cache-operator";
 
 export const useThemeStore = defineStore("theme", {
   state: (): ThemeState => ({
-    theme_mode: "",
+    theme_mode: "light",
     theme_naiveEditor: true,
     theme_cssVars: {},
     theme_naiveOverrides: {}
   }),
+  cache: {
+    theme_mode: {
+      type: "local",
+      default: "light",
+      init(cache) {
+        (this as any).useThemeSetMode(cache);
+      }
+    }
+  },
   actions: {
     /**
      * state 操作器
@@ -22,7 +32,6 @@ export const useThemeStore = defineStore("theme", {
      * @param mode "light" | "dark"
      */
     useThemeSetMode(mode: ThemeState["theme_mode"]) {
-      if (mode === this.theme_mode) return;
       const { theme_cssVars, theme_naiveOverrides } = getThemeConfig(mode);
       this.theme_mode = mode;
       this.theme_cssVars = theme_cssVars;

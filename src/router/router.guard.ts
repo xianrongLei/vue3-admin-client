@@ -25,7 +25,7 @@ export const mountGuard = (router: Router): void => {
         try {
           await useGetUserInfo(user_token.userId);
         } catch (error: any) {
-          message.error(error.message);
+          message.error(error);
           // 清除缓存token
           clearAll("local");
           useUserStateOperator("user_token", {});
