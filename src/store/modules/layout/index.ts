@@ -2,7 +2,7 @@ import { once, debounce } from "lodash";
 import { defineStore } from "pinia";
 import { nextTick } from "vue";
 
-export type LayoutState = {
+export interface LayoutState {
   /**
    *  aside的宽度 单位px
    */
@@ -51,7 +51,7 @@ export type LayoutState = {
    * 遮罩
    */
   layout_maskRef: null | HTMLElement;
-};
+}
 
 export const useLayoutStore = defineStore("layout", {
   state: (): LayoutState => ({
@@ -101,10 +101,12 @@ export const useLayoutStore = defineStore("layout", {
       // 重置菜单收缩状态
       this.layout_isMenuExpand = false;
       nextTick(() => {
-        const asideRef = this.layout_asideRef as HTMLElement;
-        const menuRef = this.layout_menuRef as HTMLElement;
-        const xMenuRef = this.layout_xMenuRef as HTMLElement;
-        const maskRef = this.layout_maskRef as HTMLElement;
+        const [asideRef, menuRef, xMenuRef, maskRef] = [
+          this.layout_asideRef as HTMLElement,
+          this.layout_menuRef as HTMLElement,
+          this.layout_xMenuRef as HTMLElement,
+          this.layout_maskRef as HTMLElement
+        ];
         // 初始化遮罩
         maskRef.style.display = "none";
         // 大窗口
@@ -127,12 +129,14 @@ export const useLayoutStore = defineStore("layout", {
      */
     // eslint-disable-next-line no-unused-vars, func-names
     useMenuExpand() {
-      // 取反对应收缩开关
+      // 菜单收缩开关
       this.layout_isMenuExpand = !this.layout_isMenuExpand;
-      const asideRef = this.layout_asideRef as HTMLElement;
-      const menuRef = this.layout_menuRef as HTMLElement;
-      const maskRef = this.layout_maskRef as HTMLElement;
-      const xMenuRef = this.layout_xMenuRef as HTMLElement;
+      const [asideRef, menuRef, xMenuRef, maskRef] = [
+        this.layout_asideRef as HTMLElement,
+        this.layout_menuRef as HTMLElement,
+        this.layout_xMenuRef as HTMLElement,
+        this.layout_maskRef as HTMLElement
+      ];
       const { layout_asideWidth, layout_menuWidth, layout_isLargeWindow, layout_isMenuExpand } = this;
       // layout_isMenuExpand 为真表示菜单折起 假则为收起
       if (layout_isMenuExpand) {

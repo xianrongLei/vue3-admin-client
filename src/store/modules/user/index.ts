@@ -1,6 +1,5 @@
 import { defineStore } from "pinia";
-import { useUserInfoApi } from "./user.gql";
-import { awaitTo } from "@/utils/utils.awaitTo";
+import { useUserInfoApi, useUserMenuApi } from "./user.gql";
 
 export interface UserState {
   user_token: {
@@ -48,20 +47,18 @@ export const useUserStore = defineStore("user", {
      * @param param0
      */
     useUserStateOperator<Key>(key: keyof UserState, value: UserState[Key & keyof UserState]): void {
-      (this as any)[key] = value;
+      this[key] = value;
     },
     /**
      * 获取用户信息
      * @param userId
      */
     async useGetUserInfo(userId?: string) {
-      const userInfoApi = useUserInfoApi({
-        userId
-      });
-      const [err, result] = await awaitTo(userInfoApi.mutate());
-      if (err) throw new Error(err.message);
+      const [userInfoApi, userMenuApi] = [useUserInfoApi({ userId }), useUserMenuApi({ userId })];
+      const [userInfo, menus] = await Promise.all([userInfoApi.mutate(), userMenuApi.mutate()]);
+      console.log(menus);
       this.useUserStateOperator<"user_userInfo">("user_userInfo", {
-        ...result?.data?.user
+        ...userInfo?.data?.user
       });
     }
   }

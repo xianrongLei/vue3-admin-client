@@ -5,7 +5,7 @@ import gql from "graphql-tag";
  * @param variables
  * @returns
  */
-export const useUserInfoApi = (variables: Record<string, unknown>): ReturnType<typeof useMutation> =>
+export const useUserInfoApi = (variables: Record<string, unknown>) =>
   useMutation(
     gql`
       query User($userId: ID!) {
@@ -29,6 +29,39 @@ export const useUserInfoApi = (variables: Record<string, unknown>): ReturnType<t
           roleId
           creatorName
           updaterName
+        }
+      }
+    `,
+    () => ({
+      variables
+    })
+  );
+/**
+ * 根据用户id获取菜单
+ * @param variables
+ * @returns
+ */
+export const useUserMenuApi = (variables: Record<string, unknown>) =>
+  useMutation(
+    gql`
+      query MenusByUserId($userId: ID!) {
+        menusByUserId(userId: $userId) {
+          id
+          createdAt
+          updatedAt
+          creator
+          updater
+          sort
+          state
+          name
+          description
+          route
+          icon
+          title
+          type
+          componentUrl
+          outside
+          parentId
         }
       }
     `,

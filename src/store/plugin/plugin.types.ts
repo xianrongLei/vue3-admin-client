@@ -1,9 +1,10 @@
+import { PiniaPluginContext } from "pinia";
 import type { CacheType } from "@/utils/utils.cache-operator";
 
 /**
  * Store cache item
  */
-export type CacheItem = {
+export type CacheItem<S, Store> = {
   /** Cache type , local or session */
   type: CacheType;
   /** Default value */
@@ -13,17 +14,12 @@ export type CacheItem = {
    * @param cache state缓存的值
    * @returns
    */
-  // eslint-disable-next-line no-unused-vars
-  init?: (cache: unknown) => void;
-};
-
-export type Cache<T> = {
-  // eslint-disable-next-line no-unused-vars
-  [key in keyof T]?: CacheItem;
+  beforeMounted?: (this: Store & PiniaPluginContext["store"], cache: unknown) => void;
 };
 declare module "pinia" {
-  // eslint-disable-next-line no-unused-vars
   export interface DefineStoreOptionsBase<S, Store> {
-    cache?: Cache<S>;
+    cache?: {
+      [key in keyof S]?: CacheItem<S, Store>;
+    };
   }
 }

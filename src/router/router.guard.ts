@@ -1,7 +1,7 @@
 import type { Router } from "vue-router";
 import { useRouterStore } from "@/store/modules/router";
 import { useUserStore } from "@/store/modules/user";
-import { clearAll } from "@/utils/utils.cache-operator";
+import { clearAll, getCache } from "@/utils/utils.cache-operator";
 import { loadingBar, message } from "@/naive";
 
 // 解决刷新动态路由丢失
@@ -16,7 +16,6 @@ export const mountGuard = (router: Router): void => {
     loadingBar.start();
     const { user_token, user_userInfo, useGetUserInfo, useUserStateOperator } = useUserStore();
     const { router_asyncRoutes } = useRouterStore();
-
     // 用户已登录
     if (user_token.access_token) {
       // 已登录 路由地址为login则跳转到首页
@@ -27,8 +26,8 @@ export const mountGuard = (router: Router): void => {
         } catch (error: any) {
           message.error(error);
           // 清除缓存token
-          clearAll("local");
           useUserStateOperator("user_token", {});
+          clearAll("local");
           next("/login");
         }
         // 设置动态路由

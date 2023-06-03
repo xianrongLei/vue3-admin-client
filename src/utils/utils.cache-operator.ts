@@ -7,7 +7,7 @@ const cacheTypes: CacheTypes = {
   session: "sessionStorage"
 };
 export type CacheType = keyof CacheTypes;
-const defaultType: CacheType = "session";
+const defaultType: CacheType = "local";
 
 /**
  * 获取缓存
@@ -15,9 +15,8 @@ const defaultType: CacheType = "session";
  * @param type
  * @returns
  */
-export function getCache(key: string, type?: CacheType) {
-  return JSON.parse(window[cacheTypes[type || defaultType]].getItem(key) as string);
-}
+export const getCache = (key: string, type?: CacheType) =>
+  JSON.parse(window[cacheTypes[type || defaultType]].getItem(key) as string);
 
 /**
  * 设置缓存
@@ -25,23 +24,23 @@ export function getCache(key: string, type?: CacheType) {
  * @param value
  * @param type
  */
-export function setCache(key: string, value: unknown, type?: CacheType): void {
+export const setCache = (key: string, value: unknown, type?: CacheType): void => {
   window[cacheTypes[type || defaultType]].setItem(key, JSON.stringify(value));
-}
+};
 
 /**
  * 清除缓存
  * @param key
  * @param type
  */
-export function clearCache(key: string, type?: CacheType): void {
+export const clearCache = (key: string, type?: CacheType): void => {
   window[cacheTypes[type || defaultType]].removeItem(key);
-}
+};
 
 /**
  * 清除所有缓存
  * @param { CacheType } type
  */
-export function clearAll(type?: CacheType): void {
+export const clearAll = (type?: CacheType): void => {
   window[cacheTypes[type || defaultType]].clear();
-}
+};

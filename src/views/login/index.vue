@@ -14,7 +14,7 @@
     </div>
     <div
       class="flex flex-grow-0 flex-shrink-1 flex-basis-a p-40px b-rd-6px box-border w-440px cursor-pointer bg-[var(--bg-color)]"
-      style="box-shadow: var(--shadow-shallow)"
+      style="box-shadow: var(--shadow-base)"
     >
       <n-form
         ref="loginFormRef"
@@ -186,8 +186,13 @@ async function login() {
     access_token: userInfo.access_token,
     refresh_token: userInfo.refresh_token
   });
-  $router.push("/");
-  loadingBar.finish();
+  /**
+   *
+   */
+  setTimeout(() => {
+    $router.push("/");
+    loadingBar.finish();
+  }, 3000);
 }
 </script>
 

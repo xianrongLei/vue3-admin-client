@@ -1,11 +1,18 @@
-import { darkTheme, lightTheme } from "naive-ui";
-import type { ThemeState } from "./theme.types";
+import { GlobalTheme, darkTheme, lightTheme } from "naive-ui";
+import { ThemeState } from "./index";
 
-type ThemeInfo = {
-  theme_cssVars: ThemeState["theme_cssVars"];
-  theme_naiveOverrides: ThemeState["theme_naiveOverrides"];
+export type ThemeMap = {
+  dark: {
+    theme_cssVars: ThemeState["theme_cssVars"];
+    theme_naiveOverrides: GlobalTheme;
+  };
+  light: {
+    theme_cssVars: ThemeState["theme_cssVars"];
+    theme_naiveOverrides: GlobalTheme;
+  };
 };
-export const themeMap: Record<ThemeState["theme_mode"], ThemeInfo> = {
+
+export const themeMap: ThemeMap = {
   dark: {
     theme_cssVars: {
       // 背景颜色
@@ -25,7 +32,7 @@ export const themeMap: Record<ThemeState["theme_mode"], ThemeInfo> = {
       // 浅阴影颜色
       "--shadow-shallow": "0 2px 12px 0 rgba(0, 0, 0, 0.1)",
       // 主要阴影颜色
-      "--shadow-base": "0 2px 4px rgba(179, 191, 222, 0.12), 0 0 6px rgba(179, 191, 222, 0.04)"
+      "--shadow-base": "0 2px 4px rgba(0, 0, 0, 0.3), 0 0 6px rgba(0, 0, 0, 0.24)"
 
       // !! 下面为暂时没有用到的
       // 特殊颜色的RGB值
@@ -114,7 +121,7 @@ export const themeMap: Record<ThemeState["theme_mode"], ThemeInfo> = {
       "--special-color": "rgba(74, 127, 208, 1)",
       "--shadow-color-rgb": "179, 191, 222",
       "--shadow-shallow": "0 2px 12px 0 rgba(179, 191, 222, 0.1)",
-      "--shadow-base": "0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04)"
+      "--shadow-base": "0 2px 4px rgba(179, 191, 222, 0.3), 0 0 6px rgba(179, 191, 222, 0.24)"
 
       // !! 下面为暂时没有用到的
       // "--special-text-color": "rgba(255, 255, 255, 1)",
@@ -153,6 +160,6 @@ export const themeMap: Record<ThemeState["theme_mode"], ThemeInfo> = {
 };
 
 // eslint-disable-next-line arrow-body-style
-export const getThemeConfig = (mode: ThemeState["theme_mode"]): ThemeInfo => {
+export const useThemeConfig = (mode: keyof ThemeMap): ThemeMap[keyof ThemeMap] => {
   return themeMap[mode];
 };

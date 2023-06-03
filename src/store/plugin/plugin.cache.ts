@@ -1,16 +1,15 @@
 import type { PiniaPlugin, PiniaPluginContext } from "pinia";
 import { watch } from "vue";
 import { isEmpty } from "lodash";
-import type { CacheItem } from "./plugin.types";
 import { getCache, setCache } from "@/utils/utils.cache-operator";
 
 export const cacheManager: PiniaPlugin = (context: PiniaPluginContext) => {
   context.store.$cache = context.options.cache;
   if (!context.options.cache) return;
-  const $cache = context.options.cache as Record<string, CacheItem>;
-  Object.keys($cache).forEach((key: string) => {
+  const $cache = context.options.cache;
+  Object.keys($cache).forEach((key) => {
     const cache = $cache[key];
-    $cache[key].init?.bind(context.store)(getCache(key, cache?.type));
+    $cache[key]?.beforeMounted?.bind(context.store)(getCache(key, cache?.type));
     watch(
       () => context.store.$state[key],
       (newValue) => {
