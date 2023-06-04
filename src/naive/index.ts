@@ -20,7 +20,8 @@ import {
   NScrollbar,
   NTab,
   NTable,
-  NDataTable
+  NDataTable,
+  NMenu
 } from "naive-ui";
 
 const naive = create({
@@ -41,7 +42,8 @@ const naive = create({
     NScrollbar,
     NTab,
     NTable,
-    NDataTable
+    NDataTable,
+    NMenu
   ]
 });
 

@@ -7,7 +7,7 @@
     <!-- 窄菜单 -->
     <div
       ref="layout_xMenuRef"
-      style="border-right: 1px solid var(--border-color)"
+      style="width: 49px; border-right: 1px solid var(--border-color)"
       class="flex-shrink-0 flex-grow-0 overflow-hidden h-full z-2 bg-[var(--bg-color)]"
     >
       <div
@@ -30,6 +30,16 @@
           {{ appConfig.appTitle }}
         </div>
       </div>
+      <div class="p-t-20px flex flex-wrap justify-center">
+        <div
+          v-for="item in routerStore.router_asyncRoutes"
+          :key="item.name"
+          @click="jumpRouter($router, item)"
+          class="m-t-6px overflow-hidden h-42px w-42px cursor-pointer bg-pink"
+        >
+          {{ item.name }}
+        </div>
+      </div>
     </div>
     <!-- 收缩菜单 -->
     <div
@@ -45,17 +55,7 @@
           {{ appConfig.appTitle }}
         </n-divider>
       </div>
-      <div>
-        <button @click="$router.push('/2')">login2</button><br />
-        <button @click="$router.push('/user')">user</button><br />
-        <button @click="$router.push('/organ')">organ</button><br />
-        <button @click="$router.push('/role')">role</button><br />
-        <button @click="$router.push('/department')">department</button><br />
-        <button @click="$router.push('/post')">post</button><br />
-        <button @click="$router.push('/dictEntry')">dictEntry</button><br />
-        <button @click="$router.push('/dictionary')">dictionary</button><br />
-        <button @click="$router.push('/menu')">menu</button><br />
-      </div>
+      <Menu />
     </div>
     <!-- 窄设备时菜单遮罩 -->
     <teleport to="body">
@@ -71,10 +71,14 @@
 
 <script lang="ts" setup>
 import { computed, onMounted, ref } from "vue";
+import { RouteRecordRaw, Router } from "vue-router";
 import { useLayoutStore } from "@/store/modules/layout";
+import Menu from "../components/menu.vue";
 import { appConfig } from "@/config/index";
+import useRouterStore from "@/store/modules/router";
 
 const layoutStore = useLayoutStore();
+const routerStore = useRouterStore();
 const layout_xMenuRef = ref(null);
 const layout_asideRef = ref(null);
 const layout_menuRef = ref(null);
@@ -85,11 +89,21 @@ const menuWidth = computed(() => `${layoutStore.layout_menuWidth}px`);
 
 // 初始化侧边栏
 onMounted(() => {
-  layoutStore.useLayoutStateOperator("layout_asideRef", layout_asideRef.value);
-  layoutStore.useLayoutStateOperator("layout_xMenuRef", layout_xMenuRef.value);
-  layoutStore.useLayoutStateOperator("layout_menuRef", layout_menuRef.value);
-  layoutStore.useLayoutStateOperator("layout_maskRef", layout_maskRef.value);
+  layoutStore.layout_asideRef = layout_asideRef.value;
+  layoutStore.layout_xMenuRef = layout_xMenuRef.value;
+  layoutStore.layout_menuRef = layout_menuRef.value;
+  layoutStore.layout_maskRef = layout_maskRef.value;
 });
+
+const jumpRouter = ($router: Router, route: RouteRecordRaw & any) => {
+  $router.push(route.path);
+  const activeMenus = routerStore.router_asyncRoutes.filter((item: any) => item.key === route.key);
+  routerStore.router_menuData = activeMenus;
+  routerStore.router_activeKey = (activeMenus[0] as any).key;
+  layoutStore.useMenuExpand(false);
+  console.log(activeMenus, activeMenus[0].path);
+  // layoutStore.layout_menuInstRef?.value?.showOption(route.key);
+};
 </script>
 
 <style lang="scss" scoped>

@@ -14,7 +14,6 @@ export const mountGuard = (router: Router): void => {
   // 路由加载前
   router.beforeEach(async (to, _from, next) => {
     loadingBar.start();
-    const { useGetUserInfo, useUserStateOperator } = useUserStore();
     const { useMountRoutes } = useRouterStore();
     const userStore = useUserStore();
     // 用户已登录
@@ -26,12 +25,12 @@ export const mountGuard = (router: Router): void => {
         // 刷新页面重新拉取用户数据
         try {
           isRefresh.value = false;
-          await useGetUserInfo(userStore.user_token.userId);
+          await userStore.useGetUserInfo(userStore.user_token.userId);
           useMountRoutes(router, userStore.user_menuTree);
           next({ ...to, replace: true }); // 防止刷新页面后同一路由找不到的情况
         } catch (error: any) {
           message.error(error.message);
-          useUserStateOperator("user_token", {}); // 清除缓存token
+          userStore.user_token = {}; // 清除缓存token
           clearAll("local");
           next("/login");
         }
@@ -41,14 +40,14 @@ export const mountGuard = (router: Router): void => {
         try {
           isRefresh.value = false;
           // 没有用户信息重新拉取
-          await useGetUserInfo(userStore.user_token.userId);
+          await userStore.useGetUserInfo(userStore.user_token.userId);
           // 设置动态路由
           useMountRoutes(router, userStore.user_menuTree);
-          next(); // 此时不存在同一页面的情况不需要replace
+          next({ ...to, replace: true }); // 防止刷新页面后同一路由找不到的情况
         } catch (error: any) {
           message.error(error.message);
           // 清除缓存token
-          useUserStateOperator("user_token", {});
+          userStore.user_token = {};
           clearAll("local");
           next("/login");
         }

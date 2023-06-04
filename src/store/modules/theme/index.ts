@@ -121,13 +121,6 @@ export const useThemeStore = defineStore("theme", {
   },
   actions: {
     /**
-     * state 操作器
-     * @param param0
-     */
-    useThemeStateOperator<Key>(key: keyof ThemeState, value: ThemeState[Key & keyof ThemeState]): void {
-      (this as any)[key] = value;
-    },
-    /**
      * 设置 app 主题
      * @param mode "light" | "dark"
      */

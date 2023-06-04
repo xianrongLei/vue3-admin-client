@@ -1,6 +1,5 @@
 import { defineStore } from "pinia";
 import { useUserInfoApi, useUserMenuApi } from "./user.gql";
-import { useTransTree } from "@/utils/utils.helpers";
 
 export type Menu = {
   id?: string;
@@ -66,11 +65,24 @@ export const useUserStore = defineStore("user", {
   },
   actions: {
     /**
-     * state 操作器
-     * @param param0
+     * 将菜单列表转成树形结构
+     * @param _children
+     * @param parentId
+     * @returns
      */
-    useUserStateOperator<Key>(key: keyof UserState, value: UserState[Key & keyof UserState]): void {
-      (this as any)[key] = value;
+    useTransTree<T>(_children: T[] & any[], parentId: unknown): T[] {
+      const result: T[] = [];
+      for (let i = 0; i < _children.length; i += 1) {
+        const child = _children[i];
+        if (child.parentId === parentId) {
+          const children = this.useTransTree(_children, child.id);
+          if (children.length > 0) {
+            child.children = children;
+          }
+          result.push(child);
+        }
+      }
+      return result;
     },
     /**
      * 获取用户信息
@@ -79,18 +91,14 @@ export const useUserStore = defineStore("user", {
     async useGetUserInfo(userId?: string, user?: UserState["user_userInfo"]) {
       const [userInfoApi, userMenuApi] = [useUserInfoApi({ userId }), useUserMenuApi({ userId })];
       if (user) {
-        this.useUserStateOperator<"user_userInfo">("user_userInfo", {
-          ...user
-        });
+        this.user_userInfo = user;
       } else {
         const data = (await userInfoApi.mutate()) as { data: { user: UserState["user_userInfo"] } };
-        this.useUserStateOperator<"user_userInfo">("user_userInfo", {
-          ...data.data.user
-        });
+        this.user_userInfo = data.data.user;
       }
       const menus = (await userMenuApi.mutate())?.data.menusByUserId;
-      const menuTree = useTransTree<any>(menus, null);
-      this.useUserStateOperator<"user_menuTree">("user_menuTree", menuTree);
+      const menuTree = this.useTransTree<any>(menus, null);
+      this.user_menuTree = menuTree;
     }
   }
 });

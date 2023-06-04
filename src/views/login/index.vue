@@ -116,7 +116,7 @@ const [loadingBar, message] = [useLoadingBar(), useMessage()];
  * 核心模块
  */
 const [$router, { t }] = [useRouter(), useI18n()];
-const { useUserStateOperator, useGetUserInfo } = useUserStore();
+const userStore = useUserStore();
 /**
  * 组件引用据
  */
@@ -186,12 +186,12 @@ async function login() {
   }
   const { access_token, refresh_token, user } = data?.data?.signIn as SignInResult["data"]["signIn"];
   // 缓存token 获取数据
-  useUserStateOperator<"user_token">("user_token", {
+  userStore.user_token = {
     userId: user.id,
     access_token,
     refresh_token
-  });
-  await awaitTo(useGetUserInfo(user.id, user));
+  };
+  await awaitTo(userStore.useGetUserInfo(user.id, user));
   // 跳转路由
   $router.push("/");
   loadingBar.finish();

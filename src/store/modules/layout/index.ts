@@ -1,6 +1,6 @@
 import { once, debounce } from "lodash";
 import { defineStore } from "pinia";
-import { nextTick } from "vue";
+import { ComponentOptions, nextTick } from "vue";
 
 export interface LayoutState {
   /**
@@ -44,6 +44,10 @@ export interface LayoutState {
    */
   layout_menuRef: null | HTMLElement;
   /**
+   * 宽菜单内部naiveMenu
+   */
+  layout_menuInstRef: null | ComponentOptions;
+  /**
    * 窄菜单
    */
   layout_xMenuRef: null | HTMLElement;
@@ -65,17 +69,11 @@ export const useLayoutStore = defineStore("layout", {
     layout_isMenuExpand: false,
     layout_asideRef: null,
     layout_menuRef: null,
+    layout_menuInstRef: null,
     layout_xMenuRef: null,
     layout_maskRef: null
   }),
   actions: {
-    /**
-     * State Operator
-     * @param param0
-     */
-    useLayoutStateOperator<Key>(key: keyof LayoutState, value: LayoutState[Key & keyof LayoutState]): void {
-      (this as any)[key] = value;
-    },
     /**
      * 添加 WindowResize 事件 只会调用一次
      * 防止无限增加 WindowResize 事件，选择单独抽离封装
@@ -102,11 +100,11 @@ export const useLayoutStore = defineStore("layout", {
       this.layout_isMenuExpand = false;
       nextTick(() => {
         const [asideRef, menuRef, xMenuRef, maskRef] = [
-          this.layout_asideRef as HTMLElement,
-          this.layout_menuRef as HTMLElement,
-          this.layout_xMenuRef as HTMLElement,
-          this.layout_maskRef as HTMLElement
-        ];
+          this.layout_asideRef,
+          this.layout_menuRef,
+          this.layout_xMenuRef,
+          this.layout_maskRef
+        ] as HTMLElement[];
         // 初始化遮罩
         maskRef.style.display = "none";
         // 大窗口
@@ -128,9 +126,9 @@ export const useLayoutStore = defineStore("layout", {
      * 响应菜单展开关闭
      */
     // eslint-disable-next-line no-unused-vars, func-names
-    useMenuExpand() {
+    useMenuExpand(isMenuExpand?: boolean) {
       // 菜单收缩开关
-      this.layout_isMenuExpand = !this.layout_isMenuExpand;
+      this.layout_isMenuExpand = isMenuExpand ?? !this.layout_isMenuExpand;
       const [asideRef, menuRef, xMenuRef, maskRef] = [
         this.layout_asideRef as HTMLElement,
         this.layout_menuRef as HTMLElement,
