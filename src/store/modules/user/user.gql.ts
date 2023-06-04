@@ -59,9 +59,10 @@ export const useUserMenuApi = (variables: Record<string, unknown>) =>
           icon
           title
           type
-          componentUrl
+          component
           outside
           parentId
+          isCache
         }
       }
     `,

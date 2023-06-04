@@ -1,6 +1,27 @@
 import { defineStore } from "pinia";
 import { useUserInfoApi, useUserMenuApi } from "./user.gql";
+import { useTransTree } from "@/utils/utils.helpers";
 
+export type Menu = {
+  id?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  creator?: string;
+  updater?: string;
+  sort?: string;
+  state?: string;
+  name?: string;
+  description?: string;
+  route?: string;
+  icon?: string;
+  title?: string;
+  type?: string;
+  component?: string;
+  outside?: string;
+  parentId?: string;
+  isCache?: boolean;
+  children?: [];
+};
 export interface UserState {
   user_token: {
     userId?: string;
@@ -28,12 +49,14 @@ export interface UserState {
     creatorName?: string;
     updaterName?: string;
   };
+  user_menuTree: Omit<Menu, "children">[];
 }
 
 export const useUserStore = defineStore("user", {
   state: (): UserState => ({
     user_userInfo: {},
-    user_token: {}
+    user_token: {},
+    user_menuTree: []
   }),
   cache: {
     user_token: {
@@ -47,7 +70,7 @@ export const useUserStore = defineStore("user", {
      * @param param0
      */
     useUserStateOperator<Key>(key: keyof UserState, value: UserState[Key & keyof UserState]): void {
-      this[key] = value;
+      (this as any)[key] = value;
     },
     /**
      * 获取用户信息
@@ -60,16 +83,15 @@ export const useUserStore = defineStore("user", {
           ...user
         });
       } else {
-        const { data } = (await userInfoApi.mutate()) as { data: UserState["user_userInfo"] };
+        const data = (await userInfoApi.mutate()) as { data: { user: UserState["user_userInfo"] } };
         this.useUserStateOperator<"user_userInfo">("user_userInfo", {
-          ...data
+          ...data.data.user
         });
-        console.log(data);
       }
-      const menus = await userMenuApi.mutate();
-      console.log(menus, ((window as any).index += 1));
+      const menus = (await userMenuApi.mutate())?.data.menusByUserId;
+      const menuTree = useTransTree<any>(menus, null);
+      this.useUserStateOperator<"user_menuTree">("user_menuTree", menuTree);
     }
   }
 });
-(window as any).index = 0;
 export default useUserStore;

@@ -6,11 +6,7 @@ module.exports = {
     node: true
   },
   // 插件从右到左覆盖处理
-  extends: [
-    "plugin:vue/vue3-strongly-recommended",
-    "eslint-config-airbnb-base",
-    "eslint-config-prettier"
-  ],
+  extends: ["plugin:vue/vue3-strongly-recommended", "eslint-config-airbnb-base", "eslint-config-prettier"],
   // vue解析器
   parser: "vue-eslint-parser",
   // 解析器配置

@@ -46,7 +46,7 @@
         </n-divider>
       </div>
       <div>
-        <button @click="$router.push('/login2')">login2</button><br />
+        <button @click="$router.push('/2')">login2</button><br />
         <button @click="$router.push('/user')">user</button><br />
         <button @click="$router.push('/organ')">organ</button><br />
         <button @click="$router.push('/role')">role</button><br />

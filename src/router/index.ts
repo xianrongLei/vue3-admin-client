@@ -27,6 +27,7 @@ const constantRoutes: RouteRecordRaw[] = [
     component: () => import("@/views/error/404.vue")
   }
 ];
+
 // 路由器
 export const router: Router = createRouter({
   history: createWebHashHistory(),
