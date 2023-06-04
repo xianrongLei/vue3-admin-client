@@ -106,7 +106,7 @@ import { useRouter } from "vue-router";
 import { useSignInApi } from "./login.gql";
 import Captcha from "./captcha.vue";
 import { awaitTo } from "@/utils/utils.awaitTo";
-import { useUserStore } from "@/store/modules/user";
+import { UserState, useUserStore } from "@/store/modules/user";
 
 /**
  * UI组件
@@ -115,7 +115,8 @@ const [loadingBar, message] = [useLoadingBar(), useMessage()];
 /**
  * 核心模块
  */
-const [$router, { t }, { useUserStateOperator }] = [useRouter(), useI18n(), useUserStore()];
+const [$router, { t }] = [useRouter(), useI18n()];
+const { useUserStateOperator, useGetUserInfo } = useUserStore();
 /**
  * 组件引用据
  */
@@ -159,40 +160,41 @@ const SignInApi = useSignInApi({
  */
 async function login() {
   loadingBar.start();
-  /**
-   * 校验表单
-   */
+  // 校验表单
   const [formErr] = await awaitTo(loginFormRef.value?.validate());
   if (formErr) {
     loadingBar.finish();
     return;
   }
-  /**
-   * 调用接口
-   */
-  const [error, data] = await awaitTo(SignInApi.mutate());
-  if (error) {
-    loginForm.value.uniCode = captchaRef.value?.useCaptcha() || "";
-    message.error(error.message);
+  // 调用接口
+  type SignInResult = {
+    data: {
+      signIn: {
+        access_token: string;
+        refresh_token: string;
+        user: UserState["user_userInfo"];
+      };
+    };
+  };
+  const [signInErr, data] = await awaitTo<SignInResult>(SignInApi.mutate() as Promise<SignInResult>);
+  if (signInErr) {
+    loginForm.value.uniCode = "";
+    captchaRef.value?.useCaptcha();
+    message.error(signInErr.message);
     loadingBar.error();
     return;
   }
-  const userInfo = data?.data.signIn;
-  /**
-   * 缓存token
-   */
+  const { access_token, refresh_token, user } = data?.data?.signIn as SignInResult["data"]["signIn"];
+  // 缓存token 获取数据
   useUserStateOperator<"user_token">("user_token", {
-    userId: userInfo.user.id,
-    access_token: userInfo.access_token,
-    refresh_token: userInfo.refresh_token
+    userId: user.id,
+    access_token,
+    refresh_token
   });
-  /**
-   *
-   */
-  setTimeout(() => {
-    $router.push("/");
-    loadingBar.finish();
-  }, 3000);
+  await awaitTo(useGetUserInfo(user.id, user));
+  // 跳转路由
+  $router.push("/");
+  loadingBar.finish();
 }
 </script>
 

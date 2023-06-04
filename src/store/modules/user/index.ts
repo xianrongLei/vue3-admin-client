@@ -53,14 +53,23 @@ export const useUserStore = defineStore("user", {
      * 获取用户信息
      * @param userId
      */
-    async useGetUserInfo(userId?: string) {
+    async useGetUserInfo(userId?: string, user?: UserState["user_userInfo"]) {
       const [userInfoApi, userMenuApi] = [useUserInfoApi({ userId }), useUserMenuApi({ userId })];
-      const [userInfo, menus] = await Promise.all([userInfoApi.mutate(), userMenuApi.mutate()]);
-      console.log(menus);
-      this.useUserStateOperator<"user_userInfo">("user_userInfo", {
-        ...userInfo?.data?.user
-      });
+      if (user) {
+        this.useUserStateOperator<"user_userInfo">("user_userInfo", {
+          ...user
+        });
+      } else {
+        const { data } = (await userInfoApi.mutate()) as { data: UserState["user_userInfo"] };
+        this.useUserStateOperator<"user_userInfo">("user_userInfo", {
+          ...data
+        });
+        console.log(data);
+      }
+      const menus = await userMenuApi.mutate();
+      console.log(menus, ((window as any).index += 1));
     }
   }
 });
+(window as any).index = 0;
 export default useUserStore;

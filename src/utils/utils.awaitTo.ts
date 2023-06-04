@@ -2,21 +2,18 @@
  * @param {Promise} promise
  * @return {Promise} Promise
  */
-export type AwaitToResult = Promise<[Record<string, any> | null, Record<string, any> | null]>;
 
-export const awaitTo = (
-  promise: Promise<unknown> | any,
+type ErrorObject = { message: string };
+
+export const awaitTo = async <T>(
+  promise: Promise<T>,
   extantErr?: Record<string, any>
-  // eslint-disable-next-line arrow-body-style
-): AwaitToResult => {
-  if (!(promise instanceof Promise)) {
-    throw new Error("Parameter one must be a promise!");
+): Promise<[ErrorObject | null, T | null]> => {
+  try {
+    const result = await promise;
+    return [null, result];
+  } catch (error: any) {
+    const errorObject: ErrorObject = { message: error.message, ...(extantErr || {}) };
+    return [errorObject, null];
   }
-  return promise
-    .then((data) => [null, data || { data }])
-    .catch((err) => {
-      const sourceErr = typeof err === "object" ? err : { message: err };
-      const Err = extantErr ? { ...extantErr, ...sourceErr } : { ...sourceErr };
-      return [Err, null];
-    }) as AwaitToResult;
 };

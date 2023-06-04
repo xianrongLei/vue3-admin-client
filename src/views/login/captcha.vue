@@ -6,7 +6,7 @@ import { useCaptchaApi } from "./login.gql";
 /**
  * 数据
  */
-const [isExceed, verifySrc] = [ref(false), ref(false)];
+const [isExpire, verifySrc] = [ref(false), ref("")];
 /**
  * UI组件
  */
@@ -24,18 +24,29 @@ const emits = defineEmits(["captcha"]);
 /**
  * 获取验证码
  */
+type CaptchaResult = {
+  data: {
+    captcha: {
+      uniCode: string;
+      svg: string;
+      time: number;
+    };
+  };
+};
 const useCaptcha = async () => {
-  isExceed.value = false;
-  const [error, data] = await awaitTo(CaptchaApi.mutate(), { message: "获取验证码失败" });
+  isExpire.value = false;
+  const [error, data] = await awaitTo<CaptchaResult>(CaptchaApi.mutate() as Promise<CaptchaResult>, {
+    message: "获取验证码失败"
+  });
   if (error) {
     message.error(error.message);
     throw new Error(error.message);
   }
-  const { captcha } = data?.data || {};
+  const { captcha } = data?.data as CaptchaResult["data"];
   verifySrc.value = captcha.svg;
   setTimeout(() => {
-    isExceed.value = true;
-  }, (captcha.time as number) * 1000);
+    isExpire.value = true;
+  }, captcha.time * 1000);
   emits("captcha", captcha.uniCode);
 };
 onMounted(() => {
@@ -54,7 +65,7 @@ defineExpose({
   >
     <div
       class="svg-container"
-      v-show="!isExceed && verifySrc"
+      v-show="!isExpire && verifySrc"
       v-html="verifySrc"
     ></div>
     <div
@@ -65,7 +76,7 @@ defineExpose({
     </div>
     <div
       class="absolute top-0 left-0 w-full h-full text-12px line-height-[15px] flex justify-center items-center text-center"
-      v-show="isExceed"
+      v-show="isExpire"
     >
       <div style="transform: scale(0.8)">验证码已过期<br />点击刷新</div>
     </div>
