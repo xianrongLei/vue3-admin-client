@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { useUserInfoApi, useUserMenuApi } from "./user.gql";
-import { Menu } from "@/store/store.types";
+import { Menu } from "@/store/modules/router/router.types";
 
 export interface UserState {
   user_token: {
