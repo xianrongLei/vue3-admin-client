@@ -1,6 +1,6 @@
 import { once, debounce } from "lodash";
 import { defineStore } from "pinia";
-import { ComponentOptions, nextTick } from "vue";
+import { nextTick } from "vue";
 
 export interface LayoutState {
   /**
@@ -44,10 +44,6 @@ export interface LayoutState {
    */
   layout_menuRef: null | HTMLElement;
   /**
-   * 宽菜单内部naiveMenu
-   */
-  layout_menuInstRef: null | ComponentOptions;
-  /**
    * 窄菜单
    */
   layout_xMenuRef: null | HTMLElement;
@@ -69,7 +65,6 @@ export const useLayoutStore = defineStore("layout", {
     layout_isMenuExpand: false,
     layout_asideRef: null,
     layout_menuRef: null,
-    layout_menuInstRef: null,
     layout_xMenuRef: null,
     layout_maskRef: null
   }),
@@ -130,11 +125,11 @@ export const useLayoutStore = defineStore("layout", {
       // 菜单收缩开关
       this.layout_isMenuExpand = isMenuExpand ?? !this.layout_isMenuExpand;
       const [asideRef, menuRef, xMenuRef, maskRef] = [
-        this.layout_asideRef as HTMLElement,
-        this.layout_menuRef as HTMLElement,
-        this.layout_xMenuRef as HTMLElement,
-        this.layout_maskRef as HTMLElement
-      ];
+        this.layout_asideRef,
+        this.layout_menuRef,
+        this.layout_xMenuRef,
+        this.layout_maskRef
+      ] as HTMLElement[];
       const { layout_asideWidth, layout_menuWidth, layout_isLargeWindow, layout_isMenuExpand } = this;
       // layout_isMenuExpand 为真表示菜单折起 假则为收起
       if (layout_isMenuExpand) {

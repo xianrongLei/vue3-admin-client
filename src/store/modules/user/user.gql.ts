@@ -63,6 +63,7 @@ export const useUserMenuApi = (variables: Record<string, unknown>) =>
           outside
           parentId
           isCache
+          isHidden
         }
       }
     `,

@@ -24,8 +24,10 @@ import { router } from "@/router";
 
 const layoutStore = useLayoutStore();
 const routerStore = useRouterStore();
-const renderMenuLabel = (option: MenuOption) => {
-  if ("href" in option) {
+const renderMenuLabel = (option: MenuOption & any) => {
+  if ("outside" in option.meta) {
+    console.log(option.meta.outside);
+
     return h("a", { href: option.href, target: "_blank" }, option.label as string);
   }
   return option.label as string;
@@ -37,13 +39,21 @@ const renderMenuIcon = (option: MenuOption) => {
   if (option.key === "food") return null;
   return h(NIcon, null, { default: () => h(BookmarkOutline) });
 };
+/**
+ * 更新路由
+ * @param _key
+ * @param item
+ */
 const updateHandler = (_key: string, item: MenuOption) => {
   router.push(item.path as string);
+  routerStore.router_activeKey = item.key as string;
 };
-
-const menuInstRef = ref();
+/**
+ * 将菜单组件存入store
+ */
+const menuInstRef = ref(null);
 onMounted(() => {
-  layoutStore.layout_menuInstRef = menuInstRef;
+  routerStore.layout_menuInstRef = menuInstRef;
 });
 </script>
 

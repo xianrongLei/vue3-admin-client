@@ -1,26 +1,7 @@
 import { defineStore } from "pinia";
 import { useUserInfoApi, useUserMenuApi } from "./user.gql";
+import { Menu } from "@/store/store.types";
 
-export type Menu = {
-  id?: string;
-  createdAt?: string;
-  updatedAt?: string;
-  creator?: string;
-  updater?: string;
-  sort?: string;
-  state?: string;
-  name?: string;
-  description?: string;
-  route?: string;
-  icon?: string;
-  title?: string;
-  type?: string;
-  component?: string;
-  outside?: string;
-  parentId?: string;
-  isCache?: boolean;
-  children?: [];
-};
 export interface UserState {
   user_token: {
     userId?: string;

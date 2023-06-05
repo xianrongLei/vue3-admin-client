@@ -32,12 +32,13 @@
       </div>
       <div class="p-t-20px flex flex-wrap justify-center">
         <div
-          v-for="item in routerStore.router_asyncRoutes"
-          :key="item.name"
-          @click="jumpRouter($router, item)"
+          v-for="(item, index) in routerStore.router_asyncRoutes"
+          :key="item.key"
+          @click="jumpRouter($router, item, index)"
+          :class="{ isActive: routerStore.router_activeKey === 'item' ? 'isActive' : '' }"
           class="m-t-6px overflow-hidden h-42px w-42px cursor-pointer bg-pink"
         >
-          {{ item.name }}
+          {{ item.label }}
         </div>
       </div>
     </div>
@@ -52,7 +53,7 @@
       >
         {{ appConfig.appTitle }}
         <n-divider title-placement="center">
-          {{ appConfig.appTitle }}
+          {{ $route.meta.title }}
         </n-divider>
       </div>
       <Menu />
@@ -70,7 +71,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { RouteRecordRaw, Router } from "vue-router";
 import { useLayoutStore } from "@/store/modules/layout";
 import Menu from "../components/menu.vue";
@@ -95,14 +96,31 @@ onMounted(() => {
   layoutStore.layout_maskRef = layout_maskRef.value;
 });
 
-const jumpRouter = ($router: Router, route: RouteRecordRaw & any) => {
+/**
+ * 窄菜单路由跳转
+ * @param $router
+ * @param route
+ */
+const jumpRouter = async ($router: Router, route: RouteRecordRaw, index: number) => {
+  // 跳转路由
   $router.push(route.path);
-  const activeMenus = routerStore.router_asyncRoutes.filter((item: any) => item.key === route.key);
-  routerStore.router_menuData = activeMenus;
-  routerStore.router_activeKey = (activeMenus[0] as any).key;
+  // 等待路跳转完毕
+  const isRepeat = await new Promise<boolean>((resolve) => {
+    const unwatch = watch($router.currentRoute, () => {
+      unwatch();
+      resolve(false);
+    });
+    setTimeout(() => {
+      resolve(true);
+    }, 500);
+  });
+  // 如果为真表示重复点击
+  if (isRepeat) return;
+  // 设置当前计划的路由id
+  routerStore.router_activeKey = $router.currentRoute.value.meta.id as string;
+  // 设置数据菜单
+  routerStore.useInitMenuData(index);
   layoutStore.useMenuExpand(false);
-  console.log(activeMenus, activeMenus[0].path);
-  // layoutStore.layout_menuInstRef?.value?.showOption(route.key);
 };
 </script>
 

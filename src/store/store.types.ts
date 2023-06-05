@@ -1,0 +1,21 @@
+export type Menu = {
+  id?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  creator?: string;
+  updater?: string;
+  sort?: string;
+  state?: string;
+  name?: string;
+  description?: string;
+  route?: string;
+  icon?: string;
+  title?: string;
+  type?: number;
+  component?: string;
+  outside?: string;
+  parentId?: string;
+  isCache?: boolean;
+  isHidden?: boolean;
+  children?: [];
+};
