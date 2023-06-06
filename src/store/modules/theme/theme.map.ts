@@ -27,6 +27,8 @@ export const themeMap: ThemeMap = {
       "--mask-color": "rgba(0, 0, 0, 0.3)",
       // 主题颜色
       "--special-color": "rgba(99, 139, 210, 1)",
+      // 特殊颜色的RGB值
+      "--special-color-rgb": "99, 139, 210",
       // 阴影颜色的RGB值
       "--shadow-color-rgb": "0, 0, 0",
       // 浅阴影颜色
@@ -119,6 +121,7 @@ export const themeMap: ThemeMap = {
       "--border-color": "rgba(225, 231, 247, 1)",
       "--mask-color": "rgba(0, 0, 0, 0.3)",
       "--special-color": "rgba(74, 127, 208, 1)",
+      "--special-color-rgb": "74, 127, 208",
       "--shadow-color-rgb": "179, 191, 222",
       "--shadow-shallow": "0 2px 12px 0 rgba(179, 191, 222, 0.1)",
       "--shadow-base": "0 2px 4px rgba(179, 191, 222, 0.3), 0 0 6px rgba(179, 191, 222, 0.24)"

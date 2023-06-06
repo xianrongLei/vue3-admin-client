@@ -70,7 +70,18 @@ export const useUserStore = defineStore("user", {
      * @param userId
      */
     async useGetUserInfo(userId?: string, user?: UserState["user_userInfo"]) {
-      const [userInfoApi, userMenuApi] = [useUserInfoApi({ userId }), useUserMenuApi({ userId })];
+      const [userInfoApi, userMenuApi] = [
+        useUserInfoApi({ userId }),
+        useUserMenuApi({
+          queryMenusByUserIdInput: {
+            userId,
+            orderBy: {
+              field: "sort",
+              direction: "desc"
+            }
+          }
+        })
+      ];
       if (user) {
         this.user_userInfo = user;
       } else {

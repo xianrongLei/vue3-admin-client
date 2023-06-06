@@ -13,10 +13,7 @@
       <div
         class="cursor-pointer flex justify-center"
         :style="{ height: logoHeight }"
-        @click="
-          $router.push('/');
-          layoutStore.useInitLayout();
-        "
+        @click="useRouter($router, { path: 'index' })"
       >
         <img
           src="@/assets/logo.png"
@@ -30,16 +27,19 @@
           {{ appConfig.appTitle }}
         </div>
       </div>
-      <div class="p-t-20px flex flex-wrap justify-center">
-        <div
-          v-for="(item, index) in routerStore.router_asyncRoutes"
-          :key="item.key"
-          @click="jumpRouter($router, item, index)"
-          :class="{ isActive: routerStore.router_activeKey === 'item' ? 'isActive' : '' }"
-          class="m-t-6px overflow-hidden h-42px w-42px cursor-pointer bg-pink"
-        >
-          {{ item.label }}
-        </div>
+      <div class="p-t-20px flex flex-grow-1 flex-wrap justify-center">
+        <n-menu
+          v-model:value="menuActiveKey"
+          class="flex-grow-1 x-menu-default"
+          :class="menuClass"
+          :collapsed="layoutStore.layout_isLargeWindow"
+          :collapsed-icon-size="28"
+          :on-update:value="updateHandler"
+          :collapsed-width="50"
+          :options="routerStore.useXMenuDate"
+          :render-label="renderMenuLabel"
+          :render-icon="renderMenuIcon"
+        />
       </div>
     </div>
     <!-- 收缩菜单 -->
@@ -71,37 +71,78 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref, watch } from "vue";
-import { RouteRecordRaw, Router } from "vue-router";
+import { computed, h, nextTick, onMounted, ref, watch } from "vue";
+import { Router } from "vue-router";
+import { BookmarkOutline } from "@vicons/ionicons5";
+import { MenuOption, NIcon } from "naive-ui";
 import { useLayoutStore } from "@/store/modules/layout";
 import Menu from "../components/menu.vue";
 import { appConfig } from "@/config/index";
 import useRouterStore from "@/store/modules/router";
+import { router } from "@/router";
+import { AsyncRoute } from "@/store/modules/router/router.types";
 
-const layoutStore = useLayoutStore();
-const routerStore = useRouterStore();
-const layout_xMenuRef = ref(null);
-const layout_asideRef = ref(null);
-const layout_menuRef = ref(null);
-const layout_maskRef = ref(null);
+const [layoutStore, routerStore] = [useLayoutStore(), useRouterStore()];
+const [logoHeight, menuWidth, menuClass] = [
+  computed(() => `${layoutStore.layout_headerHeight}px`),
+  computed(() => `${layoutStore.layout_menuWidth}px`),
+  // 窄菜单class
+  computed(() => (layoutStore.layout_isLargeWindow ? "x-menu" : ""))
+];
 
-const logoHeight = computed(() => `${layoutStore.layout_headerHeight}px`);
-const menuWidth = computed(() => `${layoutStore.layout_menuWidth}px`);
+// 渲染展开时菜单的label
+const renderMenuLabel = (option: MenuOption & any) => {
+  if ("outside" in option.meta) {
+    // console.log(option.meta.outside);
 
-// 初始化侧边栏
-onMounted(() => {
-  layoutStore.layout_asideRef = layout_asideRef.value;
-  layoutStore.layout_xMenuRef = layout_xMenuRef.value;
-  layoutStore.layout_menuRef = layout_menuRef.value;
-  layoutStore.layout_maskRef = layout_maskRef.value;
-});
+    return h("a", { href: option.href, target: "_blank" }, option.label as string);
+  }
+  return option.label as string;
+};
+/**
+ * 渲染窄菜单图标和label
+ * @param option
+ */
+const renderMenuIcon = (option: MenuOption & { meta: { parentId: string } }) => {
+  // 渲染图标占位符以保持缩进
+  if (option.key === "sheep-man") return false;
+  // console.log(!option.meta.parentId);
+  // if (!option.meta.parentId) {
+  return h("div", { class: "x-menu-menu-item", title: option.label }, [
+    h(NIcon, null, { default: () => h(BookmarkOutline) })
+  ]);
+  // }
+  // return false;
+};
+/**
+ * 窄菜单绑定的key值
+ */
+const menuActiveKey = ref(routerStore.router_activeKey);
+/**
+ * 更新路由
+ * @param _key
+ * @param item
+ */
+const updateHandler = async (key: string, item: MenuOption) => {
+  router.push(item.path as string);
+  // 设置当前计划的路由id
+  routerStore.router_activeKey = key;
+  if (layoutStore.layout_isLargeWindow) {
+    menuActiveKey.value = key;
+  } else {
+    menuActiveKey.value = routerStore.router_activeKey;
+  }
+  // 设置数据菜单
+  routerStore.useInitMenuData();
+  layoutStore.useMenuExpand(false);
+};
 
 /**
  * 窄菜单路由跳转
  * @param $router
  * @param route
  */
-const jumpRouter = async ($router: Router, route: RouteRecordRaw, index: number) => {
+const useRouter = async ($router: Router, route: AsyncRoute | { path: string }, index?: number) => {
   // 跳转路由
   $router.push(route.path);
   // 等待路跳转完毕
@@ -122,6 +163,35 @@ const jumpRouter = async ($router: Router, route: RouteRecordRaw, index: number)
   routerStore.useInitMenuData(index);
   layoutStore.useMenuExpand(false);
 };
+/**
+ * 禁用窄菜单收缩时的hover事件
+ */
+const beenMouseenter = () => {
+  (document as any).querySelectorAll(".x-menu .n-menu-item-content").forEach((el: any) => {
+    // eslint-disable-next-line no-underscore-dangle
+    el.removeEventListener("mouseenter", el._vei.onMouseenter, false);
+  });
+};
+watch(
+  () => layoutStore.layout_isLargeWindow,
+  () => {
+    nextTick(() => {
+      beenMouseenter();
+    });
+  },
+  {
+    immediate: true
+  }
+);
+
+// 初始化侧边栏
+const [layout_xMenuRef, layout_asideRef, layout_menuRef, layout_maskRef] = [ref(null), ref(null), ref(null), ref(null)];
+onMounted(() => {
+  layoutStore.layout_asideRef = layout_asideRef.value;
+  layoutStore.layout_xMenuRef = layout_xMenuRef.value;
+  layoutStore.layout_menuRef = layout_menuRef.value;
+  layoutStore.layout_maskRef = layout_maskRef.value;
+});
 </script>
 
 <style lang="scss" scoped>
@@ -135,6 +205,49 @@ const jumpRouter = async ($router: Router, route: RouteRecordRaw, index: number)
     font-size: 12px;
     font-weight: 400;
     transform: translateY(50%);
+  }
+  .x-menu-default {
+    :deep(.n-menu-item-content) {
+      .x-menu-menu-item {
+        display: flex;
+        align-items: center;
+        padding-bottom: 4px;
+      }
+    }
+  }
+  .x-menu {
+    width: 100%;
+    :deep(.n-menu-item-content) {
+      pointer-events: visible;
+      padding: 0 !important;
+      width: 100%;
+      margin: 0;
+      display: flex;
+      &::before {
+        left: 2px;
+        right: 2px;
+      }
+      .n-menu-item-content-header {
+        display: none !important;
+      }
+      .n-menu-item-content__icon {
+        pointer-events: none;
+        width: 100% !important;
+        height: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+
+        .x-menu-menu-item {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          text-align: center;
+          white-space: nowrap;
+          width: 100%;
+        }
+      }
+    }
   }
 }
 </style>

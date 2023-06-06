@@ -44,8 +44,8 @@ export const useUserInfoApi = (variables: Record<string, unknown>) =>
 export const useUserMenuApi = (variables: Record<string, unknown>) =>
   useMutation(
     gql`
-      query MenusByUserId($userId: ID!) {
-        menusByUserId(userId: $userId) {
+      query MenusByUserId($queryMenusByUserIdInput: QueryMenusByUserIdInput) {
+        menusByUserId(queryMenusByUserIdInput: $queryMenusByUserIdInput) {
           id
           createdAt
           updatedAt

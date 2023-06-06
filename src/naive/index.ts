@@ -21,7 +21,8 @@ import {
   NTab,
   NTable,
   NDataTable,
-  NMenu
+  NMenu,
+  NPopover
 } from "naive-ui";
 
 const naive = create({
@@ -43,7 +44,8 @@ const naive = create({
     NTab,
     NTable,
     NDataTable,
-    NMenu
+    NMenu,
+    NPopover
   ]
 });
 

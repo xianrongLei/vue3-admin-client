@@ -2,10 +2,10 @@ import { defineStore } from "pinia";
 import { Router } from "vue-router";
 import { nextTick } from "vue";
 import { AsyncRoute, Menu, RouterState } from "@/store/modules/router/router.types";
+import useLayoutStore from "../layout";
 
 // 加载vue组件
 const layoutModules = import.meta.glob("/src/views/**/*.vue");
-
 // 把路径转换成驼峰命名
 export const useRouterStore = defineStore("router", {
   state: (): RouterState => ({
@@ -23,30 +23,55 @@ export const useRouterStore = defineStore("router", {
       }
     }
   },
+  getters: {
+    /**
+     * 窄菜单数据
+     */
+    useXMenuDate(): any[] {
+      const layoutStore = useLayoutStore();
+      if (layoutStore.layout_isLargeWindow) {
+        return this.router_asyncRoutes.map((e) => {
+          const [select] = (this as any).useFindDeepById({
+            arr: [e],
+            children_filed: "children",
+            id_filed: "children"
+          });
+          return {
+            ...select,
+            label: e.label
+          };
+        });
+      }
+      return this.router_asyncRoutes;
+    }
+  },
   actions: {
     /**
      * 根据路由查找第一个符合条件的子菜单 未找到返回null
      * @param arr
      * @returns
      */
-    useFindDeepById(options: { arr: any[]; children_filed: string; id_filed: string; value: string }): any {
+    useFindDeepById(options: { arr: any[]; children_filed: string; id_filed: string; value?: string }): any {
       // 结果
       const result: any = [];
       // 最外层索引
-      let index = 0;
+      let $index = -1;
       function F({ arr, children_filed, id_filed, value }: any): any {
+        $index += 1; // 必须在函数调用后立即自增 放在最后循环中的递归会打乱顺序
         for (let i = 0; i < arr.length; i += 1) {
           const item = arr[i];
           // 不存在children
           if (!item[children_filed] || arr[i][children_filed]?.length === 0) {
+            if (!value) {
+              return !item[id_filed] && result.push(item, $index);
+            }
             if (item[id_filed] === value) {
-              return result.push(item, index);
+              return result.push(item, $index);
             }
           } else {
             F({ arr: item[children_filed], children_filed, id_filed, value });
           }
         }
-        index += 1;
       }
       F(options);
       return result;
@@ -128,6 +153,7 @@ export const useRouterStore = defineStore("router", {
           component,
           children: [],
           meta: {
+            ...menu,
             title: menu.title,
             icon: menu.icon,
             id: menu.id,
@@ -146,14 +172,14 @@ export const useRouterStore = defineStore("router", {
         }
         routers.push(route);
       });
-      return this.useGetBreadcrumb(routers);
+      return this.useSetBreadcrumb(routers);
     },
     /**
      * 获取组件
      * @param componentUrl
      * @returns
      */
-    useGetComponent(componentUrl: string): any {
+    useGetComponent(componentUrl: string): () => Promise<{ [key: string]: any }> {
       const component = layoutModules[`/src/views/${componentUrl}.vue`];
       if (!component) {
         // eslint-disable-next-line no-console
@@ -166,20 +192,20 @@ export const useRouterStore = defineStore("router", {
      * @param routes
      * @returns
      */
-    useGetBreadcrumb(routes: any[]): AsyncRoute[] {
+    useSetBreadcrumb(routes: AsyncRoute[]): AsyncRoute[] {
       const breadcrumb: string[] = [];
-      const getBreadcrumb = (route: any) => {
-        breadcrumb.push(route.meta.title);
+      const setBreadcrumb = (route: any) => {
+        breadcrumb.push(route.meta.title as never);
         route.meta.breadcrumb = [...breadcrumb]; // 新数组;
         if (route.children) {
-          route.children = route.children.map((child: any) => getBreadcrumb(child));
+          route.children = route.children.map((child: any) => setBreadcrumb(child));
         }
         return route;
       };
       return routes.map((route) => {
         // 重置
         breadcrumb.length = 0;
-        return getBreadcrumb(route);
+        return setBreadcrumb(route);
       });
     }
   }
