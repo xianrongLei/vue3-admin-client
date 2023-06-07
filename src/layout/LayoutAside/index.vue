@@ -13,7 +13,7 @@
       <div
         class="cursor-pointer flex justify-center"
         :style="{ height: logoHeight }"
-        @click="useRouter($router, { path: 'index' })"
+        @click="useRouter($router, { path: '/index' })"
       >
         <img
           src="@/assets/logo.png"
@@ -29,7 +29,7 @@
       </div>
       <div class="p-t-20px flex flex-grow-1 flex-wrap justify-center">
         <n-menu
-          v-model:value="menuActiveKey"
+          v-model:value="routerStore.router_xActiveKey"
           class="flex-grow-1 x-menu-default"
           :class="menuClass"
           :collapsed="layoutStore.layout_isLargeWindow"
@@ -115,10 +115,6 @@ const renderMenuIcon = (option: MenuOption & { meta: { parentId: string } }) => 
   // return false;
 };
 /**
- * 窄菜单绑定的key值
- */
-const menuActiveKey = ref(routerStore.router_activeKey);
-/**
  * 更新路由
  * @param _key
  * @param item
@@ -128,9 +124,9 @@ const updateHandler = async (key: string, item: MenuOption) => {
   // 设置当前计划的路由id
   routerStore.router_activeKey = key;
   if (layoutStore.layout_isLargeWindow) {
-    menuActiveKey.value = key;
+    routerStore.router_xActiveKey = key;
   } else {
-    menuActiveKey.value = routerStore.router_activeKey;
+    routerStore.router_xActiveKey = routerStore.router_activeKey;
   }
   // 设置数据菜单
   routerStore.useInitMenuData();
@@ -142,7 +138,7 @@ const updateHandler = async (key: string, item: MenuOption) => {
  * @param $router
  * @param route
  */
-const useRouter = async ($router: Router, route: AsyncRoute | { path: string }, index?: number) => {
+const useRouter = async ($router: Router, route: AsyncRoute | { path: string }) => {
   // 跳转路由
   $router.push(route.path);
   // 等待路跳转完毕
@@ -159,8 +155,9 @@ const useRouter = async ($router: Router, route: AsyncRoute | { path: string }, 
   if (isRepeat) return;
   // 设置当前计划的路由id
   routerStore.router_activeKey = $router.currentRoute.value.meta.id as string;
+  routerStore.router_xActiveKey = $router.currentRoute.value.meta.id as string;
   // 设置数据菜单
-  routerStore.useInitMenuData(index);
+  routerStore.useInitMenuData();
   layoutStore.useMenuExpand(false);
 };
 /**
@@ -224,8 +221,8 @@ onMounted(() => {
       margin: 0;
       display: flex;
       &::before {
-        left: 2px;
-        right: 2px;
+        left: 4px;
+        right: 4px;
       }
       .n-menu-item-content-header {
         display: none !important;
@@ -244,6 +241,7 @@ onMounted(() => {
           align-items: center;
           text-align: center;
           white-space: nowrap;
+          padding-top: 2px;
           width: 100%;
         }
       }

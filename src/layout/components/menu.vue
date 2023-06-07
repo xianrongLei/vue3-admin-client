@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts" setup>
-import { BookmarkOutline } from "@vicons/ionicons5";
+import * as icons from "@vicons/ionicons5";
 import { MenuOption, NIcon } from "naive-ui";
 import { h, onMounted, ref } from "vue";
 import { useLayoutStore } from "@/store/modules/layout/index";
@@ -32,12 +32,20 @@ const renderMenuLabel = (option: MenuOption & any) => {
   }
   return option.label as string;
 };
-const renderMenuIcon = (option: MenuOption) => {
-  // 渲染图标占位符以保持缩进
-  if (option.key === "sheep-man") return true;
-  // 返回 falsy 值，不再渲染图标及占位符
-  if (option.key === "food") return null;
-  return h(NIcon, null, { default: () => h(BookmarkOutline) });
+console.log(icons);
+
+const renderMenuIcon = (option: MenuOption & { meta: { icon: keyof typeof icons } }) => {
+  option.meta.icon = "Add";
+  if (option.meta.icon) {
+    return h(NIcon, null, { default: () => h(icons[option.meta.icon]) });
+  }
+  return false;
+
+  // // 渲染图标占位符以保持缩进
+  // if (option.key === "sheep-man") return true;
+  // // 返回 falsy 值，不再渲染图标及占位符
+  // if (option.key === "food") return null;
+  // return h(NIcon, null, { default: () => h(BookmarkOutline) });
 };
 /**
  * 更新路由
@@ -53,7 +61,7 @@ const updateHandler = (_key: string, item: MenuOption) => {
  */
 const menuInstRef = ref(null);
 onMounted(() => {
-  routerStore.layout_menuInstRef = menuInstRef;
+  routerStore.router_menuInstRef = menuInstRef;
 });
 </script>
 

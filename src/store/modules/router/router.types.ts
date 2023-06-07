@@ -44,5 +44,9 @@ export interface RouterState {
   /**
    * 宽菜单内部naiveMenu
    */
-  layout_menuInstRef: null | ComponentOptions;
+  router_menuInstRef: null | ComponentOptions;
+  /**
+   * 窄菜单key
+   */
+  router_xActiveKey: string;
 }

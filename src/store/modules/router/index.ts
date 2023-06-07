@@ -12,7 +12,8 @@ export const useRouterStore = defineStore("router", {
     router_asyncRoutes: [],
     router_activeKey: "/index",
     router_menuData: [],
-    layout_menuInstRef: null
+    router_menuInstRef: null,
+    router_xActiveKey: ""
   }),
   cache: {
     router_activeKey: {
@@ -20,6 +21,16 @@ export const useRouterStore = defineStore("router", {
       default: "/index",
       beforeMounted(cache: any) {
         if (cache) this.router_activeKey = cache;
+      }
+    },
+    router_xActiveKey: {
+      type: "local",
+      default: "",
+      beforeMounted(cache: any) {
+        if (cache) {
+          this.router_xActiveKey = cache;
+        }
+        this.router_xActiveKey = this.layout_activeKey;
       }
     }
   },
@@ -95,6 +106,7 @@ export const useRouterStore = defineStore("router", {
           value: this.router_activeKey
         });
         this.router_activeKey = select.key;
+        this.router_xActiveKey = select.key; // 首次进入主页设置窄菜单激活key
         this.router_menuData = [asyncRoutes[index]];
       } else if ($index) {
         this.router_menuData = [asyncRoutes[$index]];
@@ -109,7 +121,7 @@ export const useRouterStore = defineStore("router", {
       }
       // 等待菜单渲染完毕 否子展开菜单失效
       await nextTick();
-      this.layout_menuInstRef?.showOption(this.router_activeKey);
+      this.router_menuInstRef?.showOption(this.router_activeKey);
     },
     /**
      * 挂载路由

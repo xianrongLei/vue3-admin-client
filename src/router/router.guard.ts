@@ -18,8 +18,6 @@ export const mountGuard = (router: Router): void => {
     const userStore = useUserStore();
     // 用户已登录
     if (userStore.user_token.access_token) {
-      // 已登录去登录页进行拦截
-      if (to.path === "/login") next("/");
       // 刷新页面
       if (!userStore.user_userInfo.id && isRefresh.value) {
         // 刷新页面重新拉取用户数据
@@ -27,7 +25,8 @@ export const mountGuard = (router: Router): void => {
           isRefresh.value = false;
           await userStore.useGetUserInfo(userStore.user_token.userId);
           useMountRoutes(router, userStore.user_menuTree);
-          next({ ...to, replace: true }); // 防止刷新页面后同一路由找不到的情况
+          if (to.path === "/login") next("/"); // 已登录去登录页进行拦截
+          else next({ ...to, replace: true }); // 防止刷新页面后同一路由找不到的情况
         } catch (error: any) {
           message.error(error.message);
           userStore.user_token = {}; // 清除缓存token
@@ -39,11 +38,10 @@ export const mountGuard = (router: Router): void => {
       else if (isRefresh.value) {
         try {
           isRefresh.value = false;
-          // 没有用户信息重新拉取
-          await userStore.useGetUserInfo(userStore.user_token.userId);
           // 设置动态路由
           useMountRoutes(router, userStore.user_menuTree);
-          next({ ...to, replace: true }); // 防止刷新页面后同一路由找不到的情况
+          if (to.path === "/login") next("/"); // 已登录去登录页进行拦截
+          else next({ ...to, replace: true }); // 防止刷新页面后同一路由找不到的情况
         } catch (error: any) {
           message.error(error.message);
           // 清除缓存token
