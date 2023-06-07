@@ -73,7 +73,7 @@
 <script lang="ts" setup>
 import { computed, h, nextTick, onMounted, ref, watch } from "vue";
 import { Router } from "vue-router";
-import { BookmarkOutline } from "@vicons/ionicons5";
+// import { BookmarkOutline } from "@vicons/ionicons5";
 import { MenuOption, NIcon } from "naive-ui";
 import { useLayoutStore } from "@/store/modules/layout";
 import Menu from "../components/menu.vue";
@@ -109,7 +109,8 @@ const renderMenuIcon = (option: MenuOption & { meta: { parentId: string } }) => 
   // console.log(!option.meta.parentId);
   // if (!option.meta.parentId) {
   return h("div", { class: "x-menu-menu-item", title: option.label }, [
-    h(NIcon, null, { default: () => h(BookmarkOutline) })
+    h(NIcon, null, { default: () => h("BookmarkOutline") })
+    // h(NIcon, null, { default: () => h(BookmarkOutline) })
   ]);
   // }
   // return false;

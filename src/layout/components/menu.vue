@@ -15,7 +15,6 @@
 </template>
 
 <script lang="ts" setup>
-import * as icons from "@vicons/ionicons5";
 import { MenuOption, NIcon } from "naive-ui";
 import { h, onMounted, ref } from "vue";
 import { useLayoutStore } from "@/store/modules/layout/index";
@@ -32,13 +31,12 @@ const renderMenuLabel = (option: MenuOption & any) => {
   }
   return option.label as string;
 };
-console.log(icons);
 
-const renderMenuIcon = (option: MenuOption & { meta: { icon: keyof typeof icons } }) => {
+const renderMenuIcon = (option: MenuOption & { meta: { icon: string } }) => {
   option.meta.icon = "Add";
-  if (option.meta.icon) {
-    return h(NIcon, null, { default: () => h(icons[option.meta.icon]) });
-  }
+  // if (option.meta.icon) {
+  //   return h(NIcon, null, { default: () => h(icons[option.meta.icon]) });
+  // }
   return false;
 
   // // 渲染图标占位符以保持缩进

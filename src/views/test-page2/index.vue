@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref, Ref } from "vue";
-import CommonResizeBox from "@/components/CommonResizeBox/index.vue";
+// import CommonResizeBox from "@/components/CommonResizeBox/index.vue";
 
 const mode: Ref = ref(0);
 const checkMode = () => {
@@ -16,7 +16,7 @@ const checkMode = () => {
     class="container"
     ref="refContainer"
   >
-    <CommonResizeBox
+    <!-- <CommonResizeBox
       :mode="mode"
       :height="1080"
       :width="1920"
@@ -27,7 +27,7 @@ const checkMode = () => {
       >
         第三方的
       </div>
-    </CommonResizeBox>
+    </CommonResizeBox> -->
   </div>
 </template>
 

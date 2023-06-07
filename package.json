@@ -50,6 +50,7 @@
     "vfonts": "^0.0.3",
     "vite": "^2.8.0",
     "vite-plugin-eslint": "^1.8.1",
+    "vite-plugin-svg-icons": "^2.0.1",
     "vue-tsc": "^0.29.8"
   },
   "husky": {
