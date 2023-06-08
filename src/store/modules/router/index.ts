@@ -38,7 +38,7 @@ export const useRouterStore = defineStore("router", {
     /**
      * 窄菜单数据
      */
-    useXMenuDate(): any[] {
+    useXMenuDate(): AsyncRoute[] {
       const layoutStore = useLayoutStore();
       if (layoutStore.layout_isLargeWindow) {
         return this.router_asyncRoutes.map((e) => {
@@ -49,6 +49,7 @@ export const useRouterStore = defineStore("router", {
           });
           return {
             ...select,
+            icon: e.meta?.icon,
             label: e.label
           };
         });

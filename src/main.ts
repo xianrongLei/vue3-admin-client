@@ -6,6 +6,7 @@ import { mountI18n } from "@/i18n/index";
 import { mountNaive } from "./naive/index";
 import { mountApollo } from "@/apollo";
 import { mountConfig } from "./config/index";
+import { mountComponents } from "@/components/index";
 // App base style
 import "@/style/index";
 
@@ -27,8 +28,11 @@ mountPinia(app.use);
 mountRouter(app.use);
 // i18n
 mountI18n(app.use);
+// common components
+mountComponents(app.component);
 // render application
 app.mount("#app");
+
 // eslint-disable-next-line no-restricted-syntax
 // for (const [key, component] of Object.entries(appIcons)) {
 //   app.component(key, component);

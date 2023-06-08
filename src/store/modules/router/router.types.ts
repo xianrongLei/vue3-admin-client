@@ -26,6 +26,7 @@ export type Menu = {
 export type AsyncRoute = {
   key: string;
   label: string;
+  icon: string;
 } & RouteRecordRaw;
 
 export interface RouterState {

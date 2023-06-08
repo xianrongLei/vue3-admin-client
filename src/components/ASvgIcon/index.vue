@@ -1,30 +1,27 @@
 <template>
-  <Vcon
+  <n-icon
     v-if="vcon_name"
-    :name="vcon_name"
     :size="size"
     :color="color"
+    :component="vcon_name"
   />
-  <Icon
+  <svg
     v-else
-    :name="name"
-    :size="size"
-    :color="color"
-  />
+    :width="size"
+    :height="size"
+    :fill="color"
+    aria-hidden="true"
+  >
+    <use :href="symbolId" />
+  </svg>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import * as vcons from "@vicons/ionicons5";
-import Icon from "./icon.vue";
-import Vcon from "./vIcon.vue";
 
 export default defineComponent({
-  name: "SvgIcon",
-  components: {
-    Icon,
-    Vcon
-  },
+  name: "ASvgIcon",
   props: {
     name: {
       type: String,
@@ -39,12 +36,16 @@ export default defineComponent({
       default: 25
     }
   },
-  setup(props) {
-    return {
-      icon_name: props.name,
-      // @ts-ignore
-      vcon_name: vcons[props.name]
-    };
+  computed: {
+    symbolId() {
+      return `#icon-${this.name}`;
+    },
+    icon_name() {
+      return this.name;
+    },
+    vcon_name() {
+      return vcons[this.name];
+    }
   }
 });
 </script>
