@@ -28,18 +28,20 @@
         </div>
       </div>
       <div class="p-t-20px flex flex-grow-1 flex-wrap justify-center">
-        <n-menu
-          v-model:value="routerStore.router_xActiveKey"
-          class="flex-grow-1 x-menu-default"
-          :class="menuClass"
-          :collapsed="layoutStore.layout_isLargeWindow"
-          :collapsed-icon-size="28"
-          :on-update:value="updateHandler"
-          :collapsed-width="50"
-          :options="menuData"
-          :render-label="renderMenuLabel"
-          :render-icon="renderMenuIcon"
-        />
+        <n-scrollbar :style="{ maxHeight: scrollbarHeight }">
+          <n-menu
+            v-model:value="routerStore.router_xActiveKey"
+            class="flex-grow-1 x-menu-default"
+            :class="menuClass"
+            :collapsed="layoutStore.layout_isLargeWindow"
+            :collapsed-icon-size="28"
+            :on-update:value="updateHandler"
+            :collapsed-width="50"
+            :options="menuData"
+            :render-label="renderMenuLabel"
+            :render-icon="renderMenuIcon"
+          />
+        </n-scrollbar>
       </div>
     </div>
     <!-- 收缩菜单 -->
@@ -91,6 +93,10 @@ const [logoHeight, menuWidth, menuClass] = [
   // 窄菜单class
   computed(() => (layoutStore.layout_isLargeWindow ? "x-menu" : ""))
 ];
+/**
+ * 滚动条区域高度 包含footer
+ */
+const scrollbarHeight = computed(() => `calc(100vh - (${layoutStore.layout_headerHeight + 21}px))`);
 
 // 渲染展开时菜单的label
 const renderMenuLabel = (option: MenuOption & { label: string; meta: {} }) => {
@@ -108,7 +114,7 @@ const renderMenuIcon = (option: MenuOption & { meta: { parentId: string; icon: s
     return h(
       "div",
       { class: "x-menu-menu-item", title: option.label },
-      h(ASvgIcon, { name: option.meta.icon, size: 25 })
+      h(ASvgIcon, { name: option.meta.icon, size: 25, color: "var(--text-color)" })
     );
   }
   return false;

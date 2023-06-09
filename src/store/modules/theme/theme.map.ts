@@ -1,17 +1,16 @@
-import { GlobalTheme, darkTheme, lightTheme, progressProps } from "naive-ui";
+import { GlobalThemeOverrides, darkTheme, lightTheme } from "naive-ui";
 import { ThemeState } from "./index";
 
 export type ThemeMap = {
   dark: {
     theme_cssVars: ThemeState["theme_cssVars"];
-    theme_naiveOverrides: GlobalTheme;
+    theme_naiveOverrides: GlobalThemeOverrides;
   };
   light: {
     theme_cssVars: ThemeState["theme_cssVars"];
-    theme_naiveOverrides: GlobalTheme;
+    theme_naiveOverrides: GlobalThemeOverrides;
   };
 };
-console.log(lightTheme.Button);
 const darkTheme_cssVars = {
   // 背景颜色
   "--bg-color": "rgba(32, 32, 32, 0.9)",
@@ -118,36 +117,37 @@ const lightTheme_cssVars = {
   // "--light-color-rgb": "240, 243, 252"
 };
 
-console.log(darkTheme.Progress);
-
 export const themeMap: ThemeMap = {
   dark: {
     theme_cssVars: darkTheme_cssVars,
     theme_naiveOverrides: {
-      name: "dark",
       common: {
         ...darkTheme.common,
         primaryColor: `rgba(${darkTheme_cssVars["--special-color-rgb"]}, 1)`,
         primaryColorHover: `rgba(${darkTheme_cssVars["--special-color-rgb"]}, 0.9)`,
         primaryColorPressed: `rgba(${darkTheme_cssVars["--special-color-rgb"]}, 0.8)`
+      },
+      Scrollbar: {
+        color: `rgba(${darkTheme_cssVars["--special-color-rgb"]}, 0.2)`,
+        colorHover: `rgba(${darkTheme_cssVars["--special-color-rgb"]}, 0.2)`
       }
     }
   },
   light: {
     theme_cssVars: lightTheme_cssVars,
     theme_naiveOverrides: {
-      name: "light",
       common: {
         ...lightTheme.common,
         primaryColor: `rgba(${lightTheme_cssVars["--special-color-rgb"]}, 1)`,
         primaryColorHover: `rgba(${lightTheme_cssVars["--special-color-rgb"]}, 0.9)`,
         primaryColorPressed: `rgba(${lightTheme_cssVars["--special-color-rgb"]}, 0.8)`
+      },
+      Scrollbar: {
+        color: `rgba(${darkTheme_cssVars["--special-color-rgb"]}, 0.2)`,
+        colorHover: `rgba(${darkTheme_cssVars["--special-color-rgb"]}, 0.2)`
       }
     }
   }
 };
 
-// eslint-disable-next-line arrow-body-style
-export const useThemeConfig = (mode: keyof ThemeMap): ThemeMap[keyof ThemeMap] => {
-  return themeMap[mode];
-};
+export const useThemeConfig = (mode: keyof ThemeMap): ThemeMap[keyof ThemeMap] => themeMap[mode];

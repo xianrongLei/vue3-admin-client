@@ -25,7 +25,7 @@ specifiers:
   husky: ^8.0.3
   lint-staged: ^13.1.0
   lodash: ^4.17.21
-  naive-ui: ^2.34.3
+  naive-ui: 2.34.4
   pinia: ^2.0.11
   prettier: ^2.8.2
   sass: ^1.43.4
@@ -71,7 +71,7 @@ devDependencies:
   eslint-plugin-vue: 9.8.0_eslint@8.31.0
   husky: 8.0.3
   lint-staged: 13.1.0
-  naive-ui: 2.34.3_vue@3.2.47
+  naive-ui: 2.34.4_vue@3.2.47
   prettier: 2.8.2
   sass: 1.57.1
   typescript: 4.9.4
@@ -3402,8 +3402,8 @@ packages:
     resolution: {integrity: sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==}
     dev: true
 
-  /naive-ui/2.34.3_vue@3.2.47:
-    resolution: {integrity: sha512-fUMr0dzb/iGsOTWgoblPVobY5X5dihQ1eam5dA+H74oyLYAvgX4pL96xQFPBLIYqvyRFBAsN85kHN5pLqdtpxA==}
+  /naive-ui/2.34.4_vue@3.2.47:
+    resolution: {integrity: sha512-aPG8PDfhSzIzn/jSC9y3Jb3Pe2wHJ7F0cFV1EWlbImSrZECeUmoc+fIcOSWbizoztkKfaUAeKwYdMl09MKkj1g==}
     peerDependencies:
       vue: ^3.0.0
     dependencies:

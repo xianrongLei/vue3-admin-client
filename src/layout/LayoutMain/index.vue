@@ -10,10 +10,7 @@
             name="app-main"
             mode="out-in"
           >
-            <keep-alive
-              exclude=""
-              :max="10"
-            >
+            <keep-alive :max="10">
               <component :is="Component" />
             </keep-alive>
           </transition>
