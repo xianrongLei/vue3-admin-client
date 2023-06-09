@@ -13,7 +13,7 @@
       <div
         class="cursor-pointer flex justify-center"
         :style="{ height: logoHeight }"
-        @click="useRouter($router, { path: '/index' })"
+        @click="goToHome($router)"
       >
         <img
           src="@/assets/logo.png"
@@ -75,7 +75,6 @@
 <script lang="ts" setup>
 import { computed, h, nextTick, onMounted, ref, watch } from "vue";
 import { Router } from "vue-router";
-import { MenuOption } from "naive-ui";
 import { useLayoutStore } from "@/store/modules/layout";
 import Menu from "../components/menu.vue";
 import { appConfig } from "@/config/index";
@@ -99,9 +98,9 @@ const [logoHeight, menuWidth, menuClass] = [
 const scrollbarHeight = computed(() => `calc(100vh - (${layoutStore.layout_headerHeight + 21}px))`);
 
 // 渲染展开时菜单的label
-const renderMenuLabel = (option: MenuOption & { label: string; meta: {} }) => {
-  if ("outside" in option.meta) {
-    return h("a", { href: option.href, target: "_blank" }, [option.label]);
+const renderMenuLabel = (option: AsyncRoute) => {
+  if (option.meta.outside) {
+    return h("a", { href: option.meta.component, target: "_blank" }, option.label);
   }
   return option.label;
 };
@@ -109,7 +108,18 @@ const renderMenuLabel = (option: MenuOption & { label: string; meta: {} }) => {
  * 渲染窄菜单图标和label
  * @param option
  */
-const renderMenuIcon = (option: MenuOption & { meta: { parentId: string; icon: string } }) => {
+const renderMenuIcon = (option: AsyncRoute) => {
+  if (option.meta.outside) {
+    return h(
+      "a",
+      { href: option.meta.component, target: "_blank" },
+      h(
+        "div",
+        { class: "x-menu-menu-item", title: option.label },
+        h(ASvgIcon, { name: option.meta.icon, size: 25, color: "var(--text-color)" })
+      )
+    );
+  }
   if (option.meta.icon) {
     return h(
       "div",
@@ -134,8 +144,12 @@ const menuData = computed(() => {
  * @param _key
  * @param item
  */
-const updateHandler = async (key: string, item: MenuOption) => {
-  router.push(item.path as string);
+const updateHandler = async (key: string, route: AsyncRoute) => {
+  /**
+   * 外链组织跳转路由
+   */
+  if (route.meta.outside) return;
+  router.push(route.path);
   // 设置当前计划的路由id
   routerStore.router_activeKey = key;
   if (layoutStore.layout_isLargeWindow) {
@@ -153,9 +167,9 @@ const updateHandler = async (key: string, item: MenuOption) => {
  * @param $router
  * @param route
  */
-const useRouter = async ($router: Router, route: AsyncRoute | { path: string }) => {
+const goToHome = async ($router: Router) => {
   // 跳转路由
-  $router.push(route.path);
+  $router.push("/index");
   // 等待路跳转完毕
   const isRepeat = await new Promise<boolean>((resolve) => {
     const unwatch = watch($router.currentRoute, () => {

@@ -4,11 +4,11 @@ import { ThemeState } from "./index";
 export type ThemeMap = {
   dark: {
     theme_cssVars: ThemeState["theme_cssVars"];
-    theme_naiveOverrides: GlobalThemeOverrides;
+    theme_naiveOverrides: GlobalThemeOverrides & any;
   };
   light: {
     theme_cssVars: ThemeState["theme_cssVars"];
-    theme_naiveOverrides: GlobalThemeOverrides;
+    theme_naiveOverrides: GlobalThemeOverrides & any;
   };
 };
 const darkTheme_cssVars = {

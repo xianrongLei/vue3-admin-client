@@ -17,18 +17,18 @@
 </template>
 
 <script lang="ts" setup>
-import { MenuOption } from "naive-ui";
 import { computed, h, onMounted, ref } from "vue";
 import { useLayoutStore } from "@/store/modules/layout/index";
 import useRouterStore from "@/store/modules/router";
 import { router } from "@/router";
 import ASvgIcon from "@/components/ASvgIcon/index.vue";
+import { AsyncRoute } from "@/store/modules/router/router.types";
 
 const layoutStore = useLayoutStore();
 const routerStore = useRouterStore();
-const renderMenuLabel = (option: MenuOption & { label: string; meta: {} }) => {
-  if ("outside" in option.meta) {
-    return h("a", { href: option.href, target: "_blank" }, option.label);
+const renderMenuLabel = (option: AsyncRoute) => {
+  if (option.meta.outside) {
+    return h("a", { href: option.meta.component, target: "_blank" }, option.label);
   }
   return option.label;
 };
@@ -41,7 +41,7 @@ const scrollbarHeight = computed(() => `calc(100vh - (${layoutStore.layout_heade
  * 渲染窄菜单图标和label
  * @param option
  */
-const renderMenuIcon = (option: MenuOption & { meta: { parentId: string; icon: string } }) => {
+const renderMenuIcon = (option: AsyncRoute) => {
   if (option.meta.icon) {
     return h(
       "div",
@@ -56,9 +56,13 @@ const renderMenuIcon = (option: MenuOption & { meta: { parentId: string; icon: s
  * @param _key
  * @param item
  */
-const updateHandler = (_key: string, item: MenuOption) => {
-  router.push(item.path as string);
-  routerStore.router_activeKey = item.key as string;
+const updateHandler = (_key: string, route: AsyncRoute) => {
+  /**
+   * 外链组织跳转路由
+   */
+  if (route.meta.outside) return;
+  router.push(route.path);
+  routerStore.router_activeKey = route.key;
 };
 /**
  * 将菜单组件存入store

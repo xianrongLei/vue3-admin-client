@@ -25,8 +25,13 @@ export type Menu = {
 
 export type AsyncRoute = {
   key: string;
+  show: Boolean;
   label: string;
-  icon: string;
+  meta: {
+    outside: boolean;
+    icon: string;
+    component: string;
+  };
 } & RouteRecordRaw;
 
 export interface RouterState {

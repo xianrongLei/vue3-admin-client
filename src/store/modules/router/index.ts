@@ -36,23 +36,6 @@ export const useRouterStore = defineStore("router", {
   },
   actions: {
     /**
-     * 设置窄菜单数据
-     */
-    useSetXMenuData(): void {
-      this.router_xMenuData = this.router_asyncRoutes.map((e) => {
-        const [select] = this.useFindDeepById({
-          arr: [e],
-          children_filed: "children",
-          id_filed: "children"
-        });
-        return {
-          ...select,
-          meta: e.meta,
-          label: e.label
-        };
-      });
-    },
-    /**
      * 根据路由查找第一个符合条件的子菜单 未找到返回null
      * @param arr
      * @returns
@@ -68,8 +51,9 @@ export const useRouterStore = defineStore("router", {
           const item = arr[i];
           // 不存在children
           if (!item[children_filed] || arr[i][children_filed]?.length === 0) {
-            if (!value) {
-              return !item[id_filed] && result.push(item, $index);
+            // 没有传value  说明是找结果为空的值 找到则返回
+            if (!value && !item[id_filed]) {
+              return result.push(item, $index);
             }
             if (item[id_filed] === value) {
               return result.push(item, $index);
@@ -81,6 +65,40 @@ export const useRouterStore = defineStore("router", {
       }
       F(options);
       return result;
+    },
+    /**
+     * 设置窄菜单数据
+     */
+    useSetXMenuData() {
+      this.router_xMenuData = this.router_asyncRoutes.map((e, i) => {
+        const [select] = this.useFindDeepById({
+          arr: [e],
+          children_filed: "children",
+          id_filed: "children"
+        });
+
+        if (select.meta.outside) {
+          if (e.children) {
+            const selectSpare = (e as any).children.filter(
+              (_e: any) => !_e.children && !_e.meta.outside && !_e.meta.isHidden
+            )[0];
+            if (selectSpare) {
+              return {
+                ...selectSpare,
+                key: selectSpare.key,
+                label: e.label,
+                meta: e.meta
+              };
+            }
+          }
+        }
+        return {
+          ...select,
+          key: select.key,
+          label: e.label,
+          meta: e.meta
+        };
+      });
     },
     /**
      * 设置宽菜单数据，和选中的菜单
@@ -170,43 +188,46 @@ export const useRouterStore = defineStore("router", {
     useGenerateRoutes(menuTree: Menu[]): AsyncRoute[] {
       const routers: AsyncRoute[] = [];
       menuTree.forEach((_menu: Menu) => {
-        const menu = _menu as Required<Menu>;
+        const { children, ...menuInfo } = _menu as Required<Menu>;
         // eslint-disable-next-line one-var
         let component, path, redirect;
-        const childrenExist = menu.children && menu.children.length > 0;
+        const childrenExist = children && children.length > 0;
         // 有child  说明不是模块 否则说明是模块 则获取模块的组件
         if (childrenExist) {
-          path = `/${menu.route}`;
-          redirect = `/${(menu.children as any)[0].route}`;
+          path = `/${menuInfo.route}`;
+          redirect = `/${(children as any)[0].route}`;
+        } else if (menuInfo.outside) {
+          path = `/${menuInfo.route}`;
+          redirect = undefined;
         } else {
-          component = this.useGetComponent(menu.component);
-          path = `/${menu.route}`;
+          component = this.useGetComponent(menuInfo.component);
+          path = `/${menuInfo.route}`;
           redirect = undefined;
         }
         const route: any = {
           path,
-          name: menu.name.replace(/\/(\w)/g, (_all, letter) => letter.toUpperCase()),
-          key: menu.id,
-          label: menu.title,
+          name: menuInfo.name.replace(/\/(\w)/g, (_all, letter) => letter.toUpperCase()),
+          key: menuInfo.id,
+          label: menuInfo.title,
+          show: !menuInfo.isHidden,
           redirect,
           component,
           children: [],
           meta: {
-            ...menu,
-            id: menu.id,
-            title: menu.title,
-            icon: menu.icon,
-            outside: menu.outside,
-            isCache: menu.isCache,
-            isHidden: menu.isHidden,
-            breadcrumb: []
+            ...menuInfo,
+            id: menuInfo.id,
+            title: menuInfo.title,
+            icon: menuInfo.icon,
+            outside: menuInfo.outside,
+            isCache: menuInfo.isCache,
+            isHidden: menuInfo.isHidden,
+            breadcrumb: [menuInfo.title]
           }
         };
-        route.meta.breadcrumb.push(menu.title);
         // 有子菜单的情况
         if (childrenExist) {
-          route.children?.push(...this.useGenerateRoutes(menu.children));
-        } else if (menu.type === 0) {
+          route.children?.push(...this.useGenerateRoutes(children));
+        } else if (menuInfo.type === 0) {
           route.children = undefined;
         }
         routers.push(route);
