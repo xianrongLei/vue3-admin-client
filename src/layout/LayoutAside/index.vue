@@ -84,7 +84,9 @@ import ASvgIcon from "@/components/ASvgIcon/index.vue";
 
 const [layoutStore, routerStore] = [useLayoutStore(), useRouterStore()];
 const [logoHeight, menuWidth, menuClass] = [
+  // logo的高度
   computed(() => `${layoutStore.layout_headerHeight}px`),
+  // 菜单的宽度
   computed(() => `${layoutStore.layout_menuWidth}px`),
   // 窄菜单class
   computed(() => (layoutStore.layout_isLargeWindow ? "x-menu" : ""))
@@ -111,6 +113,9 @@ const renderMenuIcon = (option: MenuOption & { meta: { parentId: string; icon: s
   }
   return false;
 };
+/**
+ * 窄菜单和抽屉菜单共用一个菜单 需要计算菜单所用的routes
+ */
 const menuData = computed(() => {
   if (layoutStore.layout_isLargeWindow) {
     return routerStore.router_xMenuData;
@@ -165,10 +170,11 @@ const useRouter = async ($router: Router, route: AsyncRoute | { path: string }) 
   layoutStore.useMenuExpand(false);
 };
 /**
- * 禁用窄菜单收缩时的hover事件
+ * 1.禁用窄菜单收缩时的hover事件
+ * 2.在模式更改菜单重新渲染后继续禁用
  */
 const beenMouseenter = () => {
-  document.querySelectorAll(".x-menu .n-menu-item-content").forEach((el: any) => {
+  document.querySelectorAll(".x-menu .n-menu-item-content").forEach((el: Record<string, any>) => {
     // eslint-disable-next-line no-underscore-dangle
     el.removeEventListener("mouseenter", el._vei.onMouseenter, false);
   });
