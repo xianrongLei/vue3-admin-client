@@ -1,5 +1,4 @@
 import type { Router } from "vue-router";
-import { MessageApi } from "naive-ui";
 import { useRouterStore } from "@/store/modules/router";
 import { useUserStore } from "@/store/modules/user";
 import { clearAll } from "@/utils/utils.cache-operator";
@@ -34,7 +33,8 @@ export const mountGuard = (router: Router): void => {
           useDiscreteApi(theme_mode, "message").error(error.message);
           userStore.user_token = {}; // 清除缓存token
           clearAll("local");
-          next("/login");
+          clearAll("session");
+          next({ ...to, path: "/login", replace: true }); // 防止刷新页面后同一路由找不到的情况
         }
       }
       // 有数据但还未设置动态路由
@@ -50,7 +50,8 @@ export const mountGuard = (router: Router): void => {
           // 清除缓存token
           userStore.user_token = {};
           clearAll("local");
-          next("/login");
+          clearAll("session");
+          next({ ...to, path: "/login", replace: true }); // 防止刷新页面后同一路由找不到的情况
         }
       } else {
         next();

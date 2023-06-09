@@ -50,4 +50,8 @@ export interface RouterState {
    * 窄菜单key
    */
   router_xActiveKey: string;
+  /**
+   * 窄菜单数据
+   */
+  router_xMenuData: AsyncRoute[];
 }

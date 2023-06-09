@@ -44,7 +44,7 @@ export default defineComponent({
       return this.name;
     },
     vcon_name() {
-      return vcons[this.name];
+      return (vcons as any)[this.name];
     }
   }
 });

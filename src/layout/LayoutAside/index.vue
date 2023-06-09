@@ -36,7 +36,7 @@
           :collapsed-icon-size="28"
           :on-update:value="updateHandler"
           :collapsed-width="50"
-          :options="routerStore.useXMenuDate"
+          :options="menuData"
           :render-label="renderMenuLabel"
           :render-icon="renderMenuIcon"
         />
@@ -103,11 +103,20 @@ const renderMenuLabel = (option: MenuOption & { label: string; meta: {} }) => {
  */
 const renderMenuIcon = (option: MenuOption & { meta: { parentId: string; icon: string } }) => {
   if (option.meta.icon) {
-    return h(ASvgIcon, { name: option.meta.icon, size: 25 });
+    return h(
+      "div",
+      { class: "x-menu-menu-item", title: option.label },
+      h(ASvgIcon, { name: option.meta.icon, size: 25 })
+    );
   }
   return false;
 };
-
+const menuData = computed(() => {
+  if (layoutStore.layout_isLargeWindow) {
+    return routerStore.router_xMenuData;
+  }
+  return routerStore.router_asyncRoutes;
+});
 // 渲染图标占位符以保持缩进
 /**
  * 更新路由
@@ -159,7 +168,7 @@ const useRouter = async ($router: Router, route: AsyncRoute | { path: string }) 
  * 禁用窄菜单收缩时的hover事件
  */
 const beenMouseenter = () => {
-  (document as any).querySelectorAll(".x-menu .n-menu-item-content").forEach((el: any) => {
+  document.querySelectorAll(".x-menu .n-menu-item-content").forEach((el: any) => {
     // eslint-disable-next-line no-underscore-dangle
     el.removeEventListener("mouseenter", el._vei.onMouseenter, false);
   });
@@ -209,21 +218,28 @@ onMounted(() => {
   }
   .x-menu {
     width: 100%;
+    :deep(.n-menu-item-content--selected) {
+      &::before {
+        background-color: rgba(var(--special-color-rgb), 0.8) !important;
+      }
+    }
     :deep(.n-menu-item-content) {
       pointer-events: visible;
       padding: 0 !important;
-      width: 100%;
-      margin: 0;
+      margin: 0 4px;
+      width: calc(100% - 8px);
       display: flex;
       &::before {
-        left: 4px;
-        right: 4px;
+        left: 0px;
+        right: 0px;
+        background-color: rgba(var(--special-color-rgb), 0.2);
       }
       &:hover {
         &::before {
-          background-color: pink;
+          background-color: rgba(var(--special-color-rgb), 0.4);
         }
       }
+
       .n-menu-item-content-header {
         display: none !important;
       }
@@ -235,6 +251,7 @@ onMounted(() => {
         padding: 0 !important;
 
         .x-menu-menu-item {
+          pointer-events: auto;
           display: flex;
           flex-direction: column;
           justify-content: center;
@@ -243,6 +260,7 @@ onMounted(() => {
           white-space: nowrap;
           padding-top: 2px;
           width: 100%;
+          height: 100%;
         }
       }
     }

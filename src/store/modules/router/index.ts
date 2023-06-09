@@ -2,7 +2,6 @@ import { defineStore } from "pinia";
 import { Router } from "vue-router";
 import { nextTick } from "vue";
 import { AsyncRoute, Menu, RouterState } from "@/store/modules/router/router.types";
-import useLayoutStore from "../layout";
 
 // 加载vue组件
 const layoutModules = import.meta.glob("/src/views/**/*.vue");
@@ -13,7 +12,8 @@ export const useRouterStore = defineStore("router", {
     router_activeKey: "/index",
     router_menuData: [],
     router_menuInstRef: null,
-    router_xActiveKey: ""
+    router_xActiveKey: "",
+    router_xMenuData: []
   }),
   cache: {
     router_activeKey: {
@@ -34,30 +34,24 @@ export const useRouterStore = defineStore("router", {
       }
     }
   },
-  getters: {
-    /**
-     * 窄菜单数据
-     */
-    useXMenuDate(): AsyncRoute[] {
-      const layoutStore = useLayoutStore();
-      if (layoutStore.layout_isLargeWindow) {
-        return this.router_asyncRoutes.map((e) => {
-          const [select] = (this as any).useFindDeepById({
-            arr: [e],
-            children_filed: "children",
-            id_filed: "children"
-          });
-          return {
-            ...select,
-            meta: e.meta,
-            label: e.label
-          };
-        });
-      }
-      return this.router_asyncRoutes;
-    }
-  },
   actions: {
+    /**
+     * 设置窄菜单数据
+     */
+    useSetXMenuData(): void {
+      this.router_xMenuData = this.router_asyncRoutes.map((e) => {
+        const [select] = this.useFindDeepById({
+          arr: [e],
+          children_filed: "children",
+          id_filed: "children"
+        });
+        return {
+          ...select,
+          meta: e.meta,
+          label: e.label
+        };
+      });
+    },
     /**
      * 根据路由查找第一个符合条件的子菜单 未找到返回null
      * @param arr
@@ -91,52 +85,84 @@ export const useRouterStore = defineStore("router", {
     /**
      * 设置宽菜单数据，和选中的菜单
      */
-    async useInitMenuData($index?: number) {
+    async useInitMenuData() {
       const asyncRoutes = this.router_asyncRoutes;
       /**
        * 判断是否是首次加载 , 如果是首次加载则更具路由地址设置第一个符合地址的路由为激活
        * 1. 第一种情况 没有缓存首次记载 使用路由地址查找 并使用第一个找到的
-       * 2. 第二种情况 窄菜单触发的事件 直接有index 直接设置宽菜单数据
        * 3. 第三种情况 有缓存的路由 根据缓存的路由筛选得到的第一个数据
        */
       if (this.router_activeKey.indexOf("/") !== -1) {
+        /**
+         * 为了方便设置默认路由地址，如果是首次加载，根据默认路由查找到对应的route
+         */
         const [select, index] = this.useFindDeepById({
           arr: asyncRoutes,
           children_filed: "children",
           id_filed: "path",
           value: this.router_activeKey
         });
+        /**
+         * 初始化在菜单和联动菜单的key
+         * 初始化联动菜单的routes
+         */
         this.router_activeKey = select.key;
-        this.router_xActiveKey = select.key; // 首次进入主页设置窄菜单激活key
+        this.router_xActiveKey = select.key;
         this.router_menuData = [asyncRoutes[index]];
-      } else if ($index) {
-        this.router_menuData = [asyncRoutes[$index]];
       } else {
+        /**
+         * 更新窄菜单路由查找对应的联动菜单下标
+         */
         const [, index] = this.useFindDeepById({
           arr: asyncRoutes,
           children_filed: "children",
           id_filed: "key",
           value: this.router_activeKey
         });
+        /**
+         * 大窗口模式设置同步联动菜单
+         */
         this.router_menuData = [asyncRoutes[index]];
+        /**
+         * 抽屉菜单和窄菜单激活项同步
+         */
+        this.router_xActiveKey = this.router_activeKey;
+        this.router_xMenuData[index].key = this.router_activeKey;
       }
       // 等待菜单渲染完毕 否子展开菜单失效
       await nextTick();
       this.router_menuInstRef?.showOption(this.router_activeKey);
     },
     /**
-     * 挂载路由
+     * 1.路由初始化函数
+     * 挂载路由，仅在路由守卫中当用户信息不存在重新初始化路由时调用
      * @param router
      * @param menuTree
      */
     useMountRoutes(router: Router, menuTree: Menu[]) {
       this.router_asyncRoutes = this.useGenerateRoutes(menuTree);
+      this.useSetXMenuData();
       this.useInitMenuData();
       this.router_asyncRoutes.forEach((route) => {
         router.addRoute("/", route);
       });
     },
     /**
+     * 2.路由初始化函数
+     * 获取组件
+     * @param componentUrl
+     * @returns
+     */
+    useGetComponent(componentUrl: string): () => Promise<{ [key: string]: any }> {
+      const component = layoutModules[`/src/views/${componentUrl}.vue`];
+      if (!component) {
+        // eslint-disable-next-line no-console
+        console.error("组件不存在，路径为：", componentUrl);
+      }
+      return component;
+    },
+    /**
+     * 3.路由初始化函数
      * 根据menuTree生成路由
      * @param menuTree
      * @returns
@@ -188,19 +214,7 @@ export const useRouterStore = defineStore("router", {
       return this.useSetBreadcrumb(routers);
     },
     /**
-     * 获取组件
-     * @param componentUrl
-     * @returns
-     */
-    useGetComponent(componentUrl: string): () => Promise<{ [key: string]: any }> {
-      const component = layoutModules[`/src/views/${componentUrl}.vue`];
-      if (!component) {
-        // eslint-disable-next-line no-console
-        console.error("组件不存在，路径为：", componentUrl);
-      }
-      return component;
-    },
-    /**
+     * 4.路由初始化函数
      * 设置面包屑数据
      * @param routes
      * @returns

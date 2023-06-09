@@ -87,7 +87,6 @@ export const useLayoutStore = defineStore("layout", {
      * 初始化layout
      */
     useInitLayout() {
-      this.useWindowResize();
       const { layout_asideWidth, layout_menuWidth } = this;
       const mediaQuery = window.matchMedia(`(min-width: ${this.layout_minWidth}px)`);
       this.layout_isLargeWindow = mediaQuery.matches;
