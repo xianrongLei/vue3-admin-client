@@ -1,8 +1,10 @@
 import type { Router } from "vue-router";
+import { MessageApi } from "naive-ui";
 import { useRouterStore } from "@/store/modules/router";
 import { useUserStore } from "@/store/modules/user";
 import { clearAll } from "@/utils/utils.cache-operator";
-import { loadingBar, message } from "@/naive";
+import { useDiscreteApi } from "@/naive";
+import useThemeStore from "@/store/modules/theme";
 
 // 解决刷新动态路由丢失
 const isRefresh = { value: true };
@@ -13,7 +15,8 @@ const whiteList: string[] = ["/login"];
 export const mountGuard = (router: Router): void => {
   // 路由加载前
   router.beforeEach(async (to, _from, next) => {
-    loadingBar.start();
+    const { theme_mode } = useThemeStore();
+    useDiscreteApi(theme_mode, "loadingBar").start();
     const { useMountRoutes } = useRouterStore();
     const userStore = useUserStore();
     // 用户已登录
@@ -28,7 +31,7 @@ export const mountGuard = (router: Router): void => {
           if (to.path === "/login") next("/"); // 已登录去登录页进行拦截
           else next({ ...to, replace: true }); // 防止刷新页面后同一路由找不到的情况
         } catch (error: any) {
-          message.error(error.message);
+          useDiscreteApi(theme_mode, "message").error(error.message);
           userStore.user_token = {}; // 清除缓存token
           clearAll("local");
           next("/login");
@@ -43,7 +46,7 @@ export const mountGuard = (router: Router): void => {
           if (to.path === "/login") next("/"); // 已登录去登录页进行拦截
           else next({ ...to, replace: true }); // 防止刷新页面后同一路由找不到的情况
         } catch (error: any) {
-          message.error(error.message);
+          useDiscreteApi(theme_mode, "message").error(error.message);
           // 清除缓存token
           userStore.user_token = {};
           clearAll("local");
@@ -61,6 +64,7 @@ export const mountGuard = (router: Router): void => {
     }
   });
   router.afterEach(() => {
-    loadingBar.finish();
+    const { theme_mode } = useThemeStore();
+    useDiscreteApi(theme_mode, "loadingBar").finish();
   });
 };

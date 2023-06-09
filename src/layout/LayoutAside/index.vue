@@ -7,7 +7,7 @@
     <!-- 窄菜单 -->
     <div
       ref="layout_xMenuRef"
-      style="width: 49px; border-right: 1px solid var(--border-color)"
+      style="width: 50px; border-right: 1px solid var(--border-color)"
       class="flex-shrink-0 flex-grow-0 overflow-hidden h-full z-2 bg-[var(--bg-color)]"
     >
       <div
@@ -73,14 +73,14 @@
 <script lang="ts" setup>
 import { computed, h, nextTick, onMounted, ref, watch } from "vue";
 import { Router } from "vue-router";
-// import { BookmarkOutline } from "@vicons/ionicons5";
-import { MenuOption, NIcon } from "naive-ui";
+import { MenuOption } from "naive-ui";
 import { useLayoutStore } from "@/store/modules/layout";
 import Menu from "../components/menu.vue";
 import { appConfig } from "@/config/index";
 import useRouterStore from "@/store/modules/router";
 import { router } from "@/router";
 import { AsyncRoute } from "@/store/modules/router/router.types";
+import ASvgIcon from "@/components/ASvgIcon/index.vue";
 
 const [layoutStore, routerStore] = [useLayoutStore(), useRouterStore()];
 const [logoHeight, menuWidth, menuClass] = [
@@ -91,30 +91,24 @@ const [logoHeight, menuWidth, menuClass] = [
 ];
 
 // 渲染展开时菜单的label
-const renderMenuLabel = (option: MenuOption & any) => {
+const renderMenuLabel = (option: MenuOption & { label: string; meta: {} }) => {
   if ("outside" in option.meta) {
-    // console.log(option.meta.outside);
-
-    return h("a", { href: option.href, target: "_blank" }, option.label as string);
+    return h("a", { href: option.href, target: "_blank" }, [option.label]);
   }
-  return option.label as string;
+  return option.label;
 };
 /**
  * 渲染窄菜单图标和label
  * @param option
  */
-const renderMenuIcon = (option: MenuOption & { meta: { parentId: string } }) => {
-  // 渲染图标占位符以保持缩进
-  if (option.key === "sheep-man") return false;
-  // console.log(!option.meta.parentId);
-  // if (!option.meta.parentId) {
-  return h("div", { class: "x-menu-menu-item", title: option.label }, [
-    h(NIcon, null, { default: () => h("BookmarkOutline") })
-    // h(NIcon, null, { default: () => h(BookmarkOutline) })
-  ]);
-  // }
-  // return false;
+const renderMenuIcon = (option: MenuOption & { meta: { parentId: string; icon: string } }) => {
+  if (option.meta.icon) {
+    return h(ASvgIcon, { name: option.meta.icon, size: 25 });
+  }
+  return false;
 };
+
+// 渲染图标占位符以保持缩进
 /**
  * 更新路由
  * @param _key
@@ -224,6 +218,11 @@ onMounted(() => {
       &::before {
         left: 4px;
         right: 4px;
+      }
+      &:hover {
+        &::before {
+          background-color: pink;
+        }
       }
       .n-menu-item-content-header {
         display: none !important;

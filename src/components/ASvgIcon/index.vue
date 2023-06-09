@@ -33,7 +33,7 @@ export default defineComponent({
     },
     size: {
       type: Number,
-      default: 25
+      default: 15
     }
   },
   computed: {

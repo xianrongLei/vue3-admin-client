@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts" setup>
-import { MenuOption, NIcon } from "naive-ui";
+import { MenuOption } from "naive-ui";
 import { h, onMounted, ref } from "vue";
 import { useLayoutStore } from "@/store/modules/layout/index";
 import useRouterStore from "@/store/modules/router";
@@ -23,27 +23,15 @@ import { router } from "@/router";
 
 const layoutStore = useLayoutStore();
 const routerStore = useRouterStore();
-const renderMenuLabel = (option: MenuOption & any) => {
+const renderMenuLabel = (option: MenuOption & { label: string; meta: {} }) => {
   if ("outside" in option.meta) {
-    console.log(option.meta.outside);
-
-    return h("a", { href: option.href, target: "_blank" }, option.label as string);
+    return h("a", { href: option.href, target: "_blank" }, option.label);
   }
-  return option.label as string;
+  return option.label;
 };
 
 const renderMenuIcon = (option: MenuOption & { meta: { icon: string } }) => {
-  option.meta.icon = "Add";
-  // if (option.meta.icon) {
-  //   return h(NIcon, null, { default: () => h(icons[option.meta.icon]) });
-  // }
-  return false;
-
-  // // 渲染图标占位符以保持缩进
-  // if (option.key === "sheep-man") return true;
-  // // 返回 falsy 值，不再渲染图标及占位符
-  // if (option.key === "food") return null;
-  // return h(NIcon, null, { default: () => h(BookmarkOutline) });
+  // console.log(option);
 };
 /**
  * 更新路由
@@ -60,6 +48,7 @@ const updateHandler = (_key: string, item: MenuOption) => {
 const menuInstRef = ref(null);
 onMounted(() => {
   routerStore.router_menuInstRef = menuInstRef;
+  console.log(routerStore.router_menuData);
 });
 </script>
 

@@ -49,7 +49,7 @@ export const useRouterStore = defineStore("router", {
           });
           return {
             ...select,
-            icon: e.meta?.icon,
+            meta: e.meta,
             label: e.label
           };
         });
@@ -167,9 +167,9 @@ export const useRouterStore = defineStore("router", {
           children: [],
           meta: {
             ...menu,
+            id: menu.id,
             title: menu.title,
             icon: menu.icon,
-            id: menu.id,
             outside: menu.outside,
             isCache: menu.isCache,
             isHidden: menu.isHidden,

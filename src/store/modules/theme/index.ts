@@ -8,7 +8,7 @@ export interface ThemeState {
   /** naiveUI主题编辑器开关 */
   theme_naiveEditor: boolean;
   /** naiveUI主题颜色覆盖 */
-  theme_naiveOverrides: {} | (GlobalTheme & {});
+  theme_naiveOverrides: {} | GlobalTheme;
   /** 全局主题css变量 */
   theme_cssVars: {
     /** 页面背景颜色 */

@@ -20,10 +20,10 @@ const app = createApp({
   },
   render: () => h(App)
 });
-// naiveUI
-mountNaive(app.use);
 // data manager
 mountPinia(app.use);
+// naiveUI
+mountNaive(app.use);
 // router
 mountRouter(app.use);
 // i18n
