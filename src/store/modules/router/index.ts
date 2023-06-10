@@ -1,36 +1,32 @@
+/* eslint-disable consistent-return */
 import { defineStore } from "pinia";
 import { Router } from "vue-router";
 import { nextTick } from "vue";
-import { AsyncRoute, Menu, RouterState } from "@/store/modules/router/router.types";
-
+import { AsyncRoute, FindDeepByIdOptions, Menu, RouterState } from "@/store/modules/router/router.types";
 // 加载vue组件
 const layoutModules = import.meta.glob("/src/views/**/*.vue");
 // 把路径转换成驼峰命名
 export const useRouterStore = defineStore("router", {
   state: (): RouterState => ({
     router_asyncRoutes: [],
-    router_activeKey: "/index",
-    router_menuData: [],
-    router_menuInstRef: null,
-    router_xActiveKey: "",
-    router_xMenuData: []
+    router_shrinkMenuData: [],
+    router_smallMenuKey: 0,
+    router_shrinkWithDrawerMenuKey: "/index",
+    router_shrinkMenuRef: null
   }),
   cache: {
-    router_activeKey: {
+    router_shrinkWithDrawerMenuKey: {
       type: "local",
       default: "/index",
       beforeMounted(cache: any) {
-        if (cache) this.router_activeKey = cache;
+        if (cache) this.router_shrinkWithDrawerMenuKey = cache;
       }
     },
-    router_xActiveKey: {
+    router_smallMenuKey: {
       type: "local",
-      default: "",
+      default: 0,
       beforeMounted(cache: any) {
-        if (cache) {
-          this.router_xActiveKey = cache;
-        }
-        this.router_xActiveKey = this.layout_activeKey;
+        if (cache) this.router_smallMenuKey = cache;
       }
     }
   },
@@ -40,117 +36,66 @@ export const useRouterStore = defineStore("router", {
      * @param arr
      * @returns
      */
-    useFindDeepById(options: { arr: any[]; children_filed: string; id_filed: string; value?: string }): any {
-      // 结果
-      const result: any = [];
-      // 最外层索引
-      let $index = -1;
-      function F({ arr, children_filed, id_filed, value }: any): any {
-        $index += 1; // 必须在函数调用后立即自增 放在最后循环中的递归会打乱顺序
-        for (let i = 0; i < arr.length; i += 1) {
-          const item = arr[i];
-          // 不存在children
-          if (!item[children_filed] || arr[i][children_filed]?.length === 0) {
-            // 没有传value  说明是找结果为空的值 找到则返回
-            if (!value && !item[id_filed]) {
-              return result.push(item, $index);
-            }
-            if (item[id_filed] === value) {
-              return result.push(item, $index);
-            }
-          } else {
-            F({ arr: item[children_filed], children_filed, id_filed, value });
+    useFindRouteById(options: FindDeepByIdOptions, result: any[]): AsyncRoute {
+      const { arr, children_field = "children", id_field, value } = options;
+      for (let i = 0; i < arr.length; i += 1) {
+        const item = arr[i];
+        // 不存在children
+        if (!item[children_field] || arr[i][children_field]?.length === 0) {
+          /**
+           * 1.没有传value  说明是找结果为空的值
+           * 2.有value则找到等于value的返回
+           */
+          if (value && `${item[id_field]}` && item[id_field] === value) {
+            result.push(item);
+            return result[0];
           }
+        } else {
+          this.useFindRouteById({ arr: item[children_field], children_field, id_field, value }, result);
         }
       }
-      F(options);
-      return result;
-    },
-    /**
-     * 设置窄菜单数据
-     */
-    useSetXMenuData() {
-      this.router_xMenuData = this.router_asyncRoutes.map((e, i) => {
-        const [select] = this.useFindDeepById({
-          arr: [e],
-          children_filed: "children",
-          id_filed: "children"
-        });
-
-        if (select.meta.outside) {
-          if (e.children) {
-            const selectSpare = (e as any).children.filter(
-              (_e: any) => !_e.children && !_e.meta.outside && !_e.meta.isHidden
-            )[0];
-            if (selectSpare) {
-              return {
-                ...selectSpare,
-                key: selectSpare.key,
-                label: e.label,
-                meta: e.meta
-              };
-            }
-          }
-        }
-        return {
-          ...select,
-          key: select.key,
-          label: e.label,
-          meta: e.meta
-        };
-      });
+      return result[0];
     },
     /**
      * 设置宽菜单数据，和选中的菜单
      */
-    async useInitMenuData() {
+    async useSetShrinkMenuData() {
       const asyncRoutes = this.router_asyncRoutes;
       /**
        * 判断是否是首次加载 , 如果是首次加载则更具路由地址设置第一个符合地址的路由为激活
        * 1. 第一种情况 没有缓存首次记载 使用路由地址查找 并使用第一个找到的
        * 3. 第三种情况 有缓存的路由 根据缓存的路由筛选得到的第一个数据
        */
-      if (this.router_activeKey.indexOf("/") !== -1) {
+      if (this.router_shrinkWithDrawerMenuKey.indexOf("/") !== -1) {
         /**
          * 为了方便设置默认路由地址，如果是首次加载，根据默认路由查找到对应的route
          */
-        const [select, index] = this.useFindDeepById({
-          arr: asyncRoutes,
-          children_filed: "children",
-          id_filed: "path",
-          value: this.router_activeKey
-        });
+        const select = this.useFindRouteById(
+          {
+            arr: asyncRoutes,
+            id_field: "path",
+            value: this.router_shrinkWithDrawerMenuKey
+          },
+          []
+        );
+        if (!select) throw new Error("'useSetShrinkMenuData', Not found a 'select' by ID !");
         /**
          * 初始化在菜单和联动菜单的key
          * 初始化联动菜单的routes
          */
-        this.router_activeKey = select.key;
-        this.router_xActiveKey = select.key;
-        this.router_menuData = [asyncRoutes[index]];
+        this.router_shrinkWithDrawerMenuKey = select.key;
+        this.router_shrinkMenuData = [asyncRoutes[this.router_smallMenuKey]];
       } else {
-        /**
-         * 更新窄菜单路由查找对应的联动菜单下标
-         */
-        const [, index] = this.useFindDeepById({
-          arr: asyncRoutes,
-          children_filed: "children",
-          id_filed: "key",
-          value: this.router_activeKey
-        });
         /**
          * 大窗口模式设置同步联动菜单
          */
-        this.router_menuData = [asyncRoutes[index]];
-        /**
-         * 抽屉菜单和窄菜单激活项同步
-         */
-        this.router_xActiveKey = this.router_activeKey;
-        this.router_xMenuData[index].key = this.router_activeKey;
+        this.router_shrinkMenuData = [asyncRoutes[this.router_smallMenuKey]];
       }
       // 等待菜单渲染完毕 否子展开菜单失效
       await nextTick();
-      this.router_menuInstRef?.showOption(this.router_activeKey);
+      this.router_shrinkMenuRef?.showOption(this.router_shrinkWithDrawerMenuKey);
     },
+
     /**
      * 1.路由初始化函数
      * 挂载路由，仅在路由守卫中当用户信息不存在重新初始化路由时调用
@@ -159,8 +104,7 @@ export const useRouterStore = defineStore("router", {
      */
     useMountRoutes(router: Router, menuTree: Menu[]) {
       this.router_asyncRoutes = this.useGenerateRoutes(menuTree);
-      this.useSetXMenuData();
-      this.useInitMenuData();
+      this.useSetShrinkMenuData();
       this.router_asyncRoutes.forEach((route) => {
         router.addRoute("/", route);
       });
@@ -242,14 +186,20 @@ export const useRouterStore = defineStore("router", {
      */
     useSetBreadcrumb(routes: AsyncRoute[]): AsyncRoute[] {
       const breadcrumb: string[] = [];
+      let deep = 0;
       const setBreadcrumb = (route: any) => {
-        breadcrumb.push(route.meta.title as never);
-        route.meta.breadcrumb = [...breadcrumb]; // 新数组;
+        breadcrumb.push(route.meta.title);
+        route.meta.breadcrumb = [...breadcrumb.filter((e) => e)]; // 新数组;
         if (route.children) {
-          route.children = route.children.map((child: any) => setBreadcrumb(child));
+          deep += 1;
+          route.children = route.children.map((child: any) => {
+            breadcrumb.length = deep;
+            return setBreadcrumb(child);
+          });
         }
         return route;
       };
+
       return routes.map((route) => {
         // 重置
         breadcrumb.length = 0;

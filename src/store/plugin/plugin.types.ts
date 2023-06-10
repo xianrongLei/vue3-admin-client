@@ -15,6 +15,13 @@ export type CacheItem<S, Store> = {
    * @returns
    */
   beforeMounted?: (this: Store & PiniaPluginContext["store"], cache: unknown) => void;
+  /**
+   * 修改缓存的钩子
+   * @param newValue
+   * @param oldValue
+   * @returns
+   */
+  onChange?: (newValue: unknown, oldValue: unknown) => void;
 };
 declare module "pinia" {
   export interface DefineStoreOptionsBase<S, Store> {

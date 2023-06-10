@@ -34,29 +34,32 @@ export type AsyncRoute = {
   };
 } & RouteRecordRaw;
 
+export interface FindDeepByIdOptions {
+  arr: any[];
+  children_field?: string;
+  id_field: string;
+  value?: any;
+}
 export interface RouterState {
   /**
    * 全部动态路由
    */
   router_asyncRoutes: AsyncRoute[];
   /**
-   * 激活联动菜单的数据
+   * 联动菜单的数据
    */
-  router_menuData: AsyncRoute[];
-  /**
-   * 激活路由key
-   */
-  router_activeKey: string;
+  router_shrinkMenuData: AsyncRoute[];
   /**
    * 宽菜单内部naiveMenu
    */
-  router_menuInstRef: null | ComponentOptions;
+  router_shrinkMenuRef: null | ComponentOptions;
+
   /**
-   * 窄菜单key
+   * 窄菜单索引
    */
-  router_xActiveKey: string;
+  router_smallMenuKey: number;
   /**
-   * 窄菜单数据
+   * shrinkWithDrawerMenuKey
    */
-  router_xMenuData: AsyncRoute[];
+  router_shrinkWithDrawerMenuKey: string;
 }

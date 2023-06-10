@@ -31,5 +31,4 @@ import { useLayoutStore } from "@/store/modules/layout";
 
 const layoutStore = useLayoutStore();
 layoutStore.useWindowResize();
-layoutStore.useInitLayout();
 </script>

@@ -22,7 +22,11 @@ import {
   NTable,
   NDataTable,
   NMenu,
-  NPopover
+  NPopover,
+  NBreadcrumb,
+  NBreadcrumbItem,
+  NDrawerContent,
+  NDrawer
 } from "naive-ui";
 import { DiscreteApi, DiscreteApiType } from "naive-ui/es/discrete/src/interface";
 import { LoadingBarInst } from "naive-ui/es/loading-bar/src/LoadingBarProvider";
@@ -49,7 +53,11 @@ const naive = create({
     NTable,
     NDataTable,
     NMenu,
-    NPopover
+    NPopover,
+    NBreadcrumb,
+    NBreadcrumbItem,
+    NDrawerContent,
+    NDrawer
   ]
 });
 

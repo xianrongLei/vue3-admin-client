@@ -18,6 +18,8 @@ const darkTheme_cssVars = {
   "--subtle-color": "rgba(24, 24, 28, 1)",
   // 文本颜色
   "--text-color": "rgba(221, 223, 228, 1)",
+  // 柔和的文本颜色
+  "--text-soft-color": "rgba(221, 223, 228, 0.7)",
   // 边框颜色
   "--border-color": "rgba(43, 48, 61, 1)",
   // 遮罩颜色
@@ -35,8 +37,6 @@ const darkTheme_cssVars = {
   // !! 下面为暂时没有用到的
   // 特殊颜色的RGB值
   // "--special-color-rgb": "99, 139, 210"
-  // 柔和的文本颜色
-  // "--text-soft-color": "rgba(185, 187, 193, 1)",
   // 强烈的文本颜色
   // "--text-strong-color": "rgba(187, 187, 187, 1)",
   // 阴影颜色
@@ -83,6 +83,7 @@ const lightTheme_cssVars = {
   "--bg-color": "rgba(255, 255, 255, 0.9)",
   "--subtle-color": "rgba(246, 248, 249, 1)",
   "--text-color": "rgba(40, 48, 66, 1)",
+  "--text-soft-color": "rgba(40, 48, 66, 0.7)",
   "--border-color": "rgba(225, 231, 247, 1)",
   "--mask-color": "rgba(0, 0, 0, 0.3)",
   "--special-color": "rgba(74, 127, 208, 1)",
@@ -93,7 +94,6 @@ const lightTheme_cssVars = {
 
   // !! 下面为暂时没有用到的
   // "--special-text-color": "rgba(255, 255, 255, 1)",
-  // "--text-soft-color": "rgba(69, 74, 87, 1)",
   // "--text-strong-color": "rgba(74, 74, 74, 1)",
   // "--shadow-color": "rgba(179, 191, 222, 1)",
   // "--input-color": "rgba(255, 255, 255, 1)",
