@@ -60,7 +60,7 @@ export const useUserStore = defineStore("user", {
           if (children.length > 0) {
             child.children = children;
           }
-          result.push(child);
+          result.unshift(child);
         }
       }
       return result;
@@ -75,10 +75,16 @@ export const useUserStore = defineStore("user", {
         useUserMenuApi({
           queryMenusByUserIdInput: {
             userId,
-            orderBy: {
-              field: "sort",
-              direction: "desc"
-            }
+            orderBy: [
+              {
+                field: "sort",
+                direction: "asc"
+              },
+              {
+                field: "createdAt",
+                direction: "asc"
+              }
+            ]
           }
         })
       ];

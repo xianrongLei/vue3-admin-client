@@ -1,5 +1,7 @@
 <template>
   <n-config-provider
+    :locale="langInfo.local"
+    :date-locale="langInfo.date"
     class="h-screen"
     :theme-overrides="themeStore.theme_naiveOverrides"
   >
@@ -13,9 +15,30 @@
 </template>
 
 <script lang="ts" setup>
-import { NThemeEditor } from "naive-ui";
+import { NThemeEditor, zhCN, dateZhCN, enUS, dateEnUS, NDateLocale } from "naive-ui";
+import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 import { useThemeStore } from "@/store/modules/theme/index";
 
+const { locale } = useI18n();
 const themeStore = useThemeStore();
-// 初始化主题
+const langInfo = computed((): { local: typeof zhCN; date: NDateLocale } => {
+  switch (locale.value) {
+    case "zh":
+      return {
+        local: zhCN,
+        date: dateZhCN
+      };
+    case "en":
+      return {
+        local: enUS,
+        date: dateEnUS
+      };
+    default:
+      return {
+        local: zhCN,
+        date: dateZhCN
+      };
+  }
+});
 </script>

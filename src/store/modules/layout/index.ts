@@ -60,7 +60,10 @@ export const useLayoutStore = defineStore("layout", {
       const asideRef = this.layout_asideRef as HTMLElement;
       const { layout_asideWidth, layout_isShrinkMenuExpand, layout_shrinkMenuWidth } = this;
       if (this.layout_isLargeWindow) {
-        if (layout_isShrinkMenuExpand) {
+        if (typeof isExpand === "boolean") {
+          this.layout_isShrinkMenuExpand = isExpand;
+          asideRef.style.width = `${layout_asideWidth}px`;
+        } else if (layout_isShrinkMenuExpand) {
           asideRef.style.width = `${layout_asideWidth}px`;
           this.layout_isShrinkMenuExpand = false;
         } else {
@@ -68,7 +71,7 @@ export const useLayoutStore = defineStore("layout", {
           this.layout_isShrinkMenuExpand = true;
         }
       } else {
-        this.layout_isDrawerMenuExpand = isExpand || !this.layout_isDrawerMenuExpand;
+        this.layout_isDrawerMenuExpand = !this.layout_isDrawerMenuExpand;
       }
     }
   }

@@ -26,7 +26,8 @@ import {
   NBreadcrumb,
   NBreadcrumbItem,
   NDrawerContent,
-  NDrawer
+  NDrawer,
+  NCard
 } from "naive-ui";
 import { DiscreteApi, DiscreteApiType } from "naive-ui/es/discrete/src/interface";
 import { LoadingBarInst } from "naive-ui/es/loading-bar/src/LoadingBarProvider";
@@ -57,7 +58,8 @@ const naive = create({
     NBreadcrumb,
     NBreadcrumbItem,
     NDrawerContent,
-    NDrawer
+    NDrawer,
+    NCard
   ]
 });
 

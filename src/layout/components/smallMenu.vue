@@ -45,7 +45,7 @@ import { AsyncRoute } from "@/store/modules/router/router.types";
 import { router } from "@/router";
 
 const routerStore = useRouterStore();
-const { layout_headerHeight } = useLayoutStore();
+const { layout_headerHeight, useMenuExpand } = useLayoutStore();
 
 const logoHeight = computed(() => `${layout_headerHeight}px`);
 
@@ -63,6 +63,7 @@ const routerHandler = (route: AsyncRoute, index: number) => {
   );
   router.push(select.path);
   routerStore.router_shrinkWithDrawerMenuKey = select.key;
+  useMenuExpand(false);
   nextTick(() => {
     routerStore.router_shrinkMenuRef?.showOption(select.key);
   });
@@ -77,7 +78,7 @@ const routerHandler = (route: AsyncRoute, index: number) => {
   .menu-icon {
     transition: background-color 0.4s ease-in-out;
     &:hover {
-      background: rgba(var(--special-color-rgb), 0.2);
+      background: rgba(var(--special-color-rgb), 0.3);
     }
   }
 }

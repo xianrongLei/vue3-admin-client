@@ -173,6 +173,8 @@ export const useRouterStore = defineStore("router", {
           route.children?.push(...this.useGenerateRoutes(children));
         } else if (menuInfo.type === 0) {
           route.children = undefined;
+        } else if (menuInfo.type > 1) {
+          route.show = false;
         }
         routers.push(route);
       });

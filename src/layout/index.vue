@@ -3,7 +3,7 @@
     <div class="h-full max-h-full flex relative overflow-hidden">
       <LayoutAside />
       <div
-        class="flex-col flex-shrink-0 flex-grow-1 shadow-y-1px"
+        class="flex-col flex-shrink-0 flex-grow-1 shadow-y-1px flex-basis-0"
         :style="{ zIndex: layoutStore.layout_isLargeWindow ? 4 : 2 }"
       >
         <div

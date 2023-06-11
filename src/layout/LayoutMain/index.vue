@@ -1,5 +1,5 @@
 <template>
-  <div class="overflow-hidden flex-shrink-0 flex-grow-0 z-3">
+  <div class="layout-main-container overflow-hidden flex-shrink-0 flex-grow-0 flex-basis-0 z-3">
     <n-scrollbar :style="{ maxHeight: scrollbarHeight }">
       <div
         class="flex flex-col"
@@ -7,7 +7,7 @@
       >
         <router-view v-slot="{ Component }">
           <transition
-            name="app-main"
+            name="route-animation"
             mode="out-in"
           >
             <keep-alive :max="10">
@@ -18,7 +18,7 @@
         <div
           style="box-shadow: var(--shadow-shallow); border-top: 1px solid var(--border-color)"
           :style="{ height: footerHeight }"
-          class="layout-footer relative z-1 m-t-a flex flex-shrink-0 flex-grow-0 flex-items-center justify-center bg-[var(--bg-color)]"
+          class="layout-footer relative z-1 m-t-a flex flex-shrink-0 flex-grow-0 flex-basis-0 flex-items-center justify-center bg-[var(--bg-color)]"
         >
           Pink 2023 Vue3 Admin Starter
         </div>
@@ -43,3 +43,39 @@ const mainHeight = computed(
   () => `calc(100vh - (${layoutStore.layout_headerHeight + layoutStore.layout_tabsHeight + 2}px))`
 );
 </script>
+
+<style lang="scss">
+.layout-main-container {
+  /* 定义过渡效果 */
+  .route-animation-enter-active {
+    transition: opacity 0.4s;
+    animation: route-animation-enter 0.4s;
+  }
+  .route-animation-leave-active {
+    transition: opacity 0.3s;
+    animation: route-animation-leave 0.3s reverse;
+  }
+  .route-animation-enter {
+    opacity: 0;
+  }
+  .route-animation-leave-to {
+    opacity: 0;
+  }
+  @keyframes route-animation-enter {
+    from {
+      transform: translateX(20%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+  @keyframes route-animation-leave {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(10%);
+    }
+  }
+}
+</style>
