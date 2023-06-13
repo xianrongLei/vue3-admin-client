@@ -19,7 +19,7 @@ export const mountGuard = (router: Router): void => {
     const { useMountRoutes } = useRouterStore();
     const userStore = useUserStore();
     // 用户已登录
-    if (userStore.user_token.access_token) {
+    if (userStore.user_token.userId) {
       // 刷新页面
       if (!userStore.user_userInfo.id && isRefresh.value) {
         // 刷新页面重新拉取用户数据

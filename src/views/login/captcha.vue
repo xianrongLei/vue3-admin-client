@@ -2,7 +2,7 @@
 import { onMounted, ref } from "vue";
 import { useMessage } from "naive-ui";
 import { awaitTo } from "@/utils/utils.awaitTo";
-import { useCaptchaApi } from "./login.gql";
+import { useCaptchaApi } from "@/gqlApi/login.gql";
 /**
  * 数据
  */

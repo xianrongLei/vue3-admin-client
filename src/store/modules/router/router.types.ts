@@ -1,58 +1,45 @@
 import { ComponentOptions } from "vue";
-import { RouteRecordRaw } from "vue-router";
+import { Nullable } from "@/types";
 
-export type Menu = {
-  id?: string;
-  createdAt?: string;
-  updatedAt?: string;
-  creator?: string;
-  updater?: string;
-  sort?: string;
-  state?: string;
-  name?: string;
-  description?: string;
-  route?: string;
-  icon?: string;
-  title?: string;
-  type?: number;
-  component?: string;
-  outside?: string;
-  parentId?: string;
-  isCache?: boolean;
-  isHidden?: boolean;
-  children?: [];
+export type RouteMenu = {
+  redirect?: Nullable<string>;
+  path?: Nullable<string>;
+  name?: Nullable<string>;
+  key?: Nullable<string>;
+  show?: Nullable<boolean>;
+  label?: Nullable<string>;
+  component?: Nullable<() => Promise<{ [key: string]: any }>>;
+  children?: RouteMenu[];
+  meta: {
+    id?: Nullable<string>;
+    title?: Nullable<string>;
+    isCache?: Nullable<boolean>;
+    isHidden?: Nullable<boolean>;
+    outside?: Nullable<boolean>;
+    icon?: Nullable<string>;
+    breadcrumb: unknown[];
+  };
 };
 
-export type AsyncRoute = {
-  key: string;
-  show: Boolean;
-  label: string;
-  meta: {
-    outside: boolean;
-    icon: string;
-    component: string;
-  };
-} & RouteRecordRaw;
-
-export interface FindDeepByIdOptions {
-  arr: any[];
-  children_field?: string;
-  id_field: string;
-  value?: any;
+export interface FindDeepByIdOptions<T> {
+  arr: T[];
+  children_field?: keyof T;
+  id_field: keyof T;
+  value?: unknown;
 }
 export interface RouterState {
   /**
    * 全部动态路由
    */
-  router_asyncRoutes: AsyncRoute[];
+  router_asyncRoutes: RouteMenu[];
   /**
    * 联动菜单的数据
    */
-  router_shrinkMenuData: AsyncRoute[];
+  router_shrinkMenuData: RouteMenu[];
   /**
    * 宽菜单内部naiveMenu
    */
-  router_shrinkMenuRef: null | ComponentOptions;
+  router_shrinkMenuRef: Nullable<ComponentOptions>;
 
   /**
    * 窄菜单索引

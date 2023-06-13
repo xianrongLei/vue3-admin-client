@@ -1,8 +1,8 @@
 <template>
-  <div class="layout-main-container overflow-hidden flex-shrink-0 flex-grow-0 flex-basis-0 z-3">
+  <div class="layout-main-container overflow-hidden flex-shrink-0 flex-grow-0 z-3">
     <n-scrollbar :style="{ maxHeight: scrollbarHeight }">
       <div
-        class="flex flex-col"
+        class="flex flex-col flex-shrink-0 flex-grow-0 flex-basis-0"
         :style="{ minHeight: mainHeight }"
       >
         <router-view v-slot="{ Component }">
@@ -53,7 +53,6 @@ const mainHeight = computed(
   }
   .route-animation-leave-active {
     transition: opacity 0.3s;
-    animation: route-animation-leave 0.3s reverse;
   }
   .route-animation-enter {
     opacity: 0;
@@ -62,19 +61,29 @@ const mainHeight = computed(
     opacity: 0;
   }
   @keyframes route-animation-enter {
+    from,
+    60%,
+    75%,
+    90%,
+    to {
+      animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    }
     from {
-      transform: translateX(20%);
+      opacity: 0;
+      transform: translate3d(2500px, 0, 0);
+    }
+    60% {
+      opacity: 1;
+      transform: translate3d(-20px, 0, 0);
+    }
+    75% {
+      transform: translate3d(15px, 0, 0);
+    }
+    90% {
+      transform: translate3d(-5px, 0, 0);
     }
     to {
-      transform: translateX(0);
-    }
-  }
-  @keyframes route-animation-leave {
-    from {
-      transform: translateX(0);
-    }
-    to {
-      transform: translateX(10%);
+      transform: none;
     }
   }
 }

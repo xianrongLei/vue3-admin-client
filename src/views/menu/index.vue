@@ -1,50 +1,45 @@
 <template>
-  <n-card class="menu-container m-15px">
-    <n-form
-      ref="formRef"
-      :model="formData"
-      :rules="formRules"
-      label-placement="left"
-      inline
-      label-width="auto"
-      require-mark-placement="right-hanging"
-      style="max-width: 100%"
-    >
-      <n-form-item
-        label="Input"
-        path="inputValue"
+  <div class="p-15px">
+    <n-card class="menu-container">
+      <n-form
+        ref="formRef"
+        :model="formData"
+        :rules="formRules"
+        size="small"
+        label-placement="left"
+        style="max-width: 100%"
       >
-        <n-input
-          v-model:value="formData.inputValue"
-          placeholder="Input"
-        />
-      </n-form-item>
-      <n-form-item
-        label="Input"
-        path="inputValue"
-      >
-        <n-input
-          v-model:value="formData.inputValue"
-          placeholder="Input"
-        />
-      </n-form-item>
-      <n-form-item
-        label="Input"
-        path="inputValue"
-      >
-        <n-input
-          v-model:value="formData.inputValue"
-          placeholder="Input"
-        />
-      </n-form-item>
-    </n-form>
-    <n-data-table
-      pagination-behavior-on-filter="first"
-      :columns="columns"
-      :data="data"
-      :pagination="pagination"
-    />
-  </n-card>
+        <n-grid
+          cols="2 s:3 m:4 l:5 xl:6 2xl:7"
+          x-gap="12"
+          responsive="screen"
+        >
+          <n-grid-item>
+            <n-form-item
+              label="菜单名称"
+              path="inputValue"
+            >
+              <n-input v-model:value="formData.inputValue" />
+            </n-form-item>
+          </n-grid-item>
+          <n-grid-item>
+            <n-form-item
+              label="路由名称"
+              path="inputValue"
+            >
+              <n-input v-model:value="formData.inputValue" />
+            </n-form-item>
+          </n-grid-item>
+        </n-grid>
+      </n-form>
+      <n-data-table
+        pagination-behavior-on-filter="first"
+        :columns="columns"
+        :data="data"
+        :pagination="pagination"
+      />
+    </n-card>
+  </div>
 </template>
 
 <script lang="ts" setup>

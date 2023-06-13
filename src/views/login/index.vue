@@ -78,7 +78,7 @@
           </n-input>
           <Captcha
             ref="captchaRef"
-            @captcha="(uniCode) => (loginForm.uniCode = uniCode)"
+            @captcha="(uniCode:string) => (loginForm.uniCode = uniCode)"
           />
         </n-form-item>
         <n-form-item>
@@ -103,10 +103,10 @@ import { Person, KeySharp, DiceSharp } from "@vicons/ionicons5";
 import { useI18n } from "vue-i18n";
 import { useLoadingBar, useMessage } from "naive-ui";
 import { useRouter } from "vue-router";
-import { useSignInApi } from "./login.gql";
 import Captcha from "./captcha.vue";
 import { awaitTo } from "@/utils/utils.awaitTo";
 import { UserState, useUserStore } from "@/store/modules/user";
+import { useSignInApi } from "@/gqlApi/login.gql";
 
 /**
  * UI组件
@@ -191,7 +191,7 @@ async function login() {
     access_token,
     refresh_token
   };
-  await awaitTo(userStore.useGetUserInfo(user.id, user));
+  await awaitTo(userStore.useGetUserInfo(user.id as any, user));
   // 跳转路由
   $router.push("/");
   loadingBar.finish();

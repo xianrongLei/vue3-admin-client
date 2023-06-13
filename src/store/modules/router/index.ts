@@ -1,8 +1,9 @@
-/* eslint-disable consistent-return */
 import { defineStore } from "pinia";
-import { Router } from "vue-router";
+import { RouteRecordRaw, Router } from "vue-router";
 import { nextTick } from "vue";
-import { AsyncRoute, FindDeepByIdOptions, Menu, RouterState } from "@/store/modules/router/router.types";
+import { RouteMenu, FindDeepByIdOptions, RouterState } from "@/store/modules/router/router.types";
+import { Menu } from "@/types/gql.types";
+import { Nullable } from "@/types";
 // 加载vue组件
 const layoutModules = import.meta.glob("/src/views/**/*.vue");
 // 把路径转换成驼峰命名
@@ -18,15 +19,15 @@ export const useRouterStore = defineStore("router", {
     router_shrinkWithDrawerMenuKey: {
       type: "local",
       default: "/index",
-      beforeMounted(cache: any) {
-        if (cache) this.router_shrinkWithDrawerMenuKey = cache;
+      beforeMounted(cache) {
+        if (cache) this.router_shrinkWithDrawerMenuKey = cache as string;
       }
     },
     router_smallMenuKey: {
       type: "local",
       default: 0,
-      beforeMounted(cache: any) {
-        if (cache) this.router_smallMenuKey = cache;
+      beforeMounted(cache) {
+        if (cache) this.router_smallMenuKey = cache as number;
       }
     }
   },
@@ -36,16 +37,17 @@ export const useRouterStore = defineStore("router", {
      * @param arr
      * @returns
      */
-    useFindRouteById(options: FindDeepByIdOptions, result: any[]): AsyncRoute {
+    useFindRouteById(options: FindDeepByIdOptions<RouteMenu>, result: RouteMenu[]): RouteMenu {
       const { arr, children_field = "children", id_field, value } = options;
       for (let i = 0; i < arr.length; i += 1) {
         const item = arr[i];
         // 不存在children
-        if (!item[children_field] || arr[i][children_field]?.length === 0) {
+        if (!Array.isArray(item[children_field]) || item[children_field].length === 0) {
           /**
            * 1.没有传value  说明是找结果为空的值
            * 2.有value则找到等于value的返回
            */
+
           if (value && `${item[id_field]}` && item[id_field] === value) {
             result.push(item);
             return result[0];
@@ -83,7 +85,7 @@ export const useRouterStore = defineStore("router", {
          * 初始化在菜单和联动菜单的key
          * 初始化联动菜单的routes
          */
-        this.router_shrinkWithDrawerMenuKey = select.key;
+        this.router_shrinkWithDrawerMenuKey = select.key as string;
         this.router_shrinkMenuData = [asyncRoutes[this.router_smallMenuKey]];
       } else {
         /**
@@ -102,11 +104,11 @@ export const useRouterStore = defineStore("router", {
      * @param router
      * @param menuTree
      */
-    useMountRoutes(router: Router, menuTree: Menu[]) {
+    useMountRoutes(router: Router, menuTree: Nullable<Menu>[]) {
       this.router_asyncRoutes = this.useGenerateRoutes(menuTree);
       this.useSetShrinkMenuData();
       this.router_asyncRoutes.forEach((route) => {
-        router.addRoute("/", route);
+        router.addRoute("/", route as RouteRecordRaw);
       });
     },
     /**
@@ -115,7 +117,7 @@ export const useRouterStore = defineStore("router", {
      * @param componentUrl
      * @returns
      */
-    useGetComponent(componentUrl: string): () => Promise<{ [key: string]: any }> {
+    useGetComponent(componentUrl: Nullable<string>) {
       const component = layoutModules[`/src/views/${componentUrl}.vue`];
       if (!component) {
         // eslint-disable-next-line no-console
@@ -129,28 +131,28 @@ export const useRouterStore = defineStore("router", {
      * @param menuTree
      * @returns
      */
-    useGenerateRoutes(menuTree: Menu[]): AsyncRoute[] {
-      const routers: AsyncRoute[] = [];
-      menuTree.forEach((_menu: Menu) => {
-        const { children, ...menuInfo } = _menu as Required<Menu>;
+    useGenerateRoutes(menuTree: Nullable<Menu>[]): RouteMenu[] {
+      const routers: RouteMenu[] = [];
+      menuTree.forEach((_menu) => {
+        // @ts-ignore
+        const { children, ...menuInfo } = _menu;
         // eslint-disable-next-line one-var
         let component, path, redirect;
-        const childrenExist = children && children.length > 0;
         // 有child  说明不是模块 否则说明是模块 则获取模块的组件
-        if (childrenExist) {
+        if (children && children.length > 0) {
           path = `/${menuInfo.route}`;
-          redirect = `/${(children as any)[0].route}`;
+          redirect = `/${children[0].route}`;
         } else if (menuInfo.outside) {
           path = `/${menuInfo.route}`;
           redirect = undefined;
         } else {
-          component = this.useGetComponent(menuInfo.component);
+          component = this.useGetComponent(menuInfo.component || null);
           path = `/${menuInfo.route}`;
           redirect = undefined;
         }
-        const route: any = {
+        const route: RouteMenu = {
           path,
-          name: menuInfo.name.replace(/\/(\w)/g, (_all, letter) => letter.toUpperCase()),
+          name: menuInfo.name?.replace(/\/(\w)/g, (_all, letter) => letter.toUpperCase()),
           key: menuInfo.id,
           label: menuInfo.title,
           show: !menuInfo.isHidden,
@@ -168,12 +170,14 @@ export const useRouterStore = defineStore("router", {
             breadcrumb: [menuInfo.title]
           }
         };
+
         // 有子菜单的情况
-        if (childrenExist) {
+        if (children.length > 0) {
           route.children?.push(...this.useGenerateRoutes(children));
-        } else if (menuInfo.type === 0) {
+        } else if (typeof menuInfo.type === "number" && menuInfo.type === 0) {
           route.children = undefined;
-        } else if (menuInfo.type > 1) {
+        } else if (typeof menuInfo.type === "number" && menuInfo.type > 1) {
+          route.children = undefined;
           route.show = false;
         }
         routers.push(route);
@@ -186,15 +190,15 @@ export const useRouterStore = defineStore("router", {
      * @param routes
      * @returns
      */
-    useSetBreadcrumb(routes: AsyncRoute[]): AsyncRoute[] {
-      const breadcrumb: string[] = [];
+    useSetBreadcrumb(routes: RouteMenu[]): RouteMenu[] {
+      const breadcrumb: Nullable<string | undefined>[] = [];
       let deep = 0;
-      const setBreadcrumb = (route: any) => {
+      const setBreadcrumb = (route: RouteMenu) => {
         breadcrumb.push(route.meta.title);
         route.meta.breadcrumb = [...breadcrumb.filter((e) => e)]; // 新数组;
         if (route.children) {
           deep += 1;
-          route.children = route.children.map((child: any) => {
+          route.children = route.children.map((child) => {
             breadcrumb.length = deep;
             return setBreadcrumb(child);
           });

@@ -41,7 +41,7 @@
 import { computed, nextTick } from "vue";
 import { useLayoutStore } from "@/store/modules/layout";
 import { useRouterStore } from "@/store/modules/router";
-import { AsyncRoute } from "@/store/modules/router/router.types";
+import { RouteMenu } from "@/store/modules/router/router.types";
 import { router } from "@/router";
 
 const routerStore = useRouterStore();
@@ -49,7 +49,7 @@ const { layout_headerHeight, useMenuExpand } = useLayoutStore();
 
 const logoHeight = computed(() => `${layout_headerHeight}px`);
 
-const routerHandler = (route: AsyncRoute, index: number) => {
+const routerHandler = (route: RouteMenu, index: number) => {
   if (routerStore.router_smallMenuKey === index) return;
   routerStore.router_shrinkMenuData = [route];
   routerStore.router_smallMenuKey = index;
@@ -61,8 +61,8 @@ const routerHandler = (route: AsyncRoute, index: number) => {
     },
     []
   );
-  router.push(select.path);
-  routerStore.router_shrinkWithDrawerMenuKey = select.key;
+  router.push(select.path as string);
+  routerStore.router_shrinkWithDrawerMenuKey = select.key as string;
   useMenuExpand(false);
   nextTick(() => {
     routerStore.router_shrinkMenuRef?.showOption(select.key);
