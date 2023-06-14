@@ -1,4 +1,4 @@
-import type { Router } from "vue-router";
+import { Router } from "vue-router";
 import { useRouterStore } from "@/store/modules/router";
 import { useUserStore } from "@/store/modules/user";
 import { clearAll } from "@/utils/utils.cache-operator";
@@ -9,13 +9,11 @@ import useThemeStore from "@/store/modules/theme";
 const isRefresh = { value: true };
 // 白名单
 const whiteList: string[] = ["/login"];
-// 路由加载条
-
 export const mountGuard = (router: Router): void => {
   // 路由加载前
   router.beforeEach(async (to, _from, next) => {
     const { theme_mode } = useThemeStore();
-    useDiscreteApi(theme_mode, "loadingBar").start();
+    useDiscreteApi<"loadingBar">(theme_mode, "loadingBar").start();
     const { useMountRoutes } = useRouterStore();
     const userStore = useUserStore();
     // 用户已登录
@@ -30,7 +28,7 @@ export const mountGuard = (router: Router): void => {
           if (to.path === "/login") next("/"); // 已登录去登录页进行拦截
           else next({ ...to, replace: true }); // 防止刷新页面后同一路由找不到的情况
         } catch (error: any) {
-          useDiscreteApi(theme_mode, "message").error(error.message);
+          useDiscreteApi<"message">(theme_mode, "message").error(error.message);
           userStore.user_token = {}; // 清除缓存token
           clearAll("local");
           clearAll("session");
@@ -46,7 +44,7 @@ export const mountGuard = (router: Router): void => {
           if (to.path === "/login") next("/"); // 已登录去登录页进行拦截
           else next({ ...to, replace: true }); // 防止刷新页面后同一路由找不到的情况
         } catch (error: any) {
-          useDiscreteApi(theme_mode, "message").error(error.message);
+          useDiscreteApi(theme_mode, "message")?.error(error.message);
           // 清除缓存token
           userStore.user_token = {};
           clearAll("local");
@@ -66,6 +64,6 @@ export const mountGuard = (router: Router): void => {
   });
   router.afterEach(() => {
     const { theme_mode } = useThemeStore();
-    useDiscreteApi(theme_mode, "loadingBar").finish();
+    useDiscreteApi<"loadingBar">(theme_mode, "loadingBar")?.finish();
   });
 };

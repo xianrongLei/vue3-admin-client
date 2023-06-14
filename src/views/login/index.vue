@@ -105,8 +105,10 @@ import { useLoadingBar, useMessage } from "naive-ui";
 import { useRouter } from "vue-router";
 import Captcha from "./captcha.vue";
 import { awaitTo } from "@/utils/utils.awaitTo";
-import { UserState, useUserStore } from "@/store/modules/user";
+import { useUserStore } from "@/store/modules/user";
 import { useSignInApi } from "@/gqlApi/login.gql";
+import { Auth } from "@/types/gql.types";
+import { useRouterStore } from "@/store/modules/router";
 
 /**
  * UI组件
@@ -117,6 +119,7 @@ const [loadingBar, message] = [useLoadingBar(), useMessage()];
  */
 const [$router, { t }] = [useRouter(), useI18n()];
 const userStore = useUserStore();
+const { useSetShrinkMenuData } = useRouterStore();
 /**
  * 组件引用据
  */
@@ -166,17 +169,7 @@ async function login() {
     loadingBar.finish();
     return;
   }
-  // 调用接口
-  type SignInResult = {
-    data: {
-      signIn: {
-        access_token: string;
-        refresh_token: string;
-        user: UserState["user_userInfo"];
-      };
-    };
-  };
-  const [signInErr, data] = await awaitTo<SignInResult>(SignInApi.mutate() as Promise<SignInResult>);
+  const [signInErr, data] = await awaitTo<{ data: { signIn: Auth } }>(SignInApi.mutate() as any);
   if (signInErr) {
     loginForm.value.uniCode = "";
     captchaRef.value?.useCaptcha();
@@ -184,14 +177,17 @@ async function login() {
     loadingBar.error();
     return;
   }
-  const { access_token, refresh_token, user } = data?.data?.signIn as SignInResult["data"]["signIn"];
+  console.log(data);
+
+  // eslint-disable-next-line no-unsafe-optional-chaining
+  const { access_token, refresh_token, user } = data?.data.signIn;
   // 缓存token 获取数据
   userStore.user_token = {
     userId: user.id,
     access_token,
     refresh_token
   };
-  await awaitTo(userStore.useGetUserInfo(user.id as any, user));
+  await awaitTo(userStore.useGetUserInfo(user.id as string, user));
   // 跳转路由
   $router.push("/");
   loadingBar.finish();

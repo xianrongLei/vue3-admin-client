@@ -5,7 +5,7 @@ import gql from "graphql-tag";
  * @param variables
  * @returns
  */
-export const useUserInfoApi = (variables: Record<string, unknown>) =>
+export const useUserInfoApi = (variables: any) =>
   useMutation(
     gql`
       query Menus($queryMenuInput: QueryMenuInput) {

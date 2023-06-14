@@ -1,12 +1,13 @@
 import { defineStore } from "pinia";
 import { useUserInfoApi, useUserMenuApi } from "@/gqlApi/user.gql";
 import { Menu, MenuOrderFelid, OrderDirection, User } from "@/types/gql.types";
+import { Nullable } from "@/types";
 
 export interface UserState {
   user_token: {
-    userId?: string;
-    access_token?: string;
-    refresh_token?: string;
+    userId?: Nullable<string>;
+    access_token?: Nullable<string>;
+    refresh_token?: Nullable<string>;
   };
   user_userInfo: User;
   user_menuTree: Menu[];

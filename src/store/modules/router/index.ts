@@ -37,7 +37,7 @@ export const useRouterStore = defineStore("router", {
      * @param arr
      * @returns
      */
-    useFindRouteById(options: FindDeepByIdOptions<RouteMenu>, result: RouteMenu[]): RouteMenu {
+    useFindRouteByKey(options: FindDeepByIdOptions<RouteMenu>, result: RouteMenu[]): RouteMenu {
       const { arr, children_field = "children", id_field, value } = options;
       for (let i = 0; i < arr.length; i += 1) {
         const item = arr[i];
@@ -53,7 +53,7 @@ export const useRouterStore = defineStore("router", {
             return result[0];
           }
         } else {
-          this.useFindRouteById({ arr: item[children_field], children_field, id_field, value }, result);
+          this.useFindRouteByKey({ arr: item[children_field], children_field, id_field, value }, result);
         }
       }
       return result[0];
@@ -68,24 +68,32 @@ export const useRouterStore = defineStore("router", {
        * 1. 第一种情况 没有缓存首次记载 使用路由地址查找 并使用第一个找到的
        * 3. 第三种情况 有缓存的路由 根据缓存的路由筛选得到的第一个数据
        */
+
       if (this.router_shrinkWithDrawerMenuKey.indexOf("/") !== -1) {
         /**
          * 为了方便设置默认路由地址，如果是首次加载，根据默认路由查找到对应的route
          */
-        const select = this.useFindRouteById(
-          {
-            arr: asyncRoutes,
-            id_field: "path",
-            value: this.router_shrinkWithDrawerMenuKey
-          },
-          []
-        );
+        const [select, index] = this.router_asyncRoutes
+          .map((e, i) => {
+            const result = this.useFindRouteByKey(
+              {
+                arr: [e],
+                id_field: "path",
+                value: "/index"
+              },
+              []
+            );
+            return [result, i];
+          })
+          .filter((e) => e[0])[0] as [RouteMenu, number];
         if (!select) throw new Error("'useSetShrinkMenuData', Not found a 'select' by ID !");
         /**
          * 初始化在菜单和联动菜单的key
          * 初始化联动菜单的routes
          */
-        this.router_shrinkWithDrawerMenuKey = select.key as string;
+        this.router_shrinkWithDrawerMenuKey = select?.key as string;
+        this.router_smallMenuKey = index as number;
+        const a__E = select.meta.breadcrumb;
         this.router_shrinkMenuData = [asyncRoutes[this.router_smallMenuKey]];
       } else {
         /**
@@ -172,7 +180,7 @@ export const useRouterStore = defineStore("router", {
         };
 
         // 有子菜单的情况
-        if (children.length > 0) {
+        if (children?.length > 0) {
           route.children?.push(...this.useGenerateRoutes(children));
         } else if (typeof menuInfo.type === "number" && menuInfo.type === 0) {
           route.children = undefined;

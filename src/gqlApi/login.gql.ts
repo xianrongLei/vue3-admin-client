@@ -1,11 +1,14 @@
-import { useMutation } from "@vue/apollo-composable";
+import { UseMutationReturn, useMutation } from "@vue/apollo-composable";
 import gql from "graphql-tag";
+import { Auth, Captcha, CreateCaptchaInput, SignInInput } from "@/types/gql.types";
 /**
  * 登录
  * @param variables
  * @returns
  */
-export const useSignInApi = (variables: Record<string, unknown>): ReturnType<typeof useMutation> =>
+export const useSignInApi = (variables: {
+  signInInput: SignInInput;
+}): UseMutationReturn<Auth, { signInInput: SignInInput }> =>
   useMutation(
     gql`
       mutation SignIn($signInInput: SignInInput!) {
@@ -46,7 +49,7 @@ export const useSignInApi = (variables: Record<string, unknown>): ReturnType<typ
  * @param variables
  * @returns
  */
-export const useCaptchaApi = (variables: Record<string, unknown>): ReturnType<typeof useMutation> =>
+export const useCaptchaApi = (variables: CreateCaptchaInput): UseMutationReturn<Captcha, CreateCaptchaInput> =>
   useMutation(
     gql`
       mutation Captcha($createCaptchaInput: CreateCaptchaInput!) {

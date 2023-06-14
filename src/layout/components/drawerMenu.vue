@@ -11,7 +11,7 @@
       <div
         class="cursor-pointer flex justify-center"
         :style="{ height: logoHeight }"
-        @click="goToHome($router)"
+        @click="goToHome($route.path)"
       >
         <img
           src="@/assets/logo.png"
@@ -26,6 +26,7 @@
         <n-scrollbar :style="{ maxHeight: scrollbarHeight }">
           <n-menu
             v-model:value="routerStore.router_shrinkWithDrawerMenuKey"
+            accordion
             class="flex-grow-1 x-menu-default"
             :on-update:value="updateHandler"
             :collapsed-width="50"
@@ -40,18 +41,18 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, h, watch } from "vue";
-import { Router } from "vue-router";
+import { computed, h } from "vue";
+import { RouteLocationRaw } from "vue-router";
 import useLayoutStore from "@/store/modules/layout";
 import { useRouterStore } from "@/store/modules/router";
-import { AsyncRoute } from "@/store/modules/router/router.types";
+import { RouteMenu } from "@/store/modules/router/router.types";
 import ASvgIcon from "@/components/ASvgIcon/index.vue";
 import { router } from "@/router";
 import { appConfig } from "@/config/index";
 
 const { layout_asideWidth } = useLayoutStore();
 const [layoutStore, routerStore] = [useLayoutStore(), useRouterStore()];
-const [logoHeight] = [computed(() => `${layoutStore.layout_headerHeight}px`)];
+const logoHeight = computed(() => `${layoutStore.layout_headerHeight}px`);
 
 // 渲染图标占位符以保持缩进
 /**
@@ -59,64 +60,50 @@ const [logoHeight] = [computed(() => `${layoutStore.layout_headerHeight}px`)];
  * @param _key
  * @param item
  */
-const updateHandler = async (key: string, route: AsyncRoute) => {
+const updateHandler = async (key: string, route: RouteMenu) => {
   /**
    * 外链组织跳转路由
    */
   if (route.meta.outside) return;
   layoutStore.useMenuExpand(false);
-  router.push(route.path);
+  router.push(route.path as string);
   // 根据抽屉菜单id设置收缩菜单和小菜单数据
-  const [select, index]: [AsyncRoute, number] = routerStore.router_asyncRoutes
+  const [select, index] = routerStore.router_asyncRoutes
     .map((e, i) => {
-      const result = routerStore.useFindRouteById(
+      const result = routerStore.useFindRouteByKey(
         {
           arr: [e],
           id_field: "key",
-          value: route.key
+          value: key
         },
         []
       );
       return [result, i];
     })
-    .filter((e) => e[0])[0] as any;
-  routerStore.router_shrinkWithDrawerMenuKey = select.key;
+    .filter((e) => e[0])[0] as [RouteMenu, number];
+  routerStore.router_shrinkWithDrawerMenuKey = select.key as string;
   routerStore.router_shrinkMenuData = [routerStore.router_asyncRoutes[index]];
   routerStore.router_smallMenuKey = index;
 };
 const scrollbarHeight = computed(() => `calc(100vh - (${layoutStore.layout_headerHeight + 21}px))`);
 /**
  * 窄菜单路由跳转
- * @param $router
+ * @param router
  * @param route
  */
-const goToHome = async ($router: Router) => {
+const goToHome = async (activePath: string) => {
   // 跳转路由
-  $router.push("/index");
-  // 等待路跳转完毕
-  const isRepeat = await new Promise<boolean>((resolve) => {
-    const unwatch = watch($router.currentRoute, () => {
-      unwatch();
-      resolve(false);
-    });
-    setTimeout(() => {
-      resolve(true);
-    }, 500);
-  });
+  router.push("/index");
   // 如果为真表示重复点击
-  if (isRepeat) return;
-  // 设置当前计划的路由id
-  // routerStore.router_activeKey = $router.currentRoute.value.meta.id as string;
-  // routerStore.router_xActiveKey = $router.currentRoute.value.meta.id as string;
+  if (activePath !== "/index") routerStore.useSetShrinkMenuData();
   // 设置数据菜单
-  routerStore.useSetShrinkMenuData();
   layoutStore.useMenuExpand(false);
 };
 
 // 渲染展开时菜单的label
-const renderMenuLabel = (option: AsyncRoute) => {
+const renderMenuLabel = (option: RouteMenu) => {
   if (option.meta.outside) {
-    return h("a", { href: option.meta.component, target: "_blank" }, option.label);
+    return h("a", { href: option.component, target: "_blank" }, { default: () => option.label });
   }
   return option.label;
 };
@@ -124,12 +111,12 @@ const renderMenuLabel = (option: AsyncRoute) => {
  * 渲染窄菜单图标和label
  * @param option
  */
-const renderMenuIcon = (option: AsyncRoute) => {
+const renderMenuIcon = (option: RouteMenu) => {
   if (option.meta.icon) {
     if (option.meta.outside) {
       return h(
         "a",
-        { class: "x-menu-menu-item", title: option.label, href: option.meta.component, target: "_blank" },
+        { class: "x-menu-menu-item", title: option.label, href: option.component, target: "_blank" },
         h(ASvgIcon, { name: option.meta.icon, size: 15, color: "var(--text-color)" })
       );
     }

@@ -53,7 +53,7 @@ const routerHandler = (route: RouteMenu, index: number) => {
   if (routerStore.router_smallMenuKey === index) return;
   routerStore.router_shrinkMenuData = [route];
   routerStore.router_smallMenuKey = index;
-  const select = routerStore.useFindRouteById(
+  const select = routerStore.useFindRouteByKey(
     {
       arr: [route],
       id_field: "show",
