@@ -1,6 +1,7 @@
 import { UseMutationReturn, useMutation } from "@vue/apollo-composable";
 import gql from "graphql-tag";
 import { Menu, QueryMenusByUserIdInput, User } from "../types/gql.types";
+import { MenuFields } from "./index.gql";
 /**
  * 登录
  * @param variables
@@ -52,22 +53,7 @@ export const useUserMenuApi = (variables: {
 > =>
   useMutation(
     gql`
-      fragment MenuFields on Menu {
-        id
-        sort
-        state
-        name
-        description
-        route
-        icon
-        title
-        type
-        component
-        outside
-        parentId
-        isCache
-        isHidden
-      }
+      ${MenuFields}
       query MenusByUserId($queryMenusByUserIdInput: QueryMenusByUserIdInput) {
         menusByUserId(queryMenusByUserIdInput: $queryMenusByUserIdInput) {
           ...MenuFields

@@ -1,11 +1,13 @@
 <template>
   <div class="p-15px">
-    <n-card class="menu-container">
+    <n-card
+      class="menu-container"
+      hoverable
+    >
       <n-form
         ref="formRef"
         :model="formData"
         :rules="formRules"
-        size="small"
         label-placement="left"
         style="max-width: 100%"
       >
@@ -35,8 +37,9 @@
       <n-data-table
         pagination-behavior-on-filter="first"
         :columns="columns"
-        :data="data"
+        :data="result?.menus.edges"
         :pagination="pagination"
+        :scroll-x="1200"
       />
     </n-card>
   </div>
@@ -44,10 +47,26 @@
 
 <script lang="ts" setup>
 import { DataTableColumns } from "naive-ui";
-import { ref } from "vue";
+import { ref, watchEffect } from "vue";
+import { useMenusApi } from "@/gqlApi/menu.gql";
 
 const formData = ref({ inputValue: "" });
 const formRules = ref({});
+/**
+ * 列表数据
+ */
+const { result } = useMenusApi({
+  queryMenuInput: {
+    after: "",
+    first: 10,
+    query: {
+      parentId: null
+    }
+  }
+});
+watchEffect(() => {
+  console.log(result.value?.menus);
+});
 
 type RowData = {
   key: number;
@@ -58,60 +77,40 @@ type RowData = {
 
 const columns: DataTableColumns<RowData> = [
   {
-    title: "Name",
-    key: "name"
+    title: "名称",
+    key: "node.title",
+    fixed: "left"
   },
   {
-    title: "Age",
-    key: "age"
+    title: "唯一标识",
+    key: "node.name"
   },
   {
-    title: "Address",
-    key: "address",
-    defaultFilterOptionValues: [],
-    filterOptions: [
-      {
-        label: "London",
-        value: "London"
-      },
-      {
-        label: "New York",
-        value: "New York"
-      }
-    ],
-    filter(value, row) {
-      // eslint-disable-next-line no-bitwise
-      return !!~row.address.indexOf(String(value));
-    }
+    title: "类型",
+    key: "node.type"
+  },
+  {
+    title: "名称",
+    key: "node.title"
+  },
+  {
+    title: "名称",
+    key: "node.title"
+  },
+  {
+    title: "名称",
+    key: "node.title"
+  },
+  {
+    title: "名称",
+    key: "node.title"
+  },
+  {
+    title: "名称",
+    key: "node.title"
   }
 ];
 
-const data: RowData[] = [
-  {
-    key: 1,
-    name: "John Brown",
-    age: 32,
-    address: "New York No. 1 Lake Park"
-  },
-  {
-    key: 2,
-    name: "Jim Green",
-    age: 42,
-    address: "London No. 1 Lake Park"
-  },
-  {
-    key: 3,
-    name: "Joe Black",
-    age: 32,
-    address: "Sidney No. 1 Lake Park"
-  },
-  {
-    key: 4,
-    name: "Jim Red",
-    age: 32,
-    address: "London No. 2 Lake Park"
-  }
-];
 const pagination = {
   "show-quick-jumper": true,
   "show-size-picker": true,

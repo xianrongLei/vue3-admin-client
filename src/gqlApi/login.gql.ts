@@ -8,7 +8,7 @@ import { Auth, Captcha, CreateCaptchaInput, SignInInput } from "@/types/gql.type
  */
 export const useSignInApi = (variables: {
   signInInput: SignInInput;
-}): UseMutationReturn<Auth, { signInInput: SignInInput }> =>
+}): UseMutationReturn<{ signIn: Auth }, { signInInput: SignInInput }> =>
   useMutation(
     gql`
       mutation SignIn($signInInput: SignInInput!) {
@@ -49,7 +49,9 @@ export const useSignInApi = (variables: {
  * @param variables
  * @returns
  */
-export const useCaptchaApi = (variables: CreateCaptchaInput): UseMutationReturn<Captcha, CreateCaptchaInput> =>
+export const useCaptchaApi = (variables: {
+  createCaptchaInput: CreateCaptchaInput;
+}): UseMutationReturn<Captcha, { createCaptchaInput: CreateCaptchaInput }> =>
   useMutation(
     gql`
       mutation Captcha($createCaptchaInput: CreateCaptchaInput!) {

@@ -3,7 +3,7 @@
  * @return {Promise} Promise
  */
 
-type ErrorObject = { message: string };
+type ErrorObject = { message: string } & Record<string, any>;
 
 export const awaitTo = async <T>(
   promise: Promise<T>,
@@ -13,7 +13,7 @@ export const awaitTo = async <T>(
     const result = await promise;
     return [null, result];
   } catch (error: any) {
-    const errorObject: ErrorObject = { message: error.message, ...(extantErr || {}) };
+    const errorObject = { message: error.message, ...extantErr };
     return [errorObject, null];
   }
 };

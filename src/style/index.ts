@@ -7,3 +7,5 @@ import "vfonts/Lato.css";
 import "vfonts/FiraCode.css";
 // svgIcon
 import "virtual:svg-icons-register";
+// naiveUI 样式优化
+import "./naiveUI.scss";
