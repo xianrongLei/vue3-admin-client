@@ -1,17 +1,15 @@
 <template>
   <div
-    class="flex-shrink-0 flex-grow-0 flex items-end"
+    class="layout-tabs-container flex-shrink-0 flex-grow-0 flex items-end"
     :style="{ height: tabsHeight }"
   >
     <n-tabs
-      class="w-full max-w-100%"
       type="card"
       size="small"
       closable
-      addable
     >
       <n-tab
-        v-for="item in 10"
+        v-for="item in 1"
         :key="item"
         :name="'幸福' + item"
       >
@@ -32,3 +30,25 @@ import useLayoutStore from "@/store/modules/layout";
 const layoutStore = useLayoutStore();
 const tabsHeight = computed(() => `${layoutStore.layout_tabsHeight}px`);
 </script>
+
+<style lang="scss" scoped>
+.layout-tabs-container {
+  :deep(.n-tabs) {
+    margin-bottom: 2px;
+    .n-tabs-tab-wrapper {
+      .n-tabs-tab {
+        min-width: 50px;
+        transition: width 2s;
+      }
+      &:hover {
+        .n-base-close {
+          display: flex;
+        }
+      }
+      .n-base-close {
+        display: none;
+      }
+    }
+  }
+}
+</style>

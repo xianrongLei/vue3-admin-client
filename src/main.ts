@@ -32,10 +32,3 @@ mountI18n(app.use);
 mountComponents(app.component);
 // render application
 app.mount("#app");
-
-// eslint-disable-next-line no-restricted-syntax
-// for (const [key, component] of Object.entries(appIcons)) {
-//   app.component(key, component);
-//   console.log(component);
-
-// }

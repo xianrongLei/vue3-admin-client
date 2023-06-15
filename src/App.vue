@@ -16,12 +16,28 @@
 
 <script lang="ts" setup>
 import { NThemeEditor, zhCN, dateZhCN, enUS, dateEnUS, NDateLocale } from "naive-ui";
-import { computed } from "vue";
+import { computed, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useThemeStore } from "@/store/modules/theme/index";
+import { mountDiscreteApi } from "@/naive/index";
 
-const { locale } = useI18n();
 const themeStore = useThemeStore();
+const { locale } = useI18n();
+/**
+ * 挂载naive-ui 独立api
+ */
+watch(
+  () => themeStore.theme_mode,
+  (newTheme) => {
+    mountDiscreteApi(newTheme);
+  },
+  {
+    immediate: true
+  }
+);
+/**
+ * 切换app显示语言
+ */
 const langInfo = computed((): { local: typeof zhCN; date: NDateLocale } => {
   switch (locale.value) {
     case "zh":
