@@ -17,14 +17,14 @@ export const useRouterStore = defineStore("router", {
   }),
   cache: {
     router_shrinkWithDrawerMenuKey: {
-      type: "local",
+      type: "session",
       default: "/index",
       beforeMounted(cache) {
         if (cache) this.router_shrinkWithDrawerMenuKey = cache as string;
       }
     },
     router_smallMenuKey: {
-      type: "local",
+      type: "session",
       default: 0,
       beforeMounted(cache) {
         if (cache) this.router_smallMenuKey = cache as number;
@@ -93,7 +93,6 @@ export const useRouterStore = defineStore("router", {
          */
         this.router_shrinkWithDrawerMenuKey = select?.key as string;
         this.router_smallMenuKey = index as number;
-        const a__E = select.meta.breadcrumb;
         this.router_shrinkMenuData = [asyncRoutes[this.router_smallMenuKey]];
       } else {
         /**

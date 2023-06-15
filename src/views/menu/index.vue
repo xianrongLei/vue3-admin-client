@@ -8,6 +8,7 @@
         ref="formRef"
         :model="formData"
         :rules="formRules"
+        size="small"
         label-placement="left"
         style="max-width: 100%"
       >
@@ -37,7 +38,7 @@
       <n-data-table
         pagination-behavior-on-filter="first"
         :columns="columns"
-        :data="result?.menus.edges"
+        :data="tableDate"
         :pagination="pagination"
         :scroll-x="1200"
       />
@@ -47,8 +48,9 @@
 
 <script lang="ts" setup>
 import { DataTableColumns } from "naive-ui";
-import { ref, watchEffect } from "vue";
+import { Ref, ref, watchEffect } from "vue";
 import { useMenusApi } from "@/gqlApi/menu.gql";
+import { MenuEdge } from "@/types/gql.types";
 
 const formData = ref({ inputValue: "" });
 const formRules = ref({});
@@ -64,8 +66,14 @@ const { result } = useMenusApi({
     }
   }
 });
+
+const tableDate: Ref<Partial<MenuEdge & { key: string }>[]> = ref([]);
+console.log(tableDate);
+
 watchEffect(() => {
-  console.log(result.value?.menus);
+  if (result.value?.menus?.edges) {
+    tableDate.value = result.value.menus.edges.map((e) => ({ ...e, key: e!.cursor }));
+  }
 });
 
 type RowData = {
@@ -77,37 +85,53 @@ type RowData = {
 
 const columns: DataTableColumns<RowData> = [
   {
-    title: "名称",
-    key: "node.title",
+    type: "selection",
     fixed: "left"
   },
   {
+    title: "名称",
+    key: "node.title",
+    fixed: "left",
+    align: "center"
+  },
+  {
     title: "唯一标识",
-    key: "node.name"
+    key: "node.name",
+    align: "center"
   },
   {
     title: "类型",
-    key: "node.type"
+    key: "node.type",
+    align: "center"
   },
   {
-    title: "名称",
-    key: "node.title"
+    title: "是否隐藏",
+    key: "node.isHidden",
+    align: "center"
   },
   {
-    title: "名称",
-    key: "node.title"
+    title: "打开方式",
+    key: "node.outside",
+    align: "center"
   },
   {
-    title: "名称",
-    key: "node.title"
+    title: "组件路径",
+    key: "node.component",
+    align: "center"
   },
   {
-    title: "名称",
-    key: "node.title"
+    title: "路由地址",
+    key: "node.route",
+    align: "center"
   },
   {
-    title: "名称",
-    key: "node.title"
+    title: "操作",
+    key: "none",
+    fixed: "right",
+    align: "center",
+    render() {
+      return "dsf";
+    }
   }
 ];
 

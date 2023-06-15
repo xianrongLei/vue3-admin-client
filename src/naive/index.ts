@@ -26,7 +26,8 @@ import {
   NDrawer,
   NCard,
   NGrid,
-  NGridItem
+  NGridItem,
+  NTabs
 } from "naive-ui";
 import { DiscreteApi, DiscreteApiType } from "naive-ui/es/discrete/src/interface";
 import { ThemeState } from "@/store/modules/theme";
@@ -59,7 +60,9 @@ const naive = create({
     NDrawer,
     NCard,
     NGrid,
-    NGridItem
+    NGridItem,
+    NTab,
+    NTabs
   ]
 });
 
