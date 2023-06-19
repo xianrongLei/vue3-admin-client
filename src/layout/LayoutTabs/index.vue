@@ -6,19 +6,40 @@
     <n-tabs
       type="card"
       size="small"
+      placement="bottom"
       closable
     >
       <n-tab
-        v-for="item in 1"
+        v-for="item in 4"
         :key="item"
         :name="'幸福' + item"
       >
-        寂寞围绕着电视
+        <span>寂寞{{ item }}</span>
       </n-tab>
-      <n-tab name="的"> 垂死坚持 </n-tab>
-      <n-tab name="旁边"> 在两点半消失 </n-tab>
-      <template #prefix> Prefix </template>
-      <template #suffix> Suffix </template>
+      <template #prefix>
+        <div
+          style="transition: background 0.3s; background: var(--n-tab-color)"
+          class="box-border flex items-center justify-center h-full p-x-4px cursor-pointer"
+        >
+          <a-svg-icon
+            name="arrowDoubleLeft"
+            :size="18"
+            color="var(--text-soft-color)"
+          />
+        </div>
+      </template>
+      <template #suffix>
+        <div
+          style="transition: background 0.3s; background: var(--n-tab-color)"
+          class="box-border flex items-center justify-center h-full p-x-4px cursor-pointer"
+        >
+          <a-svg-icon
+            name="arrowDoubleRight"
+            :size="18"
+            color="var(--text-soft-color)"
+          />
+        </div>
+      </template>
     </n-tabs>
   </div>
 </template>
@@ -34,19 +55,45 @@ const tabsHeight = computed(() => `${layoutStore.layout_tabsHeight}px`);
 <style lang="scss" scoped>
 .layout-tabs-container {
   :deep(.n-tabs) {
-    margin-bottom: 2px;
-    .n-tabs-tab-wrapper {
-      .n-tabs-tab {
-        min-width: 50px;
-        transition: width 2s;
-      }
+    user-select: none;
+    .n-tabs-nav__suffix,
+    .n-tabs-nav__prefix {
       &:hover {
-        .n-base-close {
-          display: flex;
-        }
+        background: rgba(var(--special-color-rgb), 0.05);
       }
-      .n-base-close {
-        display: none;
+      &:active {
+        background: rgba(var(--special-color-rgb), 0.15);
+      }
+      border: none;
+      padding: 0;
+    }
+    .n-tabs-pad {
+      border: none;
+    }
+    .n-tabs-nav-scroll-content {
+      border: none;
+
+      .n-tabs-tab-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .n-tabs-tab__label {
+          box-sizing: border-box;
+          padding-top: 2px;
+        }
+        .n-tabs-tab--active {
+          background: rgba(var(--special-color-rgb), 0.2);
+        }
+        .n-tabs-tab {
+          border-bottom: 0;
+          border-top: 0;
+          overflow: hidden;
+          border-radius: 0;
+          padding: 4px 4px 3px 10px;
+        }
+        .n-tabs-tab-pad {
+          border: 0;
+        }
       }
     }
   }

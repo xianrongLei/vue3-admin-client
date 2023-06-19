@@ -7,7 +7,7 @@
     <div class="h-full flex justify-center items-center w-50px">
       <a-svg-icon
         @click="layoutStore.useMenuExpand()"
-        :name="layoutStore.layout_isShrinkMenuExpand ? 'switch-off' : 'switch-on'"
+        :name="layoutStore.layout_isShrinkMenuExpand ? 'switchOff' : 'switchOn'"
         :size="24"
         class="cursor-pointer"
         color="var(--text-soft-color)"

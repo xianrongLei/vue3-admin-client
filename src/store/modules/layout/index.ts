@@ -8,7 +8,7 @@ export const useLayoutStore = defineStore("layout", {
     layout_asideWidth: 260,
     layout_shrinkMenuWidth: 210,
     layout_headerHeight: 55,
-    layout_tabsHeight: 40,
+    layout_tabsHeight: 30,
     layout_footerHeight: 65,
     layout_minWidth: 1000,
     layout_isLargeWindow: false,

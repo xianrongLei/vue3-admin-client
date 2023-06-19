@@ -1,0 +1,2 @@
+1. 删除新增icon的高度和宽度属性 避免影响全局icon组件设置icon大小
+2. 删除新增icon的fill属性 避免影响全局icon组件设置icon颜色

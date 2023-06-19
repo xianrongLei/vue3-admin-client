@@ -22,13 +22,12 @@
         <div class="w-full h-full flex justify-center items-center p-x-4px box-border">
           <div
             @click="routerHandler(item, index)"
-            :title="item.label"
+            :title="item.label!"
             :class="index === routerStore.router_smallMenuKey ? 'menu-icon-active' : ''"
             class="menu-icon flex justify-center items-center w-full h-full box-border b-rd-5px bg-[rgba(var(--special-color-rgb),0.1)] cursor-pointer"
           >
             <a-svg-icon
               :name="item.meta.icon"
-              color="var(--text-color)"
               :size="26"
             />
           </div>
