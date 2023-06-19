@@ -46,10 +46,10 @@
 
 <script lang="ts" setup>
 import { computed } from "vue";
-import useLayoutStore from "@/store/modules/layout";
+import useAppStore from "@/store/modules/app";
 
-const layoutStore = useLayoutStore();
-const tabsHeight = computed(() => `${layoutStore.layout_tabsHeight}px`);
+const appStore = useAppStore();
+const tabsHeight = computed(() => `${appStore.app_tabsHeight}px`);
 </script>
 
 <style lang="scss" scoped>

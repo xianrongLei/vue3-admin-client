@@ -1,7 +1,7 @@
 <template>
   <n-drawer
-    v-model:show="layoutStore.layout_isDrawerMenuExpand"
-    :width="layout_asideWidth"
+    v-model:show="appStore.app_isDrawerMenuExpand"
+    :width="app_asideWidth"
     placement="left"
   >
     <div
@@ -43,16 +43,16 @@
 <script lang="ts" setup>
 import { computed, h } from "vue";
 import { RouteLocationRaw } from "vue-router";
-import useLayoutStore from "@/store/modules/layout";
+import useAppStore from "@/store/modules/app";
 import { useRouterStore } from "@/store/modules/router";
 import { RouteMenu } from "@/store/modules/router/router.types";
 import ASvgIcon from "@/components/ASvgIcon/index.vue";
 import { router } from "@/router";
 import { appConfig } from "@/config/index";
 
-const { layout_asideWidth } = useLayoutStore();
-const [layoutStore, routerStore] = [useLayoutStore(), useRouterStore()];
-const logoHeight = computed(() => `${layoutStore.layout_headerHeight}px`);
+const { app_asideWidth } = useAppStore();
+const [appStore, routerStore] = [useAppStore(), useRouterStore()];
+const logoHeight = computed(() => `${appStore.app_headerHeight}px`);
 
 // 渲染图标占位符以保持缩进
 /**
@@ -65,7 +65,7 @@ const updateHandler = async (key: string, route: RouteMenu) => {
    * 外链组织跳转路由
    */
   if (route.meta.outside) return;
-  layoutStore.useMenuExpand(false);
+  appStore.useMenuExpand(false);
   router.push(route.path as string);
   // 根据抽屉菜单id设置收缩菜单和小菜单数据
   const [select, index] = routerStore.router_asyncRoutes
@@ -85,7 +85,7 @@ const updateHandler = async (key: string, route: RouteMenu) => {
   routerStore.router_shrinkMenuData = [routerStore.router_asyncRoutes[index]];
   routerStore.router_smallMenuKey = index;
 };
-const scrollbarHeight = computed(() => `calc(100vh - (${layoutStore.layout_headerHeight + 21}px))`);
+const scrollbarHeight = computed(() => `calc(100vh - (${appStore.app_headerHeight + 21}px))`);
 /**
  * 窄菜单路由跳转
  * @param router
@@ -97,7 +97,7 @@ const goToHome = async (activePath: string) => {
   // 如果为真表示重复点击
   if (activePath !== "/index") routerStore.useSetShrinkMenuData();
   // 设置数据菜单
-  layoutStore.useMenuExpand(false);
+  appStore.useMenuExpand(false);
 };
 
 // 渲染展开时菜单的label

@@ -15,7 +15,7 @@
           ref="shrinkMenuRef"
           v-model:value="routerStore.router_shrinkWithDrawerMenuKey"
           :on-update:value="updateHandler"
-          :collapsed="layoutStore.layout_isShrinkMenuExpand"
+          :collapsed="appStore.app_isShrinkMenuExpand"
           :collapsed-width="0"
           :collapsed-icon-size="0"
           :options="routerStore.router_shrinkMenuData"
@@ -29,15 +29,15 @@
 
 <script lang="ts" setup>
 import { computed, h, onMounted, ref } from "vue";
-import { useLayoutStore } from "@/store/modules/layout/index";
+import { useAppStore } from "@/store/modules/app/index";
 import { useRouterStore } from "@/store/modules/router";
 import { router } from "@/router";
 import ASvgIcon from "@/components/ASvgIcon/index.vue";
 import { AsyncRoute } from "@/store/modules/router/router.types";
 import { appConfig } from "@/config/index";
 
-const { layout_headerHeight, layout_shrinkMenuWidth } = useLayoutStore();
-const layoutStore = useLayoutStore();
+const { app_headerHeight, app_shrinkMenuWidth } = useAppStore();
+const appStore = useAppStore();
 const routerStore = useRouterStore();
 const renderMenuLabel = (option: AsyncRoute) => {
   if (option.meta.outside) {
@@ -48,12 +48,12 @@ const renderMenuLabel = (option: AsyncRoute) => {
 /**
  * 滚动条区域高度 包含footer
  */
-const scrollbarHeight = computed(() => `calc(100vh - (${layout_headerHeight + 21}px))`);
+const scrollbarHeight = computed(() => `calc(100vh - (${app_headerHeight + 21}px))`);
 const [logoHeight, menuWidth] = [
   // logo的高度
-  computed(() => `${layout_headerHeight}px`),
+  computed(() => `${app_headerHeight}px`),
   // 菜单的宽度
-  computed(() => `${layout_shrinkMenuWidth}px`)
+  computed(() => `${app_shrinkMenuWidth}px`)
 ];
 /**
  * 渲染窄菜单图标和label

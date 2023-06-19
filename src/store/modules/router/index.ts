@@ -6,7 +6,6 @@ import { Menu } from "@/types/gql.types";
 import { Nullable } from "@/types";
 // 加载vue组件
 const layoutModules = import.meta.glob("/src/views/**/*.vue");
-// 把路径转换成驼峰命名
 export const useRouterStore = defineStore("router", {
   state: (): RouterState => ({
     router_asyncRoutes: [],

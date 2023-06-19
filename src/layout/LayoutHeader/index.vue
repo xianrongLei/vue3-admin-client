@@ -6,8 +6,8 @@
   >
     <div class="h-full flex justify-center items-center w-50px">
       <a-svg-icon
-        @click="layoutStore.useMenuExpand()"
-        :name="layoutStore.layout_isShrinkMenuExpand ? 'switchOff' : 'switchOn'"
+        @click="appStore.useMenuExpand()"
+        :name="appStore.app_isShrinkMenuExpand ? 'switchOff' : 'switchOn'"
         :size="24"
         class="cursor-pointer"
         color="var(--text-soft-color)"
@@ -34,12 +34,12 @@
 <script lang="ts" setup>
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
-import { useLayoutStore } from "@/store/modules/layout";
+import { useAppStore } from "@/store/modules/app";
 import { useThemeStore } from "@/store/modules/theme";
 
-const layoutStore = useLayoutStore();
+const appStore = useAppStore();
 const themeStore = useThemeStore();
-const headerHeight = computed(() => `${layoutStore.layout_headerHeight}px`);
+const headerHeight = computed(() => `${appStore.app_headerHeight}px`);
 
 const { locale } = useI18n();
 const checkLang = () => {

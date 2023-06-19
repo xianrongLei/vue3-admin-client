@@ -29,20 +29,16 @@
 
 <script lang="ts" setup>
 import { computed } from "vue";
-import useLayoutStore from "@/store/modules/layout";
+import useAppStore from "@/store/modules/app";
 
-const layoutStore = useLayoutStore();
+const appStore = useAppStore();
 // footer 高度
-const footerHeight = computed(() => `${layoutStore.layout_footerHeight - 1}px`);
+const footerHeight = computed(() => `${appStore.app_footerHeight - 1}px`);
 
 // 滚动条区域高度 包含footer 额外减去2条边框
-const scrollbarHeight = computed(
-  () => `calc(100vh - (${layoutStore.layout_headerHeight + layoutStore.layout_tabsHeight + 2}px))`
-);
+const scrollbarHeight = computed(() => `calc(100vh - (${appStore.app_headerHeight + appStore.app_tabsHeight + 2}px))`);
 // 主容器区域高度 不包含footer 额外减去3条边框
-const mainHeight = computed(
-  () => `calc(100vh - (${layoutStore.layout_headerHeight + layoutStore.layout_tabsHeight + 2}px))`
-);
+const mainHeight = computed(() => `calc(100vh - (${appStore.app_headerHeight + appStore.app_tabsHeight + 2}px))`);
 </script>
 
 <style lang="scss">

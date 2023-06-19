@@ -4,7 +4,7 @@
       <LayoutAside />
       <div
         class="flex-col flex-shrink-0 flex-grow-1 shadow-y-1px flex-basis-0 overflow-hidden"
-        :style="{ zIndex: layoutStore.layout_isLargeWindow ? 4 : 2 }"
+        :style="{ zIndex: appStore.app_isLargeWindow ? 4 : 2 }"
       >
         <div
           class="z-4 relative bg-[var(--bg-color)]"
@@ -27,8 +27,8 @@ import LayoutTabs from "./layoutTabs/index.vue";
 import LayoutMain from "./layoutMain/index.vue";
 import LayoutHeader from "./layoutHeader/index.vue";
 import LayoutAside from "./layoutAside/index.vue";
-import { useLayoutStore } from "@/store/modules/layout";
+import { useAppStore } from "@/store/modules/app";
 
-const layoutStore = useLayoutStore();
-layoutStore.useWindowResize();
+const appStore = useAppStore();
+appStore.useWindowResize();
 </script>

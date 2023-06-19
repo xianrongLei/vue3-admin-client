@@ -38,15 +38,15 @@
 </template>
 <script lang="ts" setup>
 import { computed, nextTick } from "vue";
-import { useLayoutStore } from "@/store/modules/layout";
+import { useAppStore } from "@/store/modules/app";
 import { useRouterStore } from "@/store/modules/router";
 import { RouteMenu } from "@/store/modules/router/router.types";
 import { router } from "@/router";
 
 const routerStore = useRouterStore();
-const { layout_headerHeight, useMenuExpand } = useLayoutStore();
+const { app_headerHeight, useMenuExpand } = useAppStore();
 
-const logoHeight = computed(() => `${layout_headerHeight}px`);
+const logoHeight = computed(() => `${app_headerHeight}px`);
 
 const routerHandler = (route: RouteMenu, index: number) => {
   if (routerStore.router_smallMenuKey === index) return;
