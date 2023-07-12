@@ -33,15 +33,15 @@ import { useAppStore } from "@/store/modules/app/index";
 import { useRouterStore } from "@/store/modules/router";
 import { router } from "@/router";
 import ASvgIcon from "@/components/ASvgIcon/index.vue";
-import { AsyncRoute } from "@/store/modules/router/router.types";
+import { RouteMenu } from "@/store/modules/router/router.types";
 import { appConfig } from "@/config/index";
 
 const { app_headerHeight, app_shrinkMenuWidth } = useAppStore();
 const appStore = useAppStore();
 const routerStore = useRouterStore();
-const renderMenuLabel = (option: AsyncRoute) => {
+const renderMenuLabel = (option: RouteMenu) => {
   if (option.meta.outside) {
-    return h("a", { href: option.meta.component, target: "_blank" }, option.label);
+    return h("a", { href: option.component, target: "_blank" }, { default: () => option.label });
   }
   return option.label;
 };
@@ -59,7 +59,7 @@ const [logoHeight, menuWidth] = [
  * 渲染窄菜单图标和label
  * @param option
  */
-const renderMenuIcon = (option: AsyncRoute) => {
+const renderMenuIcon = (option: RouteMenu) => {
   if (option.meta.icon) {
     return h(
       "div",
@@ -74,13 +74,13 @@ const renderMenuIcon = (option: AsyncRoute) => {
  * @param _key
  * @param item
  */
-const updateHandler = (_key: string, route: AsyncRoute) => {
+const updateHandler = (_key: string, route: RouteMenu) => {
   /**
    * 外链组织跳转路由
    */
   if (route.meta.outside) return;
-  router.push(route.path);
-  routerStore.router_shrinkWithDrawerMenuKey = route.key;
+  router.push(route.path!);
+  routerStore.router_shrinkWithDrawerMenuKey = route.key!;
 };
 const shrinkMenuRef = ref();
 onMounted(() => {

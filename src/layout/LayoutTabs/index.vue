@@ -1,6 +1,6 @@
 <template>
   <div
-    class="layout-tabs-container flex-shrink-0 flex-grow-0 flex items-end"
+    class="layout-tabs-container flex-shrink-0 flex-grow-0 flex items-end box-border h-31px"
     :style="{ height: tabsHeight }"
   >
     <n-tabs
@@ -18,7 +18,7 @@
       </n-tab>
       <template #prefix>
         <div
-          style="transition: background 0.3s; background: var(--n-tab-color)"
+          style="transition: background 0.3s; background: var(--bg-color)"
           class="box-border flex items-center justify-center h-full p-x-4px cursor-pointer"
         >
           <a-svg-icon
@@ -30,7 +30,7 @@
       </template>
       <template #suffix>
         <div
-          style="transition: background 0.3s; background: var(--n-tab-color)"
+          style="transition: background 0.3s; background: var(--bg-color)"
           class="box-border flex items-center justify-center h-full p-x-4px cursor-pointer"
         >
           <a-svg-icon
@@ -64,8 +64,9 @@ const tabsHeight = computed(() => `${appStore.app_tabsHeight}px`);
       &:active {
         background: rgba(var(--special-color-rgb), 0.15);
       }
-      border: none;
       padding: 0;
+      border: 1px solid var(--border-color);
+      box-sizing: border-box;
     }
     .n-tabs-pad {
       border: none;
@@ -78,18 +79,16 @@ const tabsHeight = computed(() => `${appStore.app_tabsHeight}px`);
         align-items: center;
         justify-content: center;
         .n-tabs-tab__label {
-          box-sizing: border-box;
           padding-top: 2px;
         }
         .n-tabs-tab--active {
           background: rgba(var(--special-color-rgb), 0.2);
         }
         .n-tabs-tab {
-          border-bottom: 0;
-          border-top: 0;
           overflow: hidden;
           border-radius: 0;
           padding: 4px 4px 3px 10px;
+          border: 1px solid var(--border-color);
         }
         .n-tabs-tab-pad {
           border: 0;

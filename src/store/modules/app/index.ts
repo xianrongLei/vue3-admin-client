@@ -2,13 +2,14 @@ import { once, debounce } from "lodash";
 import { defineStore } from "pinia";
 import { nextTick, watch } from "vue";
 import { AppState } from "./app.types";
+import { RouteMenu } from "../router/router.types";
 
 export const useAppStore = defineStore("app", {
   state: (): AppState => ({
     app_asideWidth: 260,
     app_shrinkMenuWidth: 210,
     app_headerHeight: 55,
-    app_tabsHeight: 30,
+    app_tabsHeight: 31,
     app_footerHeight: 65,
     app_minWidth: 1000,
     app_isLargeWindow: false,
@@ -16,7 +17,9 @@ export const useAppStore = defineStore("app", {
     app_shrinkMenuRef: null,
     app_drawerMenuRef: null,
     app_isShrinkMenuExpand: false,
-    app_isDrawerMenuExpand: false
+    app_isDrawerMenuExpand: false,
+    app_tabList: [],
+    app_activeTab: {}
   }),
   actions: {
     /**
@@ -73,6 +76,17 @@ export const useAppStore = defineStore("app", {
       } else {
         this.app_isDrawerMenuExpand = !this.app_isDrawerMenuExpand;
       }
+    },
+    /**
+     * 往tabList增加一项
+     * @param tab
+     */
+    useAddTabToList(tab: RouteMenu) {
+      if (this.app_tabList.find((e) => e.key === tab.key)) {
+        this.app_activeTab = tab;
+        return;
+      }
+      this.app_tabList.push(tab);
     }
   }
 });

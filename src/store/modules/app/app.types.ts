@@ -1,3 +1,5 @@
+import { RouteMenu } from "../router/router.types";
+
 export interface AppState {
   /**
    *  aside的宽度 单位px
@@ -48,6 +50,11 @@ export interface AppState {
    */
   app_isDrawerMenuExpand: boolean;
   /**
-   * tabs
+   * tabs列表
    */
+  app_tabList: RouteMenu[];
+  /**
+   * tabs active tab
+   */
+  app_activeTab: RouteMenu | {};
 }

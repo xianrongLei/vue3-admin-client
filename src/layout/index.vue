@@ -7,7 +7,7 @@
         :style="{ zIndex: appStore.app_isLargeWindow ? 4 : 2 }"
       >
         <div
-          class="z-4 relative bg-[var(--bg-color)]"
+          class="z-4 relative bg-[var(--bg-color)] box-border"
           style="
             box-shadow: 6px 0 5px 2px rgba(var(--shadow-color-rgb), 0.2);
             border-bottom: 1px solid var(--border-color);

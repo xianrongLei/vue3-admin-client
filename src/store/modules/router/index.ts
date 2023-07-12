@@ -90,8 +90,8 @@ export const useRouterStore = defineStore("router", {
          * 初始化在菜单和联动菜单的key
          * 初始化联动菜单的routes
          */
-        this.router_shrinkWithDrawerMenuKey = select?.key as string;
-        this.router_smallMenuKey = index as number;
+        this.router_shrinkWithDrawerMenuKey = select?.key!;
+        this.router_smallMenuKey = index!;
         this.router_shrinkMenuData = [asyncRoutes[this.router_smallMenuKey]];
       } else {
         /**

@@ -3,7 +3,7 @@
     ref="app_asideRef"
     style="box-shadow: var(--shadow-shallow); transition: width 0.2s; border-right: 1px solid var(--border-color)"
     :style="{ width: `${appStore.app_asideWidth}px` }"
-    class="layout-aside-container h-full flex flex-shrink-0 flex-grow-0 overflow-hidden relative top-0 left-0 z-4 bg-[var(--bg-color)]"
+    class="layout-aside-container h-full flex flex-shrink-0 flex-grow-0 overflow-hidden relative top-0 left-0 z-4 bg-[var(--bg-color)] box-border"
   >
     <!-- 窄菜单 -->
     <SmallMenu />
