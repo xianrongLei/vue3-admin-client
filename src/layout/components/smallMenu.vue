@@ -6,6 +6,7 @@
     <div
       class="cursor-pointer flex justify-center"
       :style="{ height: logoHeight }"
+      @click="goToHome($route.path)"
     >
       <img
         src="@/assets/logo.png"
@@ -48,6 +49,24 @@ const { app_headerHeight, useMenuExpand } = useAppStore();
 
 const logoHeight = computed(() => `${app_headerHeight}px`);
 
+/**
+ * 跳转到首页
+ * @param _key
+ * @param item
+ */
+const goToHome = async (activePath: string) => {
+  // 跳转路由
+  router.push("/index");
+  // 如果为真表示重复点击
+  if (activePath !== "/index") routerStore.useSetShrinkMenuData();
+  // 设置数据菜单
+  useMenuExpand(false);
+};
+/**
+ * 跳转路由
+ * @param _key
+ * @param item
+ */
 const routerHandler = (route: RouteMenu, index: number) => {
   if (routerStore.router_smallMenuKey === index) return;
   routerStore.router_shrinkMenuData = [route];

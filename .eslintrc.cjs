@@ -11,7 +11,7 @@ module.exports = {
   parser: "vue-eslint-parser",
   // 解析器配置
   parserOptions: {
-    ecmaVersion: "latest",
+    ecmaVersion: 2021,
     sourceType: "module",
     parser: "@typescript-eslint/parser",
     ecmaFeatures: {
@@ -60,6 +60,10 @@ module.exports = {
     "import/no-absolute-path": 0,
 
     // 关闭驼峰命名检查
-    camelcase: "off"
+    camelcase: "off",
+
+    // 导入导出类型时必须使用 type 关键字
+    "@typescript-eslint/consistent-type-imports": 0,
+    "@typescript-eslint/consistent-type-exports": 0
   }
 };

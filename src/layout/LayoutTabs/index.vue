@@ -18,25 +18,25 @@
       </n-tab>
       <template #prefix>
         <div
-          style="transition: background 0.3s; background: var(--bg-color)"
+          style="transition: background 0.3s; background-color: var(--bg-color)"
           class="box-border flex items-center justify-center h-full p-x-4px cursor-pointer"
         >
           <a-svg-icon
             name="arrowDoubleLeft"
             :size="18"
-            color="var(--text-soft-color)"
+            color="var(--special-color)"
           />
         </div>
       </template>
       <template #suffix>
         <div
-          style="transition: background 0.3s; background: var(--bg-color)"
+          style="transition: background 0.3s; background-color: var(--bg-color)"
           class="box-border flex items-center justify-center h-full p-x-4px cursor-pointer"
         >
           <a-svg-icon
             name="arrowDoubleRight"
             :size="18"
-            color="var(--text-soft-color)"
+            color="var(--special-color)"
           />
         </div>
       </template>
@@ -58,11 +58,15 @@ const tabsHeight = computed(() => `${appStore.app_tabsHeight}px`);
     user-select: none;
     .n-tabs-nav__suffix,
     .n-tabs-nav__prefix {
+      transition: all 0.3s;
       &:hover {
-        background: rgba(var(--special-color-rgb), 0.05);
+        background-color: rgba(var(--special-color-rgb), 0.5);
       }
       &:active {
-        background: rgba(var(--special-color-rgb), 0.15);
+        background-color: rgba(var(--special-color-rgb), 0.4);
+        svg {
+          fill: rgba(var(--special-color-rgb), 0.9);
+        }
       }
       padding: 0;
       border: 1px solid var(--border-color);
@@ -83,12 +87,35 @@ const tabsHeight = computed(() => `${appStore.app_tabsHeight}px`);
         }
         .n-tabs-tab--active {
           background: rgba(var(--special-color-rgb), 0.2);
+          border-bottom: 1px solid !important;
+          .n-base-close {
+            transform: scale(1) translateX(0) !important;
+          }
+          .n-tabs-tab__label {
+            transform: translateX(0) !important;
+          }
         }
         .n-tabs-tab {
           overflow: hidden;
           border-radius: 0;
           padding: 4px 4px 3px 10px;
           border: 1px solid var(--border-color);
+          .n-base-close {
+            transition: transform 0.3s;
+            transform: scale(0) translateX(-100%);
+          }
+          .n-tabs-tab__label {
+            transition: transform 0.3s;
+            transform: translateX(9px);
+          }
+          &:hover {
+            .n-base-close {
+              transform: scale(1) translateX(0);
+            }
+            .n-tabs-tab__label {
+              transform: translateX(0);
+            }
+          }
         }
         .n-tabs-tab-pad {
           border: 0;

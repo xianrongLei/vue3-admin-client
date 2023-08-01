@@ -41,19 +41,22 @@
         :data="tableDate"
         :pagination="pagination"
         :scroll-x="1200"
+        :row-key="rowKey"
       />
     </n-card>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { DataTableColumns } from "naive-ui";
-import { Ref, ref, watchEffect } from "vue";
+import type { DataTableColumns } from "naive-ui";
+import type { Ref } from "vue";
+import { ref, watchEffect } from "vue";
+import type { Menu } from "@/types/gql.types";
 import { useMenusApi } from "@/gqlApi/menu.gql";
-import { MenuEdge } from "@/types/gql.types";
 
 const formData = ref({ inputValue: "" });
 const formRules = ref({});
+const tableDate: Ref<Partial<Menu & { key: string }>[]> = ref([]);
 /**
  * 列表数据
  */
@@ -66,62 +69,72 @@ const { result } = useMenusApi({
     }
   }
 });
-
-const tableDate: Ref<Partial<MenuEdge & { key: string }>[]> = ref([]);
-console.log(tableDate);
-
 watchEffect(() => {
-  if (result.value?.menus?.edges) {
-    tableDate.value = result.value.menus.edges.map((e) => ({ ...e, key: e!.cursor }));
-  }
+  if (result.value?.menus?.edges)
+    tableDate.value = result.value.menus.edges.map((e) => ({ ...e?.node, key: e!.cursor }));
 });
 
-type RowData = {
-  key: number;
-  name: string;
-  age: number;
-  address: string;
-};
-
-const columns: DataTableColumns<RowData> = [
+const columns: DataTableColumns<Menu> = [
   {
     type: "selection",
     fixed: "left"
   },
   {
-    title: "名称",
-    key: "node.title",
-    fixed: "left",
-    align: "center"
+    title: "菜单名称",
+    key: "title",
+    fixed: "left"
   },
   {
     title: "唯一标识",
-    key: "node.name",
+    key: "name",
     align: "center"
   },
   {
     title: "类型",
-    key: "node.type",
+    key: "type",
     align: "center"
   },
   {
     title: "是否隐藏",
-    key: "node.isHidden",
-    align: "center"
+    key: "isHidden",
+    align: "center",
+    render(rowData) {
+      if (rowData.isHidden) {
+        return "是";
+      }
+      return "否";
+    }
+  },
+  {
+    title: "是否缓存",
+    key: "isCache",
+    align: "center",
+    render(rowData) {
+      if (rowData.isCache) {
+        return "是";
+      }
+      return "否";
+    }
   },
   {
     title: "打开方式",
-    key: "node.outside",
-    align: "center"
+    key: "outside",
+    align: "center",
+    render(rowData) {
+      if (rowData.outside) {
+        return "外部链接";
+      }
+      return "内部打开";
+    }
   },
   {
     title: "组件路径",
-    key: "node.component",
+    key: "component",
     align: "center"
   },
   {
     title: "路由地址",
-    key: "node.route",
+    key: "route",
     align: "center"
   },
   {
@@ -134,7 +147,7 @@ const columns: DataTableColumns<RowData> = [
     }
   }
 ];
-
+const rowKey = (row: Menu) => row.id;
 const pagination = {
   "show-quick-jumper": true,
   "show-size-picker": true,

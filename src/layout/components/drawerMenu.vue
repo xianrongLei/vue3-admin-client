@@ -42,7 +42,6 @@
 
 <script lang="ts" setup>
 import { computed, h } from "vue";
-import { RouteLocationRaw } from "vue-router";
 import useAppStore from "@/store/modules/app";
 import { useRouterStore } from "@/store/modules/router";
 import { RouteMenu } from "@/store/modules/router/router.types";

@@ -2,7 +2,7 @@
   <div
     class="layout-header flex items-center flex-shrink-0 flex-grow-0 box-border"
     :style="{ height: headerHeight }"
-    style="border-bottom: 1px solid var(--border-color)"
+    style="border-bottom: 1.5px solid var(--border-color)"
   >
     <div class="h-full flex justify-center items-center w-50px">
       <a-svg-icon

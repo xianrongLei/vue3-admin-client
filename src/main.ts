@@ -7,6 +7,7 @@ import { mountNaive } from "./naive/index";
 import { mountApollo } from "@/apollo";
 import { mountConfig } from "./config/index";
 import { mountComponents } from "@/components/index";
+
 // App base style
 import "@/style/index";
 

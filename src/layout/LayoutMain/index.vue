@@ -10,9 +10,20 @@
             name="route-animation"
             mode="out-in"
           >
-            <keep-alive :max="10">
-              <component :is="Component" />
+            <keep-alive
+              v-if="$route.meta.isCache"
+              :max="100"
+            >
+              <component
+                :is="Component"
+                :key="$route.meta.id"
+              />
             </keep-alive>
+            <component
+              v-else
+              :is="Component"
+              :key="$route.name"
+            />
           </transition>
         </router-view>
         <div
@@ -31,6 +42,9 @@
 import { computed } from "vue";
 import useAppStore from "@/store/modules/app";
 
+const log = (c: any) => {
+  console.log(c);
+};
 const appStore = useAppStore();
 // footer 高度
 const footerHeight = computed(() => `${appStore.app_footerHeight - 1}px`);
