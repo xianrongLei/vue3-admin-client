@@ -1,4 +1,5 @@
-import { Pinia, createPinia } from "pinia";
+import type { Pinia } from "pinia";
+import { createPinia } from "pinia";
 import { cacheManager } from "./plugin/plugin.cache";
 
 export const pinia: Pinia = createPinia();

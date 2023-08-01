@@ -1,5 +1,6 @@
-import { GlobalThemeOverrides, darkTheme, lightTheme } from "naive-ui";
-import { ThemeState } from "./index";
+import type { GlobalThemeOverrides } from "naive-ui";
+import { darkTheme, lightTheme } from "naive-ui";
+import type { ThemeState } from "./index";
 
 export type ThemeMap = {
   dark: {

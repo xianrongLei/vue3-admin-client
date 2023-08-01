@@ -41,7 +41,7 @@
 import { computed, nextTick } from "vue";
 import { useAppStore } from "@/store/modules/app";
 import { useRouterStore } from "@/store/modules/router";
-import { RouteMenu } from "@/store/modules/router/router.types";
+import type { RouteMenu } from "@/store/modules/router/router.types";
 import { router } from "@/router";
 
 const routerStore = useRouterStore();

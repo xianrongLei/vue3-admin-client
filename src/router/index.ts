@@ -1,4 +1,5 @@
-import { createRouter, createWebHashHistory, Router, RouteRecordRaw } from "vue-router";
+import type { Router, RouteRecordRaw } from "vue-router";
+import { createRouter, createWebHashHistory } from "vue-router";
 import { mountGuard } from "./router.guard";
 
 const constantRoutes: RouteRecordRaw[] = [

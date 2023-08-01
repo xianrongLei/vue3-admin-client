@@ -33,7 +33,7 @@ import { useAppStore } from "@/store/modules/app/index";
 import { useRouterStore } from "@/store/modules/router";
 import { router } from "@/router";
 import ASvgIcon from "@/components/ASvgIcon/index.vue";
-import { RouteMenu } from "@/store/modules/router/router.types";
+import type { RouteMenu } from "@/store/modules/router/router.types";
 import { appConfig } from "@/config/index";
 
 const { app_headerHeight, app_shrinkMenuWidth } = useAppStore();

@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts" setup>
-import { DataTableColumns } from "naive-ui";
+import type { DataTableColumns } from "naive-ui";
 
 type RowData = {
   key: number;

@@ -30,9 +30,9 @@ import {
   NTabs,
   useOsTheme
 } from "naive-ui";
-import { DiscreteApi } from "naive-ui/es/discrete/src/interface";
+import type { DiscreteApi } from "naive-ui/es/discrete/src/interface";
 import { themeMap } from "@/store/modules/theme/theme.map";
-import { ThemeState } from "@/store/modules/theme";
+import type { ThemeState } from "@/store/modules/theme";
 
 const naive = create({
   components: [

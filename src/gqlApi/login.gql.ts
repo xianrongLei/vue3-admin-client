@@ -1,6 +1,7 @@
-import { UseMutationReturn, useMutation } from "@vue/apollo-composable";
+import type { UseMutationReturn } from "@vue/apollo-composable";
+import { useMutation } from "@vue/apollo-composable";
 import gql from "graphql-tag";
-import { Auth, Captcha, CreateCaptchaInput, SignInInput } from "@/types/gql.types";
+import type { Auth, Captcha, CreateCaptchaInput, SignInInput } from "@/types/gql.types";
 /**
  * 登录
  * @param variables

@@ -1,4 +1,4 @@
-import { AppConfig } from "./config.types";
+import type { AppConfig } from "./config.types";
 
 export const appConfig: AppConfig = {
   appTitle: "MAKU",

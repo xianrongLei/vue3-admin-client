@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { ref, Ref } from "vue";
+import type { Ref } from "vue";
+import { ref } from "vue";
 // import CommonResizeBox from "@/components/CommonResizeBox/index.vue";
 
 const mode: Ref = ref(0);

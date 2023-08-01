@@ -1,4 +1,4 @@
-import { Router } from "vue-router";
+import type { Router } from "vue-router";
 import { useRouterStore } from "@/store/modules/router";
 import { useUserStore } from "@/store/modules/user";
 import { clearAll } from "@/utils/utils.cache-operator";

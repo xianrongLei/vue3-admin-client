@@ -1,6 +1,7 @@
-import { UseQueryReturn, useQuery } from "@vue/apollo-composable";
+import type { UseQueryReturn } from "@vue/apollo-composable";
+import { useQuery } from "@vue/apollo-composable";
 import gql from "graphql-tag";
-import { MenuConnection, QueryMenuInput } from "@/types/gql.types";
+import type { MenuConnection, QueryMenuInput } from "@/types/gql.types";
 import { MenuFields } from "./index.gql";
 /**
  * 分页查询菜单列表

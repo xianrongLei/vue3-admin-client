@@ -1,6 +1,7 @@
-import { UseMutationReturn, useMutation } from "@vue/apollo-composable";
+import type { UseMutationReturn } from "@vue/apollo-composable";
+import { useMutation } from "@vue/apollo-composable";
 import gql from "graphql-tag";
-import { Menu, QueryMenusByUserIdInput, User } from "../types/gql.types";
+import type { Menu, QueryMenusByUserIdInput, User } from "../types/gql.types";
 import { MenuFields } from "./index.gql";
 /**
  * 登录

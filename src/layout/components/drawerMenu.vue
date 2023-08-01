@@ -44,7 +44,7 @@
 import { computed, h } from "vue";
 import useAppStore from "@/store/modules/app";
 import { useRouterStore } from "@/store/modules/router";
-import { RouteMenu } from "@/store/modules/router/router.types";
+import type { RouteMenu } from "@/store/modules/router/router.types";
 import ASvgIcon from "@/components/ASvgIcon/index.vue";
 import { router } from "@/router";
 import { appConfig } from "@/config/index";

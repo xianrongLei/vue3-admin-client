@@ -2,7 +2,7 @@ import type { PiniaPlugin, PiniaPluginContext } from "pinia";
 import { watch } from "vue";
 import { isEmpty } from "lodash";
 import { getCache, setCache } from "@/utils/utils.cache-operator";
-import { CacheItem } from "./plugin.types";
+import type { CacheItem } from "./plugin.types";
 
 export const cacheManager: PiniaPlugin = (context: PiniaPluginContext) => {
   /**

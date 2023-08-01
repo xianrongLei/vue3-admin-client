@@ -98,7 +98,8 @@
 </template>
 
 <script lang="ts" setup>
-import { ComponentOptions, ref } from "vue";
+import type { ComponentOptions } from "vue";
+import { ref } from "vue";
 import { Person, KeySharp, DiceSharp } from "@vicons/ionicons5";
 import { useI18n } from "vue-i18n";
 import { useLoadingBar, useMessage } from "naive-ui";
