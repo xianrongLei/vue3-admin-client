@@ -8,14 +8,15 @@
     <NThemeEditor v-if="themeStore.theme_naiveEditor" />
     <n-loading-bar-provider>
       <n-message-provider>
-        <router-view></router-view>
+        <router-view />
       </n-message-provider>
     </n-loading-bar-provider>
   </n-config-provider>
 </template>
 
 <script lang="ts" setup>
-import { NThemeEditor, zhCN, dateZhCN, enUS, dateEnUS, NDateLocale } from "naive-ui";
+import type { NDateLocale } from "naive-ui";
+import { NThemeEditor, zhCN, dateZhCN, enUS, dateEnUS } from "naive-ui";
 import { computed, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useThemeStore } from "@/store/modules/theme/index";

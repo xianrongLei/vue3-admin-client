@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
-import { GlobalTheme } from "naive-ui";
-import { ThemeMap, useThemeConfig } from "./theme.map";
+import type { GlobalTheme } from "naive-ui";
+import type { ThemeMap } from "./theme.map";
+import { useThemeConfig } from "./theme.map";
 
 export interface ThemeState {
   /** 主题模式 */

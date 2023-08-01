@@ -1,5 +1,5 @@
-import { ComponentOptions } from "vue";
-import { Nullable } from "@/types";
+import type { ComponentOptions } from "vue";
+import type { Nullable } from "@/types";
 
 export type RouteMenu = {
   redirect?: Nullable<string>;

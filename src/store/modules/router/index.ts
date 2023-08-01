@@ -1,9 +1,9 @@
 import { defineStore } from "pinia";
-import { RouteRecordRaw, Router } from "vue-router";
+import type { RouteRecordRaw, Router } from "vue-router";
 import { nextTick } from "vue";
-import { RouteMenu, FindDeepByIdOptions, RouterState } from "@/store/modules/router/router.types";
-import { Menu } from "@/types/gql.types";
-import { Nullable } from "@/types";
+import type { RouteMenu, FindDeepByIdOptions, RouterState } from "@/store/modules/router/router.types";
+import type { Menu } from "@/types/gql.types";
+import type { Nullable } from "@/types";
 // 加载vue组件
 const layoutModules = import.meta.glob("/src/views/**/*.vue");
 export const useRouterStore = defineStore("router", {

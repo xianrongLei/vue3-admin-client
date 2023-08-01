@@ -19,7 +19,7 @@ specifiers:
   eslint-import-resolver-alias: ^1.1.2
   eslint-plugin-import: ^2.26.0
   eslint-plugin-prettier: ^4.2.1
-  eslint-plugin-vue: ^9.8.0
+  eslint-plugin-vue: 9.8.0
   graphql: ^16.6.0
   graphql-tag: ^2.12.6
   husky: ^8.0.3
@@ -2133,9 +2133,9 @@ packages:
       eslint-utils: 3.0.0_eslint@8.31.0
       natural-compare: 1.4.0
       nth-check: 2.1.1
-      postcss-selector-parser: 6.0.11
+      postcss-selector-parser: 6.0.13
       semver: 7.3.8
-      vue-eslint-parser: 9.1.0_eslint@8.31.0
+      vue-eslint-parser: 9.3.1_eslint@8.31.0
       xml-name-validator: 4.0.0
     transitivePeerDependencies:
       - supports-color
@@ -3719,8 +3719,8 @@ packages:
       postcss: 5.2.18
     dev: true
 
-  /postcss-selector-parser/6.0.11:
-    resolution: {integrity: sha512-zbARubNdogI9j7WY4nQJBiNqQf3sLS3wCP4WfOidu+p28LofJqDH1tcXypGrcmMHhDk2t9wGhCsYe/+szLTy1g==}
+  /postcss-selector-parser/6.0.13:
+    resolution: {integrity: sha512-EaV1Gl4mUEV4ddhDnv/xtj7sxwrwxdetHdWUGnT4VJQf+4d05v6lHYZr8N573k5Z0BViss7BDhfWtKS3+sfAqQ==}
     engines: {node: '>=4'}
     dependencies:
       cssesc: 3.0.0
@@ -4875,8 +4875,8 @@ packages:
       vue: 3.2.47
     dev: false
 
-  /vue-eslint-parser/9.1.0_eslint@8.31.0:
-    resolution: {integrity: sha512-NGn/iQy8/Wb7RrRa4aRkokyCZfOUWk19OP5HP6JEozQFX5AoS/t+Z0ZN7FY4LlmWc4FNI922V7cvX28zctN8dQ==}
+  /vue-eslint-parser/9.3.1_eslint@8.31.0:
+    resolution: {integrity: sha512-Clr85iD2XFZ3lJ52/ppmUDG/spxQu6+MAeHXjjyI4I1NUYZ9xmenQp4N0oaHJhrA8OOxltCVxMRfANGa70vU0g==}
     engines: {node: ^14.17.0 || >=16.0.0}
     peerDependencies:
       eslint: '>=6.0.0'

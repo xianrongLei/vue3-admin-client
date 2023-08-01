@@ -6,7 +6,12 @@ module.exports = {
     node: true
   },
   // 插件从右到左覆盖处理
-  extends: ["plugin:vue/vue3-strongly-recommended", "eslint-config-airbnb-base", "eslint-config-prettier"],
+  extends: [
+    "plugin:vue/vue3-strongly-recommended",
+    "eslint-config-airbnb-base",
+    "eslint-config-prettier"
+    // "plugin:vue/vue3-recommended"
+  ],
   // vue解析器
   parser: "vue-eslint-parser",
   // 解析器配置
@@ -62,8 +67,7 @@ module.exports = {
     // 关闭驼峰命名检查
     camelcase: "off",
 
-    // 导入导出类型时必须使用 type 关键字
-    "@typescript-eslint/consistent-type-imports": 0,
-    "@typescript-eslint/consistent-type-exports": 0
+    // 导入类型时必须使用 type 关键字
+    "@typescript-eslint/consistent-type-imports": "error"
   }
 };

@@ -1,8 +1,8 @@
 import { once, debounce } from "lodash";
 import { defineStore } from "pinia";
 import { nextTick, watch } from "vue";
-import { AppState } from "./app.types";
-import { RouteMenu } from "../router/router.types";
+import type { AppState } from "./app.types";
+import type { RouteMenu } from "../router/router.types";
 
 export const useAppStore = defineStore("app", {
   state: (): AppState => ({

@@ -1,4 +1,4 @@
-import { RouteMenu } from "../router/router.types";
+import type { RouteMenu } from "../router/router.types";
 
 export interface AppState {
   /**
